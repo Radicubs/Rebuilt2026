@@ -10,13 +10,17 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.*;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.HolonomicPathFollower;
 import frc.robot.SwerveModule;
+
+import java.util.logging.Logger;
 
 public class Swerve extends SubsystemBase implements HolonomicPathFollower {
     public SwerveDriveOdometry swerveOdometry;
@@ -192,5 +196,8 @@ public class Swerve extends SubsystemBase implements HolonomicPathFollower {
     public void periodic() {
         swerveOdometry.update(getGyroYaw(), getModulePositions());
         field.setRobotPose(getPose());
+
+
+
     }
 }

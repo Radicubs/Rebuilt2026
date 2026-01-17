@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.lib.math.Conversions;
 import frc.lib.util.SwerveModuleConstants;
 
+import java.util.logging.Logger;
+
 public class SwerveModule implements Sendable {
     public int moduleNumber;
     private Rotation2d angleOffset;
@@ -22,6 +24,7 @@ public class SwerveModule implements Sendable {
     private TalonFX mAngleMotor;
     private TalonFX mDriveMotor;
     private CANcoder angleEncoder;
+
 
     private SwerveModuleState desiredSwerveState;
 
@@ -106,6 +109,7 @@ public class SwerveModule implements Sendable {
 
     @Override
     public void initSendable(SendableBuilder builder) {
+
         builder.setSmartDashboardType("Swerve Module");
         builder.addDoubleProperty("CANcoder", () -> getCANcoder().getDegrees(), null);
         builder.addDoubleProperty("Angle", () -> (getPosition().angle.getDegrees() % 360 < 180) ? getPosition().angle.getDegrees() % 360 : getPosition().angle.getDegrees() % 360 - 360, null);

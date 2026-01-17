@@ -11,28 +11,36 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.teleop.TeleopSwerve;
 import frc.robot.subsystems.Swerve;
 
 
 public class RobotContainer {
-    CommandXboxController mainController = new CommandXboxController(0);
+    XboxController mainController;
 
     Trigger left, up, down, right;
 
+    JoystickButton rightBumper;
     public RobotContainer() {
 
 
-        mainController = new CommandXboxController(0);
+        mainController = new XboxController(0);
+        rightBumper = new JoystickButton(mainController, XboxController.Button.kRightBumper.value);
         Swerve.getInstance().setDefaultCommand(new TeleopSwerve(
                 () -> -mainController.getLeftY(),
                 () -> -mainController.getLeftX(),
                 () -> mainController.getRightX()
         ));
 
+        configureBindings();
+
     }
     private void configureBindings () {
+        rightBumper.onTrue(new InstantCommand(() -> {
+            Swerve.getInstance().zeroHeading();
+        }));
     }
 
 
