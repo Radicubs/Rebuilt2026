@@ -30,7 +30,7 @@ public class Swerve extends SubsystemBase implements HolonomicPathFollower {
     private RobotConfig config;
 
     public static Swerve getInstance() {
-        if (instance == null) instance = new Swerve();
+        if (instance == null) {instance = new Swerve();}
         return instance;
     }
 
