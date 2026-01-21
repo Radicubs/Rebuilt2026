@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.Timer;
@@ -22,7 +23,9 @@ public class PhotonVision extends SubsystemBase {
     public static final AprilTagFieldLayout APRIL_TAG_LAYOUT = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
     private static PhotonVision instance;
 
-    private PhotonPoseEstimator poseEstimator;
+    private static final Transform3d cameraOffset = new Transform3d(Constants.CameraConfig.cameraOffsetX, Constants.CameraConfig.cameraOffsetY, Constants.CameraConfig.cameraOffsetZ, new Rotation3d(0, 0, 0));
+
+    //private PhotonPoseEstimator poseEstimator;
 
     public static PhotonVision getInstance() {
         if (instance == null) instance = new PhotonVision();
@@ -38,7 +41,7 @@ public class PhotonVision extends SubsystemBase {
         timer = new Timer();
         camera = new PhotonCamera("raspberry");
         Transform3d robotToCam = new Transform3d(Constants.CameraConfig.cameraOffsetX, Constants.CameraConfig.cameraOffsetY, Constants.CameraConfig.cameraOffsetZ, new Rotation3d());
-        poseEstimator = new PhotonPoseEstimator(APRIL_TAG_LAYOUT, PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_REFERENCE_POSE, robotToCam);
+        //poseEstimator = new PhotonPoseEstimator(APRIL_TAG_LAYOUT, PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY, robotToCam);
     }
 
     public Transform3d getTransformToTarget(int targetID) {
@@ -55,11 +58,14 @@ public class PhotonVision extends SubsystemBase {
 
     public Pose2d getRobotFieldPose() {
         if(result == null) return null;
-        poseEstimator.setReferencePose(Swerve.getInstance().getPose());
-        Optional<EstimatedRobotPose> optional = poseEstimator.update(result);
-        if (optional.isPresent()) {
-            return optional.get().estimatedPose.toPose2d();
+        Optional<Pose3d> option = APRIL_TAG_LAYOUT.getTagPose(result.getBestTarget().getFiducialId());
+
+        if(option.isPresent()){
+            return option.get().plus(result.getBestTarget()
+                            .getBestCameraToTarget().inverse()
+                            .plus(cameraOffset.inverse())).toPose2d();
         }
+
         return null;
     }
 
