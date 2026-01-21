@@ -197,7 +197,9 @@ public class Swerve extends SubsystemBase implements HolonomicPathFollower {
         swerveOdometry.update(getGyroYaw(), getModulePositions());
         field.setRobotPose(getPose());
 
-
+        for (SwerveModule mod : mSwerveMods) {
+            mod.logNetworkTables();
+        }
 
     }
 }

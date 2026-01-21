@@ -8,16 +8,23 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.networktables.DoublePublisher;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.units.Units;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib.math.Conversions;
 import frc.lib.util.SwerveModuleConstants;
 
 import java.util.logging.Logger;
 
-public class SwerveModule implements Sendable {
+public class SwerveModule{
+
+
     public int moduleNumber;
     private Rotation2d angleOffset;
 
@@ -25,7 +32,7 @@ public class SwerveModule implements Sendable {
     private TalonFX mDriveMotor;
     private CANcoder angleEncoder;
 
-
+    private DoublePublisher CANCoder, angle, velocity, desiredVelocity, desiredAngle;
     private SwerveModuleState desiredSwerveState;
 
     private final SimpleMotorFeedforward driveFeedForward = new SimpleMotorFeedforward(Constants.Swerve.driveKS, Constants.Swerve.driveKV, Constants.Swerve.driveKA);
@@ -58,7 +65,16 @@ public class SwerveModule implements Sendable {
         mDriveMotor.setNeutralMode(NeutralModeValue.Brake);
         mDriveMotor.getConfigurator().setPosition(0.0);
 
-        Shuffleboard.getTab("Swerve").add("Mod " + moduleNumber, this).withSize(2, 2);
+        /* Network Tables Logging */
+        NetworkTableInstance inst = NetworkTableInstance.getDefault();
+        NetworkTable swerveModuleTable = inst.getTable("Swerve Module " + moduleNumber);
+
+        CANCoder = swerveModuleTable.getDoubleTopic("CANCoder").publish();
+        angle = swerveModuleTable.getDoubleTopic("Angle").publish();
+        velocity = swerveModuleTable.getDoubleTopic("Velocity").publish();
+        desiredVelocity = swerveModuleTable.getDoubleTopic("Desired Velocity").publish();
+        desiredAngle = swerveModuleTable.getDoubleTopic("Desired Angle").publish();
+
     }
 
     public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop) {
@@ -89,7 +105,6 @@ public class SwerveModule implements Sendable {
 
     public void resetToAbsolute() {
         double absolutePosition = getCANcoder().getRotations() - angleOffset.getRotations();
-        System.out.println("Module " + moduleNumber + " " + getCANcoder().getRotations() + " " + angleOffset.getRotations());
         mAngleMotor.setPosition(absolutePosition);
     }
 
@@ -107,14 +122,13 @@ public class SwerveModule implements Sendable {
         );
     }
 
-    @Override
-    public void initSendable(SendableBuilder builder) {
+    public void logNetworkTables() {
+        System.out.println("sanity");
+        CANCoder.set(getCANcoder().getDegrees());
+        angle.set((getPosition().angle.getDegrees() % 360 < 180) ? getPosition().angle.getDegrees() % 360 : getPosition().angle.getDegrees() % 360 - 360);
+        velocity.set(getState().speedMetersPerSecond);
+        desiredVelocity.set((desiredSwerveState != null) ? desiredSwerveState.speedMetersPerSecond : 0);
+        desiredAngle.set((desiredSwerveState != null) ? desiredSwerveState.angle.getDegrees() : 0);
 
-        builder.setSmartDashboardType("Swerve Module");
-        builder.addDoubleProperty("CANcoder", () -> getCANcoder().getDegrees(), null);
-        builder.addDoubleProperty("Angle", () -> (getPosition().angle.getDegrees() % 360 < 180) ? getPosition().angle.getDegrees() % 360 : getPosition().angle.getDegrees() % 360 - 360, null);
-        builder.addDoubleProperty("Velocity", () -> getState().speedMetersPerSecond, null);
-        builder.addDoubleProperty("Desired Velocity", () -> (desiredSwerveState != null) ? desiredSwerveState.speedMetersPerSecond : 0, null);
-        builder.addDoubleProperty("Desired Angle", () -> (desiredSwerveState != null) ? desiredSwerveState.angle.getDegrees() : 0, null);
     }
 }
