@@ -9,6 +9,9 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.*;
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.networktables.DoublePublisher;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -33,13 +36,17 @@ public class Swerve extends SubsystemBase implements HolonomicPathFollower {
 
     private RobotConfig config;
 
+    private DoublePublisher heading;
+
     public static Swerve getInstance() {
         if (instance == null) {instance = new Swerve();}
         return instance;
     }
 
     private Swerve() {
-        
+        gyro = Navx.getInstance();
+        gyro.reset();
+
         try{
             config = RobotConfig.fromGUISettings();
         } catch (Exception e) {
@@ -71,33 +78,21 @@ public class Swerve extends SubsystemBase implements HolonomicPathFollower {
             this // Reference to this subsystem to set requirements
     );
 
-        gyro = Navx.getInstance();
-        gyro.reset();
-
-        Sendable HeadingWidget = builder -> {
-            builder.setSmartDashboardType("Gyro");
-            builder.addDoubleProperty("Value", () -> getHeading().getDegrees(), null);
-        };
-
-        Sendable Temperatures = builder -> {
-            builder.setSmartDashboardType("Number");
-            builder.addDoubleProperty("Value", () -> getHeading().getDegrees(), null);
-        };
-
-        Shuffleboard.getTab("Data").add("Heading", HeadingWidget).withSize(2, 2);
-
+        NetworkTableInstance inst = NetworkTableInstance.getDefault();
+        NetworkTable swerveTable = inst.getTable("Swerve");
 
         field = new Field2d();
         Shuffleboard.getTab("Swerve").add(field).withSize(4, 3);
-        
 
         mSwerveMods = new SwerveModule[]{
-                new SwerveModule(0, Constants.Swerve.Mod0.constants),
-                new SwerveModule(1, Constants.Swerve.Mod1.constants),
-                new SwerveModule(2, Constants.Swerve.Mod2.constants),
-                new SwerveModule(3, Constants.Swerve.Mod3.constants)
+                new SwerveModule(0, Constants.Swerve.Mod0.constants, swerveTable),
+                new SwerveModule(1, Constants.Swerve.Mod1.constants, swerveTable),
+                new SwerveModule(2, Constants.Swerve.Mod2.constants, swerveTable),
+                new SwerveModule(3, Constants.Swerve.Mod3.constants, swerveTable)
         };
         swerveOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getGyroYaw(), getModulePositions());
+
+        heading = swerveTable.getDoubleTopic("Heading Value").publish();
     }
 
     public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
@@ -196,6 +191,7 @@ public class Swerve extends SubsystemBase implements HolonomicPathFollower {
     public void periodic() {
         swerveOdometry.update(getGyroYaw(), getModulePositions());
         field.setRobotPose(getPose());
+        heading.set((getHeading()!= null) ? getHeading().getDegrees() : 0);
 
         for (SwerveModule mod : mSwerveMods) {
             mod.logNetworkTables();

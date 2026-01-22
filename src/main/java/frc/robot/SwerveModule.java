@@ -44,7 +44,7 @@ public class SwerveModule{
     /* angle motor control requests */
     private final MotionMagicVoltage anglePositionM = new MotionMagicVoltage(0);
     private final PositionVoltage anglePositionP = new PositionVoltage(0);
-    public SwerveModule(int moduleNumber, SwerveModuleConstants moduleConstants){
+    public SwerveModule(int moduleNumber, SwerveModuleConstants moduleConstants, NetworkTable SwerveTable){
         this.moduleNumber = moduleNumber;
         this.angleOffset = moduleConstants.angleOffset;
 
@@ -66,8 +66,7 @@ public class SwerveModule{
         mDriveMotor.getConfigurator().setPosition(0.0);
 
         /* Network Tables Logging */
-        NetworkTableInstance inst = NetworkTableInstance.getDefault();
-        NetworkTable swerveModuleTable = inst.getTable("Swerve Module " + moduleNumber);
+        NetworkTable swerveModuleTable = SwerveTable.getSubTable("Swerve Module " + moduleNumber);
 
         CANCoder = swerveModuleTable.getDoubleTopic("CANCoder").publish();
         angle = swerveModuleTable.getDoubleTopic("Angle").publish();
@@ -123,7 +122,6 @@ public class SwerveModule{
     }
 
     public void logNetworkTables() {
-        System.out.println("sanity");
         CANCoder.set(getCANcoder().getDegrees());
         angle.set((getPosition().angle.getDegrees() % 360 < 180) ? getPosition().angle.getDegrees() % 360 : getPosition().angle.getDegrees() % 360 - 360);
         velocity.set(getState().speedMetersPerSecond);
