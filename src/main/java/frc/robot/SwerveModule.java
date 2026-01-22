@@ -123,7 +123,6 @@ public class SwerveModule{
     }
 
     public void logNetworkTables() {
-        System.out.println("sanity");
         CANCoder.set(getCANcoder().getDegrees());
         angle.set((getPosition().angle.getDegrees() % 360 < 180) ? getPosition().angle.getDegrees() % 360 : getPosition().angle.getDegrees() % 360 - 360);
         velocity.set(getState().speedMetersPerSecond);

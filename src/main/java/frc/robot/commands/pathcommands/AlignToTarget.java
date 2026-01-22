@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.robot.subsystems.PhotonVision;
 import frc.robot.subsystems.Swerve;
+import org.littletonrobotics.junction.Logger;
 
 import java.util.Optional;
 
@@ -71,5 +72,7 @@ public class AlignToTarget extends PathFollowingCommand {
         speeds.omegaRadiansPerSecond = Math.min(constants.maxPathAngularSpeed(), speeds.omegaRadiansPerSecond);
         chassis.driveRobotRelative(speeds);
         System.out.println(speeds);
+
+
     }
 }

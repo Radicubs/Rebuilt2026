@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.teleop.TeleopSwerve;
+import frc.robot.subsystems.PhotonVision;
 import frc.robot.subsystems.Swerve;
 
 
@@ -24,7 +25,7 @@ public class RobotContainer {
 
     JoystickButton rightBumper;
     public RobotContainer() {
-
+        PhotonVision.getInstance();
 
         mainController = new XboxController(0);
         rightBumper = new JoystickButton(mainController, XboxController.Button.kRightBumper.value);
