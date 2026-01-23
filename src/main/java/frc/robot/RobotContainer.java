@@ -21,8 +21,6 @@ import frc.robot.subsystems.Swerve;
 public class RobotContainer {
     XboxController mainController;
 
-    Trigger left, up, down, right;
-
     JoystickButton rightBumper;
     public RobotContainer() {
         PhotonVision.getInstance();
@@ -32,7 +30,8 @@ public class RobotContainer {
         Swerve.getInstance().setDefaultCommand(new TeleopSwerve(
                 () -> -mainController.getLeftY(),
                 () -> -mainController.getLeftX(),
-                () -> mainController.getRightX()
+                () -> mainController.getRightX(),
+                () -> mainController.getLeftBumperButton()
         ));
 
         configureBindings();
