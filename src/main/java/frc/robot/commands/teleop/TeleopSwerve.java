@@ -19,7 +19,7 @@ public class TeleopSwerve extends Command {
     DoubleSupplier translationY;
     DoubleSupplier rotation;
     BooleanSupplier alignToggle;
-    PIDController rotController;
+    private double p = 0.1; // TODO: Tune for robot
     private Swerve swerve;
     private PhotonVision photonVision;
     private double targetRobotAngle, rotSpeed;
@@ -33,7 +33,6 @@ public class TeleopSwerve extends Command {
         swerve = Swerve.getInstance();
         photonVision = PhotonVision.getInstance();
         addRequirements(swerve);
-        rotController = new PIDController(0.1, 0, 0); //TODO: FIX ERROR CALCULATION
     }
 
     @Override
@@ -54,9 +53,7 @@ public class TeleopSwerve extends Command {
                     Constants.Swerve.hubPosition.getY() - swerve.getPose().getY()
             ).getAngle().getRadians();
 
-            rotController.setSetpoint(targetRobotAngle);
-
-            rotSpeed = rotController.calculate(swerve.getHeading().getRadians());
+            rotSpeed = (targetRobotAngle - swerve.getHeading().getRadians()) * p;
             if(rotSpeed < -1) rotSpeed = -1;
             if(rotSpeed > 1) rotSpeed = 1;
 
@@ -68,10 +65,10 @@ public class TeleopSwerve extends Command {
         }
 
 
-        SmartDashboard.putNumber("Target Rotation", new Translation2d(Constants.Swerve.hubPosition.getX() - swerve.getPose().getX(), Constants.Swerve.hubPosition.getY() - swerve.getPose().getY()).getAngle().getDegrees());
-        SmartDashboard.putNumber("Actual Rotation", swerve.getPose().getRotation().getDegrees());
+        SmartDashboard.putNumber("Target Rotation", new Translation2d(Constants.Swerve.hubPosition.getX() - swerve.getPose().getX(), Constants.Swerve.hubPosition.getY() - swerve.getPose().getY()).getAngle().getRadians());
+        SmartDashboard.putNumber("Actual Rotation", swerve.getPose().getRotation().getRadians());
         SmartDashboard.putNumber("Last Tag", photonVision.getBestTag());
-        SmartDashboard.putNumber("PID", rotController.calculate(swerve.getHeading().getDegrees()));
+        SmartDashboard.putNumber("Error Calc", rotSpeed);
 
         swerve.drive(
                 new Translation2d(
