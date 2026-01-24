@@ -30,7 +30,7 @@ public final class Constants
                 COTSTalonFXSwerveConstants.SDS.MK4i.Falcon500(COTSTalonFXSwerveConstants.SDS.MK4i.driveRatios.L2);
 
         /* Field Positions */
-        public static final Pose2d hubPosition = new Pose2d(4, 6, new Rotation2d());
+        public static final Pose2d hubPosition = new Pose2d(1, 0, new Rotation2d());
 
         /* Drivetrain Constants */
         public static final double trackWidth = Units.inchesToMeters(27.5); //TODO: This must be tuned to specific robot
@@ -75,6 +75,10 @@ public final class Constants
         public static final double angleKP = chosenModule.angleKP;
         public static final double angleKI = chosenModule.angleKI;
         public static final double angleKD = chosenModule.angleKD;
+
+        /* Lock on values*/
+        public static final double lockKP = 1.5;
+        public static final double lockDeadband = 0.025;
 
         /* Angle Motor Magic Motion Values */
         public static final double magicMotionAccel = 18;

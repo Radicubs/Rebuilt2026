@@ -19,9 +19,10 @@ public class TeleopSwerve extends Command {
     DoubleSupplier translationY;
     DoubleSupplier rotation;
     BooleanSupplier alignToggle;
-    private double p = 0.1; // TODO: Tune for robot
+
     private Swerve swerve;
     private PhotonVision photonVision;
+
     private double targetRobotAngle, rotSpeed;
     private boolean lockOn;
 
@@ -53,12 +54,13 @@ public class TeleopSwerve extends Command {
                     Constants.Swerve.hubPosition.getY() - swerve.getPose().getY()
             ).getAngle().getRadians();
 
-            rotSpeed = (targetRobotAngle - swerve.getHeading().getRadians()) * p;
+            rotSpeed = (targetRobotAngle - swerve.getHeading().getRadians()) * Constants.Swerve.lockKP;
             if(rotSpeed < -1) rotSpeed = -1;
             if(rotSpeed > 1) rotSpeed = 1;
+            if(Math.abs(rotSpeed) - Constants.Swerve.lockDeadband < 0) rotSpeed = 0;
 
             //REMOVE TO USE LOCK ON VALUES
-            rotSpeed = rotation.getAsDouble();
+            //rotSpeed = rotation.getAsDouble();
         }
         else{
             rotSpeed = rotation.getAsDouble();
@@ -68,7 +70,7 @@ public class TeleopSwerve extends Command {
         SmartDashboard.putNumber("Target Rotation", new Translation2d(Constants.Swerve.hubPosition.getX() - swerve.getPose().getX(), Constants.Swerve.hubPosition.getY() - swerve.getPose().getY()).getAngle().getRadians());
         SmartDashboard.putNumber("Actual Rotation", swerve.getPose().getRotation().getRadians());
         SmartDashboard.putNumber("Last Tag", photonVision.getBestTag());
-        SmartDashboard.putNumber("Error Calc", rotSpeed);
+        SmartDashboard.putNumber("Rotation Speed", rotSpeed);
 
         swerve.drive(
                 new Translation2d(
