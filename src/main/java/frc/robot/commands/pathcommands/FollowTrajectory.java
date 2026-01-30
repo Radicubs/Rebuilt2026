@@ -4,6 +4,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Swerve;
+import frc.robot.Constants.TrajectoryConstants;
 
 public class FollowTrajectory extends PathFollowingCommand {
     private final boolean followTrajectoryHeading;
@@ -27,7 +28,6 @@ public class FollowTrajectory extends PathFollowingCommand {
 
     @Override
     public void execute() {
-        if(timer.get() > 0.15 && timer.get() < 0.2) Swerve.getInstance().resetModulesToAbsolute();
         Trajectory.State state = trajectory.sample(timer.get());
         ChassisSpeeds speeds = controller.calculate(chassis.getPose(), state, followTrajectoryHeading ? state.poseMeters.getRotation() : endPose.getRotation());
         SmartDashboard.putNumber("PID Target X", controller.getXController().getSetpoint());

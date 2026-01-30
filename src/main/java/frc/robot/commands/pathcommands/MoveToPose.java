@@ -3,6 +3,7 @@ package frc.robot.commands.pathcommands;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.robot.subsystems.Swerve;
+import frc.robot.Constants.TrajectoryConstants;
 
 public class MoveToPose extends PathFollowingCommand {
     public MoveToPose(Pose2d endPose, TrajectoryConstants constants) {

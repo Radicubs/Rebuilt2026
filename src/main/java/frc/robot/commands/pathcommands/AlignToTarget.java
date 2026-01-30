@@ -6,16 +6,16 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.PhotonVision;
 import frc.robot.subsystems.Swerve;
-import org.littletonrobotics.junction.Logger;
+import frc.robot.Constants.TrajectoryConstants;
 
 import java.util.Optional;
 
 public class AlignToTarget extends PathFollowingCommand {
     private int tagID;
     private HolonomicDriveController controller;
-    private Pose2d tolerance;
     private TrajectoryConstants constants;
 
     private Transform2d transformFromTag;
@@ -70,8 +70,10 @@ public class AlignToTarget extends PathFollowingCommand {
         }
 
         speeds.omegaRadiansPerSecond = Math.min(constants.maxPathAngularSpeed(), speeds.omegaRadiansPerSecond);
-        chassis.driveRobotRelative(speeds);
-        System.out.println(speeds);
+        //chassis.driveRobotRelative(speeds);
+        SmartDashboard.putNumber("X m/s", speeds.vxMetersPerSecond);
+        SmartDashboard.putNumber("Y m/s", speeds.vyMetersPerSecond);
+        SmartDashboard.putNumber("Theta m/s", speeds.omegaRadiansPerSecond);
 
 
     }

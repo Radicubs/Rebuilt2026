@@ -6,6 +6,8 @@
 package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -14,6 +16,9 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.pathcommands.AlignToSpecific;
+import frc.robot.commands.pathcommands.AlignToTarget;
+import frc.robot.commands.pathcommands.PathGenerator;
 import frc.robot.commands.teleop.TeleopSwerve;
 import frc.robot.subsystems.PhotonVision;
 import frc.robot.subsystems.Swerve;
@@ -49,6 +54,6 @@ public class RobotContainer {
 
     public Command getAutonomousCommand ()
     {
-        return new InstantCommand();
+        return new AlignToTarget(new Transform2d(1, 0, new Rotation2d(180)), Constants.TrajectoryConstants.SLOW);
     }
 }

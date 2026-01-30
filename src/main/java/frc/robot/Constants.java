@@ -18,6 +18,42 @@ import frc.lib.util.SwerveModuleConstants;
 
 public final class Constants
 {
+    public record TrajectoryConstants(
+            double maxPathSpeed,
+            double maxPathAngularSpeed,
+            double maxPathAcceleration,
+            double maxPathAngularAcceleration,
+
+            double xControllerkP,
+            double xControllerkI,
+            double xControllerkD,
+
+            double yControllerkP,
+            double yControllerkI,
+            double yControllerkD,
+
+            double thetaControllerkP,
+            double thetaControllerkI,
+            double thetaControllerkD,
+
+            double xTolerance,
+            double yTolerance,
+            double rotTolerance,
+            double velXTolerance,
+            double velYTolerance,
+            double rotVelTolerance
+    ) {
+        public static final frc.robot.Constants.TrajectoryConstants DEFAULTS = new frc.robot.Constants.TrajectoryConstants(4, 10,
+                3.0, 14.0, 2.5, 0, 0,
+                2.5, 0, 0, 1.5, 0, 0,
+                0.05, 0.05, 0.05, 0.12, 0.12, 0.12);
+
+        public static final frc.robot.Constants.TrajectoryConstants SLOW = new frc.robot.Constants.TrajectoryConstants(1, 10,
+                3.0, 14.0, 1, 0, 0,
+                1, 0, 0, 1.5, 0, 0,
+                0.015, 0.015, 0.015, 0.1, 0.1, 0.1);
+    }
+
     public static final class CameraConfig {
         public static double cameraOffsetY = 0;
         public static double cameraOffsetX = 0;
