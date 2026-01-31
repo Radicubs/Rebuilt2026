@@ -24,7 +24,7 @@ public class PhotonVision extends SubsystemBase {
     public static final AprilTagFieldLayout APRIL_TAG_LAYOUT = AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltAndymark);
     private static PhotonVision instance;
 
-    public SwerveDriveOdometry visionOdometry;
+    public SwerveDriveOdometry visionOdometry = Swerve.getInstance().swerveOdometry;
 
     private static final Transform3d cameraOffset = new Transform3d(Constants.CameraConfig.cameraOffsetX, Constants.CameraConfig.cameraOffsetY, Constants.CameraConfig.cameraOffsetZ, new Rotation3d(0, 0, 0));
 
@@ -57,20 +57,6 @@ public class PhotonVision extends SubsystemBase {
     }
 
     public Pose2d getRobotFieldPose() {
-        if(result == null) return null;
-
-        Optional<Pose3d> option = APRIL_TAG_LAYOUT.getTagPose(result.getBestTarget().getFiducialId());
-
-        if(option.isPresent()){
-            visionOdometry.resetPosition(
-                    Swerve.getInstance().getGyroYaw(),
-                    Swerve.getInstance().getModulePositions(),
-                    option.get().plus(
-                            result.getBestTarget().getBestCameraToTarget().inverse()
-                                    .plus(cameraOffset.inverse())).toPose2d());
-
-        }
-
         return visionOdometry.getPoseMeters();
     }
 
@@ -88,18 +74,25 @@ public class PhotonVision extends SubsystemBase {
             for(PhotonPipelineResult res : results){
                 if(res.hasTargets()){
                     this.result = res;
+                    Optional<Pose3d> option = APRIL_TAG_LAYOUT.getTagPose(result.getBestTarget().getFiducialId());
+
+                    if(option.isPresent()){
+                        visionOdometry.resetPosition(
+                                Swerve.getInstance().getGyroYaw(),
+                                Swerve.getInstance().getModulePositions(),
+                                option.get().plus(
+                                        result.getBestTarget().getBestCameraToTarget().inverse()
+                                                .plus(cameraOffset.inverse())).toPose2d());
+
+                    }
                     timer.reset();
                     timer.start();
-                    visionOdometry.update(Swerve.getInstance().getGyroYaw(), Swerve.getInstance().getModulePositions());
                 }
             }
         }
 
-        if(timer.get() > 2 && result != null){
-            result = null;
-            System.out.println("Tag expired");
-        }
+        visionOdometry.update(Swerve.getInstance().getGyroYaw(), Swerve.getInstance().getModulePositions());
 
-        Logger.recordOutput("Vision Odometry", visionOdometry.getPoseMeters());
+        Logger.recordOutput("Vision Odometry", getRobotFieldPose());
     }
 }
