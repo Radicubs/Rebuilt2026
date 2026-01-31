@@ -70,10 +70,10 @@ public class AlignToTarget extends PathFollowingCommand {
         }
 
         speeds.omegaRadiansPerSecond = Math.min(constants.maxPathAngularSpeed(), speeds.omegaRadiansPerSecond);
-        //chassis.driveRobotRelative(speeds);
-        SmartDashboard.putNumber("X m/s", speeds.vxMetersPerSecond);
-        SmartDashboard.putNumber("Y m/s", speeds.vyMetersPerSecond);
-        SmartDashboard.putNumber("Theta m/s", speeds.omegaRadiansPerSecond);
+        chassis.driveRobotRelative(speeds);
+        SmartDashboard.putNumber("X m per s", speeds.vxMetersPerSecond);
+        SmartDashboard.putNumber("Y m per s", speeds.vyMetersPerSecond);
+        SmartDashboard.putNumber("Radians m per s", speeds.omegaRadiansPerSecond);
 
 
     }

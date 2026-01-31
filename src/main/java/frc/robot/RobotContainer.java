@@ -54,6 +54,6 @@ public class RobotContainer {
 
     public Command getAutonomousCommand ()
     {
-        return new AlignToTarget(new Transform2d(1, 0, new Rotation2d(180)), Constants.TrajectoryConstants.SLOW);
+        return new AlignToTarget(new Transform2d(1, 0, new Rotation2d(0)), Constants.TrajectoryConstants.SLOW);
     }
 }
