@@ -1,8 +1,5 @@
 package frc.robot.commands.teleop;
 
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -10,7 +7,6 @@ import frc.robot.Constants;
 import frc.robot.subsystems.PhotonVision;
 import frc.robot.subsystems.Swerve;
 
-import java.util.Vector;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
@@ -50,8 +46,8 @@ public class TeleopSwerve extends Command {
             }
 
             targetRobotAngle = new Translation2d(
-                    Constants.Swerve.hubPosition.getX() - swerve.getPose().getX(),
-                    Constants.Swerve.hubPosition.getY() - swerve.getPose().getY()
+                    Constants.Field.hubCenter.getX() - swerve.getPose().getX(),
+                    Constants.Field.hubCenter.getY() - swerve.getPose().getY()
             ).getAngle().getRadians();
 
             rotSpeed = (targetRobotAngle - swerve.getHeading().getRadians()) * Constants.Swerve.lockKP;
@@ -67,7 +63,7 @@ public class TeleopSwerve extends Command {
         }
 
 
-        SmartDashboard.putNumber("Target Rotation", new Translation2d(Constants.Swerve.hubPosition.getX() - swerve.getPose().getX(), Constants.Swerve.hubPosition.getY() - swerve.getPose().getY()).getAngle().getRadians());
+        SmartDashboard.putNumber("Target Rotation", new Translation2d(Constants.Field.hubCenter.getX() - swerve.getPose().getX(), Constants.Field.hubCenter.getY() - swerve.getPose().getY()).getAngle().getRadians());
         SmartDashboard.putNumber("Actual Rotation", swerve.getPose().getRotation().getRadians());
         SmartDashboard.putNumber("Last Tag", photonVision.getBestTag());
         SmartDashboard.putNumber("Rotation Speed", rotSpeed);

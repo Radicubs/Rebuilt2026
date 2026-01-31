@@ -2,8 +2,25 @@
   "robotWidth": 0.9,
   "robotLength": 0.9,
   "holonomicMode": true,
-  "pathFolders": [],
-  "autoFolders": [],
+  "pathFolders": [
+    "Depot",
+    "Hub-Ladder",
+    "To-Hub",
+    "Start-Depot",
+    "Start-Hub",
+    "Start-Outpost"
+  ],
+  "autoFolders": [
+    "Left-Depot",
+    "Left-Hub",
+    "Left-Outpost",
+    "Middle-Depot",
+    "Middle-Hub",
+    "Middle-Outpost",
+    "Right-Outpost",
+    "Right-Depot",
+    "Right-Hub"
+  ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,
   "defaultMaxAngVel": 540.0,

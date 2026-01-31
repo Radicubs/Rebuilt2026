@@ -54,6 +54,25 @@ public final class Constants
                 0.015, 0.015, 0.035, 0.1, 0.1, 0.1);
     }
 
+    public static final class Field {
+        /* Starting Positions */
+        public static final Pose2d rightStart = new Pose2d(3.651, 0.613, new Rotation2d());
+        public static final Pose2d middleStart =  new Pose2d(3.651, 3.964, new Rotation2d());
+        public static final Pose2d leftStart = new Pose2d(3.651, 7.444, new Rotation2d());
+
+        /* Positions */
+        public static final Pose2d hubCenter = new Pose2d(4.634, 4.003, new Rotation2d());
+        public static final Pose2d hub = new Pose2d(2.318, 3.964, new Rotation2d());
+
+        public static final Pose2d depotLeft = new Pose2d(0.429, 7.1408, new Rotation2d(90));
+        public static final Pose2d depotRight = new Pose2d(0.429, 4.866, new Rotation2d(90));
+        public static final Pose2d outpost = new Pose2d(0.429, 0.713, new Rotation2d(-90));
+
+        public static final Pose2d rightLadder = new Pose2d(1.348, 2.864, new Rotation2d(180));
+        public static final Pose2d middleLadder = new Pose2d(0.766, 3.731, new Rotation2d());
+        public static final Pose2d leftLadder = new Pose2d(0.766, 4.546, new Rotation2d());
+    }
+
     public static final class CameraConfig {
         public static double cameraOffsetY = 0;
         public static double cameraOffsetX = 0;
@@ -65,12 +84,9 @@ public final class Constants
         public static final COTSTalonFXSwerveConstants chosenModule =  //TODO: This must be tuned to specific robot
                 COTSTalonFXSwerveConstants.SDS.MK4i.Falcon500(COTSTalonFXSwerveConstants.SDS.MK4i.driveRatios.L2);
 
-        /* Field Positions */
-        public static final Pose2d hubPosition = new Pose2d(1, 0, new Rotation2d());
-
         /* Drivetrain Constants */
-        public static final double trackWidth = Units.inchesToMeters(27.5); //TODO: This must be tuned to specific robot
-        public static final double wheelBase = Units.inchesToMeters(27.5); //TODO: This must be tuned to specific robot
+        public static final double trackWidth = Units.inchesToMeters(26); //TODO: This must be tuned to specific robot
+        public static final double wheelBase = Units.inchesToMeters(26); //TODO: This must be tuned to specific robot
         public static final double centerDistance = trackWidth / 2.0;
         public static final double wheelCircumference = chosenModule.wheelCircumference;
 
@@ -113,7 +129,7 @@ public final class Constants
         public static final double angleKD = chosenModule.angleKD;
 
         /* Lock on values*/
-        public static final double lockKP = 1.5;
+        public static final double lockKP = 1.5; //TODO: This must be tuned to specific robot
         public static final double lockDeadband = 0.025;
 
         /* Angle Motor Magic Motion Values */
