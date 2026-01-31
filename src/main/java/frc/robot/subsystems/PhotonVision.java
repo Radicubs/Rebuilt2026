@@ -3,10 +3,13 @@ package frc.robot.subsystems;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.*;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import org.littletonrobotics.junction.Logger;
+import org.opencv.photo.Photo;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -20,6 +23,8 @@ public class PhotonVision extends SubsystemBase {
 
     public static final AprilTagFieldLayout APRIL_TAG_LAYOUT = AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltAndymark);
     private static PhotonVision instance;
+
+    public SwerveDriveOdometry visionOdometry;
 
     private static final Transform3d cameraOffset = new Transform3d(Constants.CameraConfig.cameraOffsetX, Constants.CameraConfig.cameraOffsetY, Constants.CameraConfig.cameraOffsetZ, new Rotation3d(0, 0, 0));
 
@@ -53,16 +58,20 @@ public class PhotonVision extends SubsystemBase {
 
     public Pose2d getRobotFieldPose() {
         if(result == null) return null;
+
         Optional<Pose3d> option = APRIL_TAG_LAYOUT.getTagPose(result.getBestTarget().getFiducialId());
 
-
         if(option.isPresent()){
-            return option.get().plus(result.getBestTarget()
-                            .getBestCameraToTarget().inverse()
-                            .plus(cameraOffset.inverse())).toPose2d();
+            visionOdometry.resetPosition(
+                    Swerve.getInstance().getGyroYaw(),
+                    Swerve.getInstance().getModulePositions(),
+                    option.get().plus(
+                            result.getBestTarget().getBestCameraToTarget().inverse()
+                                    .plus(cameraOffset.inverse())).toPose2d());
+
         }
 
-        return null;
+        return visionOdometry.getPoseMeters();
     }
 
     public int getBestTag() {
@@ -81,6 +90,7 @@ public class PhotonVision extends SubsystemBase {
                     this.result = res;
                     timer.reset();
                     timer.start();
+                    visionOdometry.update(Swerve.getInstance().getGyroYaw(), Swerve.getInstance().getModulePositions());
                 }
             }
         }
@@ -90,6 +100,6 @@ public class PhotonVision extends SubsystemBase {
             System.out.println("Tag expired");
         }
 
-        Logger.recordOutput("Robot pose", getRobotFieldPose());
+        Logger.recordOutput("Vision Odometry", visionOdometry.getPoseMeters());
     }
 }

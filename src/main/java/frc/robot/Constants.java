@@ -49,9 +49,9 @@ public final class Constants
                 0.05, 0.05, 0.05, 0.12, 0.12, 0.12);
 
         public static final frc.robot.Constants.TrajectoryConstants SLOW = new frc.robot.Constants.TrajectoryConstants(1, 10,
-                3.0, 14.0, 0.25, 0, 0,
-                0.25, 0, 0, 0.375, 0, 0,
-                0.015, 0.015, 0.015, 0.1, 0.1, 0.1);
+                3.0, 14.0, 0.75, 0, 0,
+                0.75, 0, 0, 0.365, 0, 0,
+                0.015, 0.015, 0.035, 0.1, 0.1, 0.1);
     }
 
     public static final class CameraConfig {
