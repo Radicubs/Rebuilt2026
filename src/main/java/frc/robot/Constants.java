@@ -140,14 +140,14 @@ public final class Constants
         public static final boolean useMagicMotion = false;
 
         /* Drive Motor PID Values */
-        public static final double driveKP = 0.0; //TODO: This must be tuned to specific robot
+        public static final double driveKP = 0.2; //TODO: This must be tuned to specific robot
         public static final double driveKI = 0.0;
         public static final double driveKD = 0.0;
         public static final double driveKF = 0.0;
 
         /* Drive Motor Characterization Values From SYSID */
         public static final double driveKS = 0.2; //TODO: This must be tuned to specific robot
-        public static final double driveKV = 0; //2.1
+        public static final double driveKV = 1.925; //2.1 overshoots
         public static final double driveKA = 0.0;
 
         /* Swerve Profiling Values */
