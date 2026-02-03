@@ -61,7 +61,7 @@ public final class Constants
         public static final Pose2d leftStart = new Pose2d(3.651, 7.444, new Rotation2d());
 
         /* Positions */
-        public static final Pose2d hubCenter = new Pose2d(4.634, 4.003, new Rotation2d());
+        public static final Pose2d hubCenter = new Pose2d(1, 0, new Rotation2d()); // x: 4.634 y: 4.003
         public static final Pose2d hub = new Pose2d(2.318, 3.964, new Rotation2d());
 
         public static final Pose2d depotLeft = new Pose2d(0.429, 7.1408, new Rotation2d(90));
@@ -129,8 +129,9 @@ public final class Constants
         public static final double angleKD = chosenModule.angleKD;
 
         /* Lock on values*/
-        public static final double lockKP = 1.5; //TODO: This must be tuned to specific robot
+        public static final double lockKP = 0.75; //TODO: This must be tuned to specific robot
         public static final double lockDeadband = 0.025;
+        public static final double lockOnMaxSpeed = 1;
 
         /* Angle Motor Magic Motion Values */
         public static final double magicMotionAccel = 18;
@@ -139,14 +140,14 @@ public final class Constants
         public static final boolean useMagicMotion = false;
 
         /* Drive Motor PID Values */
-        public static final double driveKP = 0.2; //TODO: This must be tuned to specific robot
+        public static final double driveKP = 0.0; //TODO: This must be tuned to specific robot
         public static final double driveKI = 0.0;
         public static final double driveKD = 0.0;
         public static final double driveKF = 0.0;
 
         /* Drive Motor Characterization Values From SYSID */
-        public static final double driveKS = 0.15; //TODO: This must be tuned to specific robot
-        public static final double driveKV = 2.1;
+        public static final double driveKS = 0.2; //TODO: This must be tuned to specific robot
+        public static final double driveKV = 0; //2.1
         public static final double driveKA = 0.0;
 
         /* Swerve Profiling Values */

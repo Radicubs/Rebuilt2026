@@ -28,16 +28,19 @@ public class RobotContainer {
     XboxController mainController;
 
     JoystickButton rightBumper;
+    JoystickButton leftBumper;
+
     public RobotContainer() {
         PhotonVision.getInstance();
 
         mainController = new XboxController(0);
         rightBumper = new JoystickButton(mainController, XboxController.Button.kRightBumper.value);
+        leftBumper = new JoystickButton(mainController, XboxController.Button.kLeftBumper.value);
         Swerve.getInstance().setDefaultCommand(new TeleopSwerve(
                 () -> -mainController.getLeftY(),
                 () -> -mainController.getLeftX(),
                 () -> mainController.getRightX(),
-                () -> mainController.getLeftBumperButton()
+                () -> mainController.getAButton()
         ));
 
         configureBindings();
@@ -46,6 +49,10 @@ public class RobotContainer {
     private void configureBindings () {
         rightBumper.onTrue(new InstantCommand(() -> {
             Swerve.getInstance().zeroHeading();
+        }));
+
+        leftBumper.onTrue(new InstantCommand(() -> {
+            Swerve.getInstance().setPose(new Pose2d(0, 0, new Rotation2d()));
         }));
 
 

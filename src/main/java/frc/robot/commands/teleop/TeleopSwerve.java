@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.PhotonVision;
 import frc.robot.subsystems.Swerve;
+import org.littletonrobotics.junction.Logger;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
@@ -51,8 +52,8 @@ public class TeleopSwerve extends Command {
             ).getAngle().getRadians();
 
             rotSpeed = (targetRobotAngle - swerve.getHeading().getRadians()) * Constants.Swerve.lockKP;
-            if(rotSpeed < -1) rotSpeed = -1;
-            if(rotSpeed > 1) rotSpeed = 1;
+            if(rotSpeed < -Constants.Swerve.lockOnMaxSpeed) rotSpeed = -Constants.Swerve.lockOnMaxSpeed;
+            if(rotSpeed > Constants.Swerve.lockOnMaxSpeed) rotSpeed = Constants.Swerve.lockOnMaxSpeed;
             if(Math.abs(rotSpeed) - Constants.Swerve.lockDeadband < 0) rotSpeed = 0;
 
             //REMOVE TO USE LOCK ON VALUES
@@ -62,11 +63,11 @@ public class TeleopSwerve extends Command {
             rotSpeed = rotation.getAsDouble();
         }
 
-
-        SmartDashboard.putNumber("Target Rotation", new Translation2d(Constants.Field.hubCenter.getX() - swerve.getPose().getX(), Constants.Field.hubCenter.getY() - swerve.getPose().getY()).getAngle().getRadians());
-        SmartDashboard.putNumber("Actual Rotation", swerve.getPose().getRotation().getRadians());
         SmartDashboard.putNumber("Last Tag", photonVision.getBestTag());
-        SmartDashboard.putNumber("Rotation Speed", rotSpeed);
+
+        Logger.recordOutput("Target Speed", rotSpeed);
+        Logger.recordOutput("Actual Speed Gyro", Swerve.getInstance().getGyroYaw());
+        Logger.recordOutput("Actual Speed Heading", Swerve.getInstance().getHeading());
 
         swerve.drive(
                 new Translation2d(
