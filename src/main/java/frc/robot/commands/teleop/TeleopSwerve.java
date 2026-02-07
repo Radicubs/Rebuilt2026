@@ -1,5 +1,7 @@
 package frc.robot.commands.teleop;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -19,6 +21,8 @@ public class TeleopSwerve extends Command {
 
     private Swerve swerve;
     private PhotonVision photonVision;
+
+    private final double LOCKON_DEADBAND = 0.01;
 
     private double targetRobotAngle, rotSpeed;
     private boolean lockOn;
@@ -42,13 +46,19 @@ public class TeleopSwerve extends Command {
             lockOn = false;
 
         if(lockOn){
-            if(photonVision.getBestTag() != -1){
+            double xTranslation = Constants.Field.hubCenter.getX() - swerve.getPose().getX();
+            double yTranslation = Constants.Field.hubCenter.getY() - swerve.getPose().getY();
+            int tagId = photonVision.getBestTag();
+            if(tagId != -1){
                 swerve.setPose(photonVision.getRobotFieldPose());
+                Pose2d tagPose = photonVision.APRIL_TAG_LAYOUT.getTagPose(tagId).get().toPose2d();
+                xTranslation = tagPose.getX() - swerve.getPose().getX();
+                yTranslation = tagPose.getY() - swerve.getPose().getY();
             }
 
             targetRobotAngle = new Translation2d(
-                    Constants.Field.hubCenter.getX() - swerve.getPose().getX(),
-                    Constants.Field.hubCenter.getY() - swerve.getPose().getY()
+                    xTranslation,
+                    yTranslation
             ).getAngle().getRadians();
 
             rotSpeed = (targetRobotAngle - swerve.getHeading().getRadians()) * Constants.Swerve.lockKP;
@@ -64,8 +74,6 @@ public class TeleopSwerve extends Command {
         }
 
         SmartDashboard.putNumber("Last Tag", photonVision.getBestTag());
-
-        Logger.recordOutput("Target Speed", rotSpeed);
         Logger.recordOutput("Actual Speed Gyro", Swerve.getInstance().getGyroYaw());
         Logger.recordOutput("Actual Speed Heading", Swerve.getInstance().getHeading());
 

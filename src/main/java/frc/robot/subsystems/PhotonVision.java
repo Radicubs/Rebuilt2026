@@ -24,7 +24,7 @@ public class PhotonVision extends SubsystemBase {
     public static final AprilTagFieldLayout APRIL_TAG_LAYOUT = AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltAndymark);
     private static PhotonVision instance;
 
-    public SwerveDriveOdometry visionOdometry = Swerve.getInstance().swerveOdometry;
+    public SwerveDriveOdometry visionOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, Swerve.getInstance().getGyroYaw(), Swerve.getInstance().getModulePositions());;
 
     private static final Transform3d cameraOffset = new Transform3d(Constants.CameraConfig.cameraOffsetX, Constants.CameraConfig.cameraOffsetY, Constants.CameraConfig.cameraOffsetZ, new Rotation3d(0, 0, 0));
 
@@ -34,12 +34,10 @@ public class PhotonVision extends SubsystemBase {
     }
 
     private final PhotonCamera camera;
-    private final Timer timer;
 
     private PhotonPipelineResult result;
 
     private PhotonVision() {
-        timer = new Timer();
         camera = new PhotonCamera("orange");
         Transform3d robotToCam = new Transform3d(Constants.CameraConfig.cameraOffsetX, Constants.CameraConfig.cameraOffsetY, Constants.CameraConfig.cameraOffsetZ, new Rotation3d());
     }
@@ -85,8 +83,9 @@ public class PhotonVision extends SubsystemBase {
                                                 .plus(cameraOffset.inverse())).toPose2d());
 
                     }
-                    timer.reset();
-                    timer.start();
+                }
+                else{
+                    this.result = null;
                 }
             }
         }

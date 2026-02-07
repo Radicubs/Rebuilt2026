@@ -186,7 +186,7 @@ public class Swerve extends SubsystemBase implements HolonomicPathFollower {
     public void periodic() {
         swerveOdometry.update(getGyroYaw(), getModulePositions());
         field.setRobotPose(getPose());
-        heading.set((getHeading()!= null) ? getHeading().getDegrees() : 0);
+        //heading.set((getHeading()!= null) ? getHeading().getDegrees() : 0);
 
         for (SwerveModule mod : mSwerveMods) {
             mod.logNetworkTables();
