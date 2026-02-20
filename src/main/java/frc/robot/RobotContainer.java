@@ -33,7 +33,7 @@ public class RobotContainer {
         Swerve.getInstance().setDefaultCommand(new TeleopSwerve(
                 () -> -mainController.getLeftY(),
                 () -> -mainController.getLeftX(),
-                () -> mainController.getRightX(),
+                () -> -mainController.getRightX(),
                 () -> mainController.getAButton()
         ));
 
