@@ -14,15 +14,13 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.pathcommands.AlignToTarget;
 import frc.robot.commands.teleop.TeleopSwerve;
-import frc.robot.subsystems.PhotonVision;
-import frc.robot.subsystems.Swerve;
+import frc.robot.subsystems.*;
 
 
 public class RobotContainer {
     XboxController mainController;
-
-    JoystickButton rightBumper;
-    JoystickButton leftBumper;
+    private JoystickButton mainA, mainB, mainX, mainY, rightBumper, leftBumper;
+    private double deadband = 0.05;
 
     public RobotContainer() {
         PhotonVision.getInstance();
@@ -30,6 +28,10 @@ public class RobotContainer {
         mainController = new XboxController(0);
         rightBumper = new JoystickButton(mainController, XboxController.Button.kRightBumper.value);
         leftBumper = new JoystickButton(mainController, XboxController.Button.kLeftBumper.value);
+        mainA = new JoystickButton(mainController, XboxController.Button.kA.value);
+        mainB = new JoystickButton(mainController, XboxController.Button.kB.value);
+        mainX = new JoystickButton(mainController, XboxController.Button.kX.value);
+        mainY = new JoystickButton(mainController, XboxController.Button.kY.value);
         Swerve.getInstance().setDefaultCommand(new TeleopSwerve(
                 () -> -mainController.getLeftY(),
                 () -> -mainController.getLeftX(),
@@ -45,9 +47,33 @@ public class RobotContainer {
             Swerve.getInstance().zeroHeading();
         }));
 
-        leftBumper.onTrue(new InstantCommand(() -> {
-            Swerve.getInstance().setPose(new Pose2d(0, 0, new Rotation2d()));
+        mainA.onTrue(new InstantCommand(() -> {
+            Shooter.getInstance().setShooterSpeeds(Constants.Shooter.mainShooterSpeed, Constants.Shooter.topShaftSpeed, Constants.Shooter.indexerSpeed);
+        })).onFalse(new InstantCommand(() -> {
+            Shooter.getInstance().setShooterSpeeds(0, 0, 0);
         }));
+
+        mainB.onTrue(new InstantCommand(() -> {
+            if(Math.abs(Pivot.getInstance().getPosition()) - deadband < 0) {
+                Intake.getInstance().setIntakeSpeed(Constants.Intake.intakeSpeed);
+                Transfer.getInstance().setTransferSpeeds(Constants.Transfer.transferSpeed);
+            }
+        })).onFalse(new InstantCommand(() -> {
+            Intake.getInstance().setIntakeSpeed(0);
+            Transfer.getInstance().setTransferSpeeds(0);
+        }));
+
+        mainX.onTrue(new InstantCommand(() -> {
+            Pivot.getInstance().setSetpoint(Constants.Pivot.downPos);
+        }));
+
+        mainY.onTrue(new InstantCommand(() -> {
+            Pivot.getInstance().setSetpoint(Constants.Pivot.upPos);
+        }));
+
+//        leftBumper.onTrue(new InstantCommand(() -> {
+//            Swerve.getInstance().setPose(new Pose2d(0, 0, new Rotation2d()));
+//        }));
 
 
     }

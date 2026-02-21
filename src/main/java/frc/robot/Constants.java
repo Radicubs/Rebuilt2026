@@ -208,4 +208,49 @@ public final class Constants
                     new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
     }
+
+    public static final class Shooter{
+        public static final int rightShooterCID = 13;
+        public static final int leftShooterCID = 14;
+
+        public static final int indexerCID = 15;
+        public static final int topShooterCID = 16;
+
+        public static final int shooterCurrentLimit = 10;
+        public static final int shooterCurrentThreshold = 40;
+        public static final double shooterCurrentThresholdTime = 0.1;
+        public static final boolean shooterEnableCurrentLimit = true;
+
+        public static final double mainShooterSpeed = .6;
+        public static final double topShaftSpeed = .2;
+        public static final double indexerSpeed = .2;
+    }
+
+    public static final class Transfer{
+        public static final int beltMotorCID = 18;
+
+        public static final double transferSpeed = .1;
+    }
+
+    public static final class Intake{
+        public static final int intakeMotorCID = 19;
+
+        public static final double intakeSpeed = .4;
+    }
+
+    public static final class Pivot{
+        public static final int pivotMotorCID = 17;
+
+        public static final double downPos = -0.3;
+        public static final double upPos = 0;
+
+        public static final class PIDFeedfowardConstants {
+            public static final double P = 0;
+            public static final double I = 0;
+            public static final double D = 0;
+            public static final double S = 0;
+            public static final double V = 0;
+            public static final double G = 0;
+        }
+    }
 }

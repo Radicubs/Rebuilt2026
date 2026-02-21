@@ -21,8 +21,8 @@ public class Navx extends SubsystemBase {
     }
 
     public double getYaw() {
-        return gyro.getYaw();
-    }
+        return -gyro.getYaw();
+    } // negated because gyro is upside down
 
     public double getRoll() {
         return gyro.getRoll();
