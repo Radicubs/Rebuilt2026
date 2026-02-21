@@ -54,7 +54,7 @@ public class RobotContainer {
         }));
 
         mainB.onTrue(new InstantCommand(() -> {
-            if(Math.abs(Pivot.getInstance().getPosition()) - deadband < 0) {
+            if(Math.abs(Pivot.getInstance().getPosition()) - deadband > 0) {
                 Intake.getInstance().setIntakeSpeed(Constants.Intake.intakeSpeed);
                 Transfer.getInstance().setTransferSpeeds(Constants.Transfer.transferSpeed);
             }
