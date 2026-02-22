@@ -35,26 +35,26 @@ public class Shooter extends SubsystemBase {
         // Indexer
         indexer = new SparkMax(Constants.Shooter.indexerCID, SparkLowLevel.MotorType.kBrushless);
         SparkMaxConfig indexerConfigs = new SparkMaxConfig();
-        indexerConfigs.inverted(false); //TODO: Change if needed
-        indexerConfigs.idleMode(SparkBaseConfig.IdleMode.kBrake);
+        indexerConfigs.inverted(true);
+        indexerConfigs.idleMode(SparkBaseConfig.IdleMode.kCoast);
         indexer.configure(indexerConfigs, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         // Top Shooter Axle
         topShooter = new SparkMax(Constants.Shooter.topShooterCID, SparkLowLevel.MotorType.kBrushless);
         SparkMaxConfig topShooterConfig = new SparkMaxConfig();
-        topShooterConfig.inverted(false); //TODO: Change if needed
+        topShooterConfig.inverted(true); //TODO: Change if needed
         topShooterConfig.idleMode(SparkBaseConfig.IdleMode.kCoast);
         topShooter.configure(topShooterConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         // Motor Config
         leftConfig = new TalonFXConfiguration();
-        leftConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive; //TODO: Change if needed
-        leftConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        leftConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive; //TODO: Change if needed
+        leftConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
         leftConfig.CurrentLimits.SupplyCurrentLimitEnable = Constants.Shooter.shooterEnableCurrentLimit;
         leftConfig.CurrentLimits.SupplyCurrentLimit = Constants.Shooter.shooterCurrentLimit;
 
         rightConfig = leftConfig.clone();
-        leftConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive; //TODO: Change if needed
+        leftConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive; //TODO: Change if needed
 
         // Left Shooter
         leftShooter = new TalonFX(Constants.Shooter.leftShooterCID);

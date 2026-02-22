@@ -23,7 +23,7 @@ public class Transfer extends SubsystemBase {
     private Transfer(){
         beltMotor = new SparkMax(Constants.Transfer.beltMotorCID, SparkLowLevel.MotorType.kBrushless);
         SparkMaxConfig beltMotorConfig = new SparkMaxConfig();
-        beltMotorConfig.inverted(false); //TODO: CHANGE IF NEEDED
+        beltMotorConfig.inverted(true);
         beltMotorConfig.idleMode(SparkBaseConfig.IdleMode.kCoast);
         beltMotor.configure(beltMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }

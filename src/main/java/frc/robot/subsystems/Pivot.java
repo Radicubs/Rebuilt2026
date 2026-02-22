@@ -64,6 +64,10 @@ public class Pivot extends SubsystemBase {
     public void zero() {
         relativeEncoder.setPosition(0);
     }
+
+    public void setSpeed(double speed){
+        pivotMotor.set(speed);
+    }
     @Override
     public void periodic() {
         if (moveToTargetAngle) {

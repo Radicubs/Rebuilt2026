@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.pathcommands.AlignToTarget;
 import frc.robot.commands.teleop.TeleopSwerve;
 import frc.robot.subsystems.*;
@@ -20,6 +21,7 @@ import frc.robot.subsystems.*;
 public class RobotContainer {
     XboxController mainController;
     private JoystickButton mainA, mainB, mainX, mainY, rightBumper, leftBumper;
+    private Trigger up, down, left, right, mainLT, mainRT;
     private double deadband = 0.05;
 
     public RobotContainer() {
@@ -32,11 +34,19 @@ public class RobotContainer {
         mainB = new JoystickButton(mainController, XboxController.Button.kB.value);
         mainX = new JoystickButton(mainController, XboxController.Button.kX.value);
         mainY = new JoystickButton(mainController, XboxController.Button.kY.value);
+        up = new Trigger(() -> mainController.getPOV() == 0);
+        right = new Trigger(() -> mainController.getPOV() == 90);
+        down = new Trigger(() -> mainController.getPOV() == 180);
+        left = new Trigger(() -> mainController.getPOV() == 270);
+        mainRT = new Trigger(() -> mainController.getRightTriggerAxis() > 0.1);
+        mainLT = new Trigger(() -> mainController.getLeftTriggerAxis() > 0.1);
+
+
         Swerve.getInstance().setDefaultCommand(new TeleopSwerve(
                 () -> -mainController.getLeftY(),
                 () -> -mainController.getLeftX(),
                 () -> -mainController.getRightX(),
-                () -> mainController.getAButton()
+                () -> mainController.getLeftBumperButton()
         ));
 
         configureBindings();
@@ -47,20 +57,23 @@ public class RobotContainer {
             Swerve.getInstance().zeroHeading();
         }));
 
-        mainA.onTrue(new InstantCommand(() -> {
+        mainRT.onTrue(new InstantCommand(() -> {
             Shooter.getInstance().setShooterSpeeds(Constants.Shooter.mainShooterSpeed, Constants.Shooter.topShaftSpeed, Constants.Shooter.indexerSpeed);
         })).onFalse(new InstantCommand(() -> {
             Shooter.getInstance().setShooterSpeeds(0, 0, 0);
         }));
 
-        mainB.onTrue(new InstantCommand(() -> {
-            if(Math.abs(Pivot.getInstance().getPosition()) - deadband > 0) {
-                Intake.getInstance().setIntakeSpeed(Constants.Intake.intakeSpeed);
-                Transfer.getInstance().setTransferSpeeds(Constants.Transfer.transferSpeed);
-            }
+        mainLT.onTrue(new InstantCommand(() -> {
+            //if(Math.abs(Pivot.getInstance().getPosition()) - deadband > 0) {
+            Intake.getInstance().setIntakeSpeed(Constants.Intake.intakeSpeed);
+            Pivot.getInstance().setSpeed(0.04);
+            Transfer.getInstance().setTransferSpeeds(Constants.Transfer.transferSpeed);
+            //}
         })).onFalse(new InstantCommand(() -> {
             Intake.getInstance().setIntakeSpeed(0);
+            Pivot.getInstance().setSpeed(0);
             Transfer.getInstance().setTransferSpeeds(0);
+
         }));
 
         mainX.onTrue(new InstantCommand(() -> {
@@ -70,6 +83,12 @@ public class RobotContainer {
         mainY.onTrue(new InstantCommand(() -> {
             Pivot.getInstance().setSetpoint(Constants.Pivot.upPos);
         }));
+
+        up.onTrue(new InstantCommand(() -> Pivot.getInstance().setSpeed(-0.15)))
+                .onFalse(new InstantCommand(() -> Pivot.getInstance().setSpeed(0)));
+
+        down.onTrue(new InstantCommand(() -> Pivot.getInstance().setSpeed(0.05)))
+                .onFalse(new InstantCommand(() -> Pivot.getInstance().setSpeed(0)));
 
 //        leftBumper.onTrue(new InstantCommand(() -> {
 //            Swerve.getInstance().setPose(new Pose2d(0, 0, new Rotation2d()));

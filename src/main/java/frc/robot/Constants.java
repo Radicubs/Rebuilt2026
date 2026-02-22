@@ -221,21 +221,21 @@ public final class Constants
         public static final double shooterCurrentThresholdTime = 0.1;
         public static final boolean shooterEnableCurrentLimit = true;
 
-        public static final double mainShooterSpeed = .6;
-        public static final double topShaftSpeed = .2;
-        public static final double indexerSpeed = .2;
+        public static final double mainShooterSpeed = .8;
+        public static final double topShaftSpeed = .55;
+        public static final double indexerSpeed = .5;
     }
 
     public static final class Transfer{
         public static final int beltMotorCID = 18;
 
-        public static final double transferSpeed = .1;
+        public static final double transferSpeed = .3;
     }
 
     public static final class Intake{
         public static final int intakeMotorCID = 19;
 
-        public static final double intakeSpeed = .4;
+        public static final double intakeSpeed = .35;
     }
 
     public static final class Pivot{
