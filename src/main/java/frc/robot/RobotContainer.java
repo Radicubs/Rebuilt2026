@@ -26,6 +26,7 @@ public class RobotContainer {
 
     public RobotContainer() {
         PhotonVision.getInstance();
+        Pivot.getInstance();
 
         mainController = new XboxController(0);
         rightBumper = new JoystickButton(mainController, XboxController.Button.kRightBumper.value);
@@ -64,11 +65,8 @@ public class RobotContainer {
         }));
 
         mainLT.onTrue(new InstantCommand(() -> {
-            //if(Math.abs(Pivot.getInstance().getPosition()) - deadband > 0) {
             Intake.getInstance().setIntakeSpeed(Constants.Intake.intakeSpeed);
-            Pivot.getInstance().setSpeed(0.04);
             Transfer.getInstance().setTransferSpeeds(Constants.Transfer.transferSpeed);
-            //}
         })).onFalse(new InstantCommand(() -> {
             Intake.getInstance().setIntakeSpeed(0);
             Pivot.getInstance().setSpeed(0);
@@ -93,6 +91,8 @@ public class RobotContainer {
 //        leftBumper.onTrue(new InstantCommand(() -> {
 //            Swerve.getInstance().setPose(new Pose2d(0, 0, new Rotation2d()));
 //        }));
+
+        leftBumper.onTrue(new InstantCommand(() -> Pivot.getInstance().zero()));
 
 
     }

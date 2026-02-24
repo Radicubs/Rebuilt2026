@@ -241,7 +241,7 @@ public final class Constants
     public static final class Pivot{
         public static final int pivotMotorCID = 17;
 
-        public static final double downPos = -0.3;
+        public static final double downPos = 0.27;
         public static final double upPos = 0;
 
         public static final class PIDFeedfowardConstants {
@@ -250,7 +250,7 @@ public final class Constants
             public static final double D = 0;
             public static final double S = 0;
             public static final double V = 0;
-            public static final double G = 0;
+            public static final double G = .3;
         }
     }
 }
