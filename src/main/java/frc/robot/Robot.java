@@ -8,6 +8,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.Pivot;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -49,7 +50,9 @@ public class Robot extends LoggedRobot
     
     
     @Override
-    public void disabledInit() {}
+    public void disabledInit() {
+        Pivot.getInstance().cancelPID();
+    }
     
     
     @Override

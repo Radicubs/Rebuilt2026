@@ -47,7 +47,7 @@ public class RobotContainer {
                 () -> -mainController.getLeftY(),
                 () -> -mainController.getLeftX(),
                 () -> -mainController.getRightX(),
-                () -> mainController.getLeftBumperButton()
+                () -> false
         ));
 
         configureBindings();
@@ -82,11 +82,15 @@ public class RobotContainer {
             Pivot.getInstance().setSetpoint(Constants.Pivot.upPos);
         }));
 
-        up.onTrue(new InstantCommand(() -> Pivot.getInstance().setSpeed(-0.15)))
-                .onFalse(new InstantCommand(() -> Pivot.getInstance().setSpeed(0)));
+        up.onTrue(new InstantCommand(() -> {
+            Pivot.getInstance().cancelPID();
+            Pivot.getInstance().setSpeed(-0.15);
+        })).onFalse(new InstantCommand(() -> Pivot.getInstance().setSpeed(0)));
 
-        down.onTrue(new InstantCommand(() -> Pivot.getInstance().setSpeed(0.05)))
-                .onFalse(new InstantCommand(() -> Pivot.getInstance().setSpeed(0)));
+        down.onTrue(new InstantCommand(() -> {
+            Pivot.getInstance().cancelPID();
+            Pivot.getInstance().setSpeed(0.05);
+        })).onFalse(new InstantCommand(() -> Pivot.getInstance().setSpeed(0)));
 
 //        leftBumper.onTrue(new InstantCommand(() -> {
 //            Swerve.getInstance().setPose(new Pose2d(0, 0, new Rotation2d()));

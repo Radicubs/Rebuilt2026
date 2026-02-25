@@ -223,7 +223,7 @@ public final class Constants
 
         public static final double mainShooterSpeed = .8;
         public static final double topShaftSpeed = .55;
-        public static final double indexerSpeed = .5;
+        public static final double indexerSpeed = .7;
     }
 
     public static final class Transfer{
@@ -235,22 +235,22 @@ public final class Constants
     public static final class Intake{
         public static final int intakeMotorCID = 19;
 
-        public static final double intakeSpeed = .35;
+        public static final double intakeSpeed = .7;
     }
 
     public static final class Pivot{
         public static final int pivotMotorCID = 17;
 
         public static final double downPos = 0.27;
-        public static final double upPos = 0;
+        public static final double upPos = 0.05;
 
         public static final class PIDFeedfowardConstants {
-            public static final double P = 0;
+            public static final double P = 1.1;
             public static final double I = 0;
             public static final double D = 0;
             public static final double S = 0;
             public static final double V = 0;
-            public static final double G = .3;
+            public static final double G = .019;
         }
     }
 }
