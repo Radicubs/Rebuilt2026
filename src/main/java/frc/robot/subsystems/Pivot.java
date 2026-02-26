@@ -42,10 +42,10 @@ public class Pivot extends SubsystemBase {
 
         relativeEncoder = pivotMotor.getEncoder();
 
-        pid = new PIDController(Constants.Pivot.PIDFeedfowardConstants.P, Constants.Pivot.PIDFeedfowardConstants.I, Constants.Pivot.PIDFeedfowardConstants.D);
+        pid = new PIDController(Constants.Pivot.PIDFeedforwardConstants.P, Constants.Pivot.PIDFeedforwardConstants.I, Constants.Pivot.PIDFeedforwardConstants.D);
         pid.setTolerance(0.05);
 
-        feedforward = new ArmFeedforward(Constants.Pivot.PIDFeedfowardConstants.S, Constants.Pivot.PIDFeedfowardConstants.G, Constants.Pivot.PIDFeedfowardConstants.V);
+        feedforward = new ArmFeedforward(Constants.Pivot.PIDFeedforwardConstants.S, Constants.Pivot.PIDFeedforwardConstants.G, Constants.Pivot.PIDFeedforwardConstants.V);
     }
     public double getPosition() {
         return relativeEncoder.getPosition();

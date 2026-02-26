@@ -243,6 +243,13 @@ public final class Constants
         public static final int intakeMotorCID = 19;
 
         public static final double intakeSpeed = .7;
+        public static final class PIDFeedforwardConstants {
+            public static final double P = 1.1;
+            public static final double I = 0;
+            public static final double D = 0;
+            public static final double S = 0;
+            public static final double V = 0;
+        }
     }
 
     public static final class Pivot{
@@ -251,7 +258,7 @@ public final class Constants
         public static final double downPos = 0.27;
         public static final double upPos = 0.05;
 
-        public static final class PIDFeedfowardConstants {
+        public static final class PIDFeedforwardConstants {
             public static final double P = 1.1;
             public static final double I = 0;
             public static final double D = 0;
