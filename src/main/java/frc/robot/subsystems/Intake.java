@@ -9,6 +9,7 @@ import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -41,16 +42,16 @@ public class Intake extends SubsystemBase {
         controller = new PIDController(Constants.Intake.PIDFeedforwardConstants.P, Constants.Intake.PIDFeedforwardConstants.I, Constants.Intake.PIDFeedforwardConstants.D);
         controller.setTolerance(0.05);
 
-        feedforward = new SimpleMotorFeedforward(Constants.Intake.PIDFeedforwardConstants.S, Constants.Intake.PIDFeedforwardConstants.V);
+        feedforward = new SimpleMotorFeedforward(Constants.Intake.PIDFeedforwardConstants.S, Constants.Intake.PIDFeedforwardConstants.V, Constants.Intake.PIDFeedforwardConstants.A);
     }
 
-    public void setIntakeSpeed(double speed){
-        intakeMotor.set(speed);
+    public void setIntakeSpeed(double RPS){
+        setSetpoint(RPS);
     }
     public void reset() { intakeMotor.set(0); }
-    public double getVelocity() { return encoder.getVelocity(); }
+    public double getVelocity() { return encoder.getVelocity()/60; }
     public double getSetpoint() { return controller.getSetpoint(); }
-    public void setSetpoint(double targetVelocity) {
+    private void setSetpoint(double targetVelocity) {
         reset();
         pidEnabled = true;
         this.targetVelocity = targetVelocity;
@@ -64,8 +65,11 @@ public class Intake extends SubsystemBase {
     public void periodic() {
         if (pidEnabled) {
             double motorSpeed = controller.calculate(getVelocity());
-            double ffValue = feedforward.calculate(getVelocity());
-            intakeMotor.set(motorSpeed - ffValue);
+            double ffValue = feedforward.calculate(getSetpoint());
+            intakeMotor.set(motorSpeed + ffValue);
+        }
+        else{
+            intakeMotor.set(0);
         }
     }
 }

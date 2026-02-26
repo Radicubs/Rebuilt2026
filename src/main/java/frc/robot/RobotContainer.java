@@ -67,11 +67,11 @@ public class RobotContainer {
         }));
 
         mainLT.onTrue(new InstantCommand(() -> {
-            Intake.getInstance().setIntakeSpeed(Constants.Intake.intakeSpeed);
+            Intake.getInstance().setIntakeSpeed(Constants.Intake.intakeSpeedRPS);
             Pivot.getInstance().setSpeed(0.05);
             //Transfer.getInstance().setTransferSpeeds(Constants.Transfer.transferSpeed);
         })).onFalse(new InstantCommand(() -> {
-            Intake.getInstance().setIntakeSpeed(0);
+            Intake.getInstance().cancelPID();
             Pivot.getInstance().setSpeed(0);
             //Transfer.getInstance().setTransferSpeeds(0);
 

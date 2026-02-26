@@ -242,13 +242,14 @@ public final class Constants
     public static final class Intake{
         public static final int intakeMotorCID = 19;
 
-        public static final double intakeSpeed = .7;
+        public static final double intakeSpeedRPS = 35;
         public static final class PIDFeedforwardConstants {
-            public static final double P = 1.1;
+            public static final double P = 0;
             public static final double I = 0;
             public static final double D = 0;
-            public static final double S = 0;
-            public static final double V = 0;
+            public static final double S = .01;
+            public static final double V = .011;
+            public static final double A = 0;
         }
     }
 
