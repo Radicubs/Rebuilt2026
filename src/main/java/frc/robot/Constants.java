@@ -224,9 +224,9 @@ public final class Constants
         public static double mainShooterRPS = 60;
         public static final double topShaftSpeed = .15;
         public static final double indexerSpeed = .7;
-        public static double kP = 0.5;
+        public static double kP = 0.4;
         public static double kI = 0;
-        public static double kD = 0;
+        public static double kD = -0.01;
         public static double kS = .15;
         public static double kV = 0.11;
         public static double kA = 0;
