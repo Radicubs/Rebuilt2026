@@ -59,18 +59,21 @@ public class RobotContainer {
         }));
 
         mainRT.onTrue(new InstantCommand(() -> {
-            Shooter.getInstance().setShooterSpeeds(Constants.Shooter.mainShooterSpeed, Constants.Shooter.topShaftSpeed, Constants.Shooter.indexerSpeed);
+            Shooter.getInstance().setShooterSpeeds(Constants.Shooter.mainShooterRPS, Constants.Shooter.topShaftSpeed, Constants.Shooter.indexerSpeed);
+            //Transfer.getInstance().setTransferSpeeds(Constants.Transfer.transferSpeed);
         })).onFalse(new InstantCommand(() -> {
-            Shooter.getInstance().setShooterSpeeds(0, 0, 0);
+            Shooter.getInstance().setShooterSpeeds(0,0, 0);
+            Transfer.getInstance().setTransferSpeeds(0);
         }));
 
         mainLT.onTrue(new InstantCommand(() -> {
             Intake.getInstance().setIntakeSpeed(Constants.Intake.intakeSpeed);
-            Transfer.getInstance().setTransferSpeeds(Constants.Transfer.transferSpeed);
+            Pivot.getInstance().setSpeed(0.05);
+            //Transfer.getInstance().setTransferSpeeds(Constants.Transfer.transferSpeed);
         })).onFalse(new InstantCommand(() -> {
             Intake.getInstance().setIntakeSpeed(0);
             Pivot.getInstance().setSpeed(0);
-            Transfer.getInstance().setTransferSpeeds(0);
+            //Transfer.getInstance().setTransferSpeeds(0);
 
         }));
 
@@ -80,6 +83,10 @@ public class RobotContainer {
 
         mainY.onTrue(new InstantCommand(() -> {
             Pivot.getInstance().setSetpoint(Constants.Pivot.upPos);
+        }));
+
+        mainB.onTrue(new InstantCommand(() -> {
+            Shooter.getInstance().setShooterSpeeds(Constants.Shooter.mainShooterRPS, Constants.Shooter.topShaftSpeed, -0.4);
         }));
 
         up.onTrue(new InstantCommand(() -> {
