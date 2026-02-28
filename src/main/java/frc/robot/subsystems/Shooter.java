@@ -38,7 +38,10 @@ public class Shooter extends SubsystemBase {
     private TalonFX rightShooter;
 
     private final VelocityVoltage leftShooterVel = new VelocityVoltage(0), rightShooterVel = new VelocityVoltage(0);
-    private final SimpleMotorFeedforward shooterFF = new SimpleMotorFeedforward(Constants.Shooter.MainShooterPIDFeedforwardConstants.kS, Constants.Shooter.MainShooterPIDFeedforwardConstants.kV, Constants.Shooter.MainShooterPIDFeedforwardConstants.kA);
+    private final SimpleMotorFeedforward leftMainShooterFF = new SimpleMotorFeedforward(Constants.Shooter.MainLeftShooterPIDFeedforwardConstants.kS, Constants.Shooter.MainLeftShooterPIDFeedforwardConstants.kV, Constants.Shooter.MainLeftShooterPIDFeedforwardConstants.kA);
+
+    private final SimpleMotorFeedforward rightMainShooterFF = new SimpleMotorFeedforward(Constants.Shooter.MainRightShooterPIDFeedforwardConstants.kS, Constants.Shooter.MainRightShooterPIDFeedforwardConstants.kV, Constants.Shooter.MainRightShooterPIDFeedforwardConstants.kA);
+
     private boolean enablePID = false;
 
     public static Shooter getInstance() {
@@ -52,6 +55,7 @@ public class Shooter extends SubsystemBase {
         SparkMaxConfig indexerConfigs = new SparkMaxConfig();
         indexerConfigs.inverted(true);
         indexerConfigs.idleMode(SparkBaseConfig.IdleMode.kCoast);
+        indexerConfigs.secondaryCurrentLimit(35);
         indexer.configure(indexerConfigs, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         indexerController = new PIDController(Constants.Shooter.IndexerPIDFeedforwardConstants.kP, Constants.Shooter.IndexerPIDFeedforwardConstants.kI, Constants.Shooter.IndexerPIDFeedforwardConstants.kD);
@@ -62,25 +66,37 @@ public class Shooter extends SubsystemBase {
         SparkMaxConfig topShooterConfig = new SparkMaxConfig();
         topShooterConfig.inverted(true); //TODO: Change if needed
         topShooterConfig.idleMode(SparkBaseConfig.IdleMode.kCoast);
+        topShooterConfig.secondaryCurrentLimit(35);
         topShooter.configure(topShooterConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         topShooterController = new PIDController(Constants.Shooter.TopShooterPIDFeedforwardConstants.kP, Constants.Shooter.TopShooterPIDFeedforwardConstants.kI, Constants.Shooter.TopShooterPIDFeedforwardConstants.kD);
         topShooterFeedforward = new SimpleMotorFeedforward(Constants.Shooter.TopShooterPIDFeedforwardConstants.kS, Constants.Shooter.TopShooterPIDFeedforwardConstants.kV, Constants.Shooter.TopShooterPIDFeedforwardConstants.kA);
 
 
-        // Motor Config
+        // Left Motor Config
         leftConfig = new TalonFXConfiguration();
         leftConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive; //TODO: Change if needed
         leftConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
         leftConfig.CurrentLimits.SupplyCurrentLimitEnable = Constants.Shooter.shooterEnableCurrentLimit;
         leftConfig.CurrentLimits.SupplyCurrentLimit = Constants.Shooter.shooterCurrentLimit;
-
-        leftConfig.Slot0.kP = Constants.Shooter.MainShooterPIDFeedforwardConstants.kP;
-        leftConfig.Slot0.kI = Constants.Shooter.MainShooterPIDFeedforwardConstants.kI;
-        leftConfig.Slot0.kD = Constants.Shooter.MainShooterPIDFeedforwardConstants.kD;
-
-        rightConfig = leftConfig.clone();
         leftConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive; //TODO: Change if needed
+
+        leftConfig.Slot0.kP = Constants.Shooter.MainLeftShooterPIDFeedforwardConstants.kP;
+        leftConfig.Slot0.kI = Constants.Shooter.MainLeftShooterPIDFeedforwardConstants.kI;
+        leftConfig.Slot0.kD = Constants.Shooter.MainLeftShooterPIDFeedforwardConstants.kD;
+
+        // Right Motor Config
+        rightConfig = new TalonFXConfiguration();
+        rightConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive; //TODO: Change if needed
+        rightConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+        rightConfig.CurrentLimits.SupplyCurrentLimitEnable = Constants.Shooter.shooterEnableCurrentLimit;
+        rightConfig.CurrentLimits.SupplyCurrentLimit = Constants.Shooter.shooterCurrentLimit;
+        rightConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive; //TODO: Change if needed
+
+        rightConfig.Slot0.kP = Constants.Shooter.MainRightShooterPIDFeedforwardConstants.kP;
+        rightConfig.Slot0.kI = Constants.Shooter.MainRightShooterPIDFeedforwardConstants.kI;
+        rightConfig.Slot0.kD = Constants.Shooter.MainRightShooterPIDFeedforwardConstants.kD;
+
 
         // Left Shooter
         leftShooter = new TalonFX(Constants.Shooter.leftShooterCID);
@@ -121,15 +137,15 @@ public class Shooter extends SubsystemBase {
 
     public void setShooterSpeeds(double mainShooterRPS, double topShaftRPS, double indexerRPS){
         indexerController.setSetpoint(indexerRPS);
-        topShooterController.setSetpoint(topShaftRPS);
+        //topShooterController.setSetpoint(topShaftRPS);
 
         leftShooterVel.Velocity = mainShooterRPS;
-        leftShooterVel.FeedForward = shooterFF.calculate(mainShooterRPS);
+        leftShooterVel.FeedForward = leftMainShooterFF.calculate(mainShooterRPS);
 
         rightShooterVel.Velocity = mainShooterRPS;
-        rightShooterVel.FeedForward = shooterFF.calculate(mainShooterRPS);
+        rightShooterVel.FeedForward = rightMainShooterFF.calculate(mainShooterRPS);
 
-        rightShooter.setControl(rightShooterVel);
+        //rightShooter.setControl(rightShooterVel);
         leftShooter.setControl(leftShooterVel);
 
         enablePID = true;
@@ -156,10 +172,10 @@ public class Shooter extends SubsystemBase {
 
         SmartDashboard.putNumber("Top Shooter", topShooter.getEncoder().getVelocity()/60.0);
 
-        SmartDashboard.putNumber("Left shooter voltage", leftShooter.getMotorVoltage().getValueAsDouble());
-        SmartDashboard.putNumber("Right shooter voltage", rightShooter.getMotorVoltage().getValueAsDouble());
-        SmartDashboard.putNumber("Top shooter voltage", topShooter.getBusVoltage());
-        SmartDashboard.putNumber("Indexer voltage", indexer.getBusVoltage());
+        SmartDashboard.putNumber("Left shooter current draw", leftShooter.getSupplyCurrent().getValueAsDouble());
+        SmartDashboard.putNumber("Right shooter current draw", rightShooter.getSupplyCurrent().getValueAsDouble());
+        SmartDashboard.putNumber("Top shooter current draw", topShooter.getOutputCurrent());
+        SmartDashboard.putNumber("Indexer current draw", indexer.getOutputCurrent());
 
 
     }
