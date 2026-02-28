@@ -55,15 +55,15 @@ public class RobotContainer {
     }
     private void configureBindings () {
         rightBumper.onTrue(new InstantCommand(() -> {
-            Swerve.getInstance().zeroHeading();
+            Shooter.getInstance().cancelPID();
         }));
 
         mainRT.onTrue(new InstantCommand(() -> {
-            Shooter.getInstance().setShooterSpeeds(Constants.Shooter.mainShooterRPS, Constants.Shooter.topShaftSpeed, Constants.Shooter.indexerSpeed);
-            Transfer.getInstance().setTransferSpeeds(Constants.Transfer.transferSpeed);
+            Shooter.getInstance().setShooterSpeeds(Constants.Shooter.mainShooterRPS, Constants.Shooter.topShaftRPS, Constants.Shooter.indexerRPS);
+            //Transfer.getInstance().setTransferSpeed(Constants.Transfer.transferSpeed);
         })).onFalse(new InstantCommand(() -> {
             Shooter.getInstance().setShooterSpeeds(0,0, 0);
-            Transfer.getInstance().setTransferSpeeds(0);
+            Transfer.getInstance().setTransferSpeed(0);
         }));
 
         mainLT.onTrue(new InstantCommand(() -> {
@@ -86,7 +86,7 @@ public class RobotContainer {
         }));
 
         mainB.onTrue(new InstantCommand(() -> {
-            Shooter.getInstance().setShooterSpeeds(Constants.Shooter.mainShooterRPS, Constants.Shooter.topShaftSpeed, -0.4);
+           // Shooter.getInstance().setShooterSpeeds(Constants.Shooter.mainShooterRPS, Constants.Shooter.topShaftRPS, -0.4);
         }));
 
         up.onTrue(new InstantCommand(() -> {

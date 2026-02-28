@@ -45,6 +45,7 @@ public class Pivot extends SubsystemBase {
         pid = new PIDController(Constants.Pivot.PIDFeedforwardConstants.P, Constants.Pivot.PIDFeedforwardConstants.I, Constants.Pivot.PIDFeedforwardConstants.D);
         pid.setTolerance(0.05);
 
+
         feedforward = new ArmFeedforward(Constants.Pivot.PIDFeedforwardConstants.S, Constants.Pivot.PIDFeedforwardConstants.G, Constants.Pivot.PIDFeedforwardConstants.V);
     }
     public double getPosition() {
@@ -66,22 +67,23 @@ public class Pivot extends SubsystemBase {
         relativeEncoder.setPosition(0);
     }
 
-    public void cancelPID(){
-        moveToTargetAngle = false;
-    }
-
     public void setSpeed(double speed){
         pivotMotor.set(speed);
     }
+
+    public void cancelPID(){
+        moveToTargetAngle = false;
+        pivotMotor.set(0);
+        pid.reset();
+    }
+
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Real Position", getPosition());
-        SmartDashboard.putNumber("Set Position", getSetpoint());
-
         if (moveToTargetAngle) {
             double motorSpeed = pid.calculate(getPosition());
             double feedforwardVal = feedforward.calculate(relativeEncoder.getPosition(), relativeEncoder.getVelocity());
             pivotMotor.set(motorSpeed - feedforwardVal);
+            SmartDashboard.putNumber("Pivot Angle", getPosition());
         }
     }
 }

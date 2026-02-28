@@ -221,22 +221,51 @@ public final class Constants
         public static final double shooterCurrentThresholdTime = 0.1;
         public static final boolean shooterEnableCurrentLimit = true;
 
-        public static double mainShooterRPS = 60;
-        public static final double topShaftSpeed = .15;
-        public static final double indexerSpeed = .7;
-        public static double kP = 0.4;
-        public static double kI = 0;
-        public static double kD = -0.01;
-        public static double kS = .15;
-        public static double kV = 0.11;
-        public static double kA = 0;
+        public static double mainShooterRPS = 60;//60;
+        public static final double topShaftRPS = 10; // Tested Speed: 10 RPS
+        public static final double indexerRPS = 40; // Tested Speed:60 RPS
 
+        public static final class MainShooterPIDFeedforwardConstants {
+            public static final double kP = 0.4; // 0.6
+            public static final double kI = 0;
+            public static final double kD = -0.01;
+            public static final double kS = .15;
+            public static final double kV = 0.11;
+            public static final double kA = 0;
+        }
+
+        public static final class IndexerPIDFeedforwardConstants {
+            public static final double kP = 0.01;
+            public static final double kI = 0.0;
+            public static final double kD = 0.0008;
+            public static final double kS = 0.0375;
+            public static final double kV = 0.0125;
+            public static final double kA = 0.0;
+        }
+
+        public static final class TopShooterPIDFeedforwardConstants {
+            public static final double kP = 0.015;
+            public static final double kI = 0.0;
+            public static final double kD = 0.001;
+            public static final double kS = 0.01875;
+            public static final double kV = 0.0125;
+            public static final double kA = 0.0;
+        }
     }
 
     public static final class Transfer{
         public static final int beltMotorCID = 18;
 
-        public static final double transferSpeed = .3;
+        public static final double transferSpeed = 10;
+
+        public static final class TransferPIDFeedforwardConstants {
+            public static final double kP = 0.0;
+            public static final double kI = 0.0;
+            public static final double kD = 0.0;
+            public static final double kS = 0.0375;
+            public static final double kV = 0.01675;
+            public static final double kA = 0.0;
+        }
     }
 
     public static final class Intake{
