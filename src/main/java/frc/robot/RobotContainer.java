@@ -5,7 +5,7 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.geometry.Pose2d;
+import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.wpilibj.XboxController;
@@ -28,20 +28,56 @@ public class RobotContainer {
         PhotonVision.getInstance();
         Pivot.getInstance();
 
-        mainController = new XboxController(0);
-        rightBumper = new JoystickButton(mainController, XboxController.Button.kRightBumper.value);
-        leftBumper = new JoystickButton(mainController, XboxController.Button.kLeftBumper.value);
-        mainA = new JoystickButton(mainController, XboxController.Button.kA.value);
-        mainB = new JoystickButton(mainController, XboxController.Button.kB.value);
-        mainX = new JoystickButton(mainController, XboxController.Button.kX.value);
-        mainY = new JoystickButton(mainController, XboxController.Button.kY.value);
-        up = new Trigger(() -> mainController.getPOV() == 0);
-        right = new Trigger(() -> mainController.getPOV() == 90);
-        down = new Trigger(() -> mainController.getPOV() == 180);
-        left = new Trigger(() -> mainController.getPOV() == 270);
-        mainRT = new Trigger(() -> mainController.getRightTriggerAxis() > 0.1);
-        mainLT = new Trigger(() -> mainController.getLeftTriggerAxis() > 0.1);
+        // Button Initialization
+        {
+            mainController = new XboxController(0);
+            rightBumper = new JoystickButton(mainController, XboxController.Button.kRightBumper.value);
+            leftBumper = new JoystickButton(mainController, XboxController.Button.kLeftBumper.value);
+            mainA = new JoystickButton(mainController, XboxController.Button.kA.value);
+            mainB = new JoystickButton(mainController, XboxController.Button.kB.value);
+            mainX = new JoystickButton(mainController, XboxController.Button.kX.value);
+            mainY = new JoystickButton(mainController, XboxController.Button.kY.value);
+            up = new Trigger(() -> mainController.getPOV() == 0);
+            right = new Trigger(() -> mainController.getPOV() == 90);
+            down = new Trigger(() -> mainController.getPOV() == 180);
+            left = new Trigger(() -> mainController.getPOV() == 270);
+            mainRT = new Trigger(() -> mainController.getRightTriggerAxis() > 0.1);
+            mainLT = new Trigger(() -> mainController.getLeftTriggerAxis() > 0.1);
+        }
 
+        // Named Commands
+        {
+            // Shooter
+            NamedCommands.registerCommand("RampShooter", new InstantCommand(() -> {
+                Shooter.getInstance().setShooterSpeeds(Constants.Shooter.mainShooterRPS, Constants.Shooter.topShaftRPS, 0);
+            }));
+
+            NamedCommands.registerCommand("StartShoot", new InstantCommand(() -> {
+                Shooter.getInstance().setShooterSpeeds(Constants.Shooter.mainShooterRPS, Constants.Shooter.topShaftRPS, Constants.Shooter.indexerRPS);
+                Transfer.getInstance().setTransferSpeed(Constants.Transfer.transferSpeed);
+            }));
+
+            NamedCommands.registerCommand("StopShoot", new InstantCommand(() -> {
+                Shooter.getInstance().setShooterSpeeds(0, 0, 0);
+                Transfer.getInstance().setTransferSpeed(0);
+            }));
+
+            // Intake
+            NamedCommands.registerCommand("ExtendIntake", new InstantCommand(() -> {
+                Pivot.getInstance().setSetpoint(Constants.Pivot.downPos);
+            }));
+            NamedCommands.registerCommand("RetractIntake", new InstantCommand(() -> {
+                Pivot.getInstance().setSetpoint(Constants.Pivot.upPos);
+            }));
+
+            NamedCommands.registerCommand("StartIntake", new InstantCommand(() -> {
+                Intake.getInstance().setIntakeSpeed(Constants.Intake.intakeSpeedRPS);
+            }));
+
+            NamedCommands.registerCommand("StopIntake", new InstantCommand(() -> {
+                Intake.getInstance().setIntakeSpeed(0);
+            }));
+        }
 
         Swerve.getInstance().setDefaultCommand(new TeleopSwerve(
                 () -> -mainController.getLeftY(),
@@ -53,6 +89,7 @@ public class RobotContainer {
         configureBindings();
 
     }
+
     private void configureBindings () {
         rightBumper.onTrue(new InstantCommand(() -> {
             Shooter.getInstance().cancelPID();
@@ -104,8 +141,6 @@ public class RobotContainer {
 //        }));
 
         leftBumper.onTrue(new InstantCommand(() -> Pivot.getInstance().zero()));
-
-
     }
 
 

@@ -4,12 +4,12 @@
     {
       "anchor": {
         "x": 0.429,
-        "y": 7.1408
+        "y": 7.141
       },
       "prevControl": null,
       "nextControl": {
         "x": 0.5624743749095052,
-        "y": 6.924069267477741
+        "y": 6.924269267477741
       },
       "isLocked": false,
       "linkedName": null
@@ -21,7 +21,7 @@
       },
       "prevControl": {
         "x": 2.0656053937154772,
-        "y": 4.086391726488128
+        "y": 4.086391726488129
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,7 +31,30 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "RampShooter",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "RampShooter"
+        }
+      }
+    },
+    {
+      "name": "StartShoot",
+      "waypointRelativePos": 1.0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "StartShoot"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 5.0,
     "maxAcceleration": 1.0,

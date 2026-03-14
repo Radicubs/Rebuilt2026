@@ -4,22 +4,15 @@
   "holonomicMode": true,
   "pathFolders": [
     "Depot",
-    "Hub-Ladder",
-    "To-Hub",
     "Start-Depot",
     "Start-Hub",
-    "Start-Outpost"
+    "Start-Outpost",
+    "To-Hub"
   ],
   "autoFolders": [
-    "Left-Depot",
-    "Left-Hub",
-    "Left-Outpost",
-    "Middle-Depot",
-    "Middle-Hub",
-    "Middle-Outpost",
-    "Right-Outpost",
-    "Right-Depot",
-    "Right-Hub"
+    "Left",
+    "Middle",
+    "Right"
   ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,
