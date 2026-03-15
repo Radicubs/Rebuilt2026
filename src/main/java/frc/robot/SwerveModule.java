@@ -9,6 +9,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.DoublePublisher;
+import edu.wpi.first.networktables.DoubleTopic;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.units.Units;
@@ -22,7 +23,7 @@ import frc.lib.util.SwerveModuleConstants;
 
 import java.util.logging.Logger;
 
-public class SwerveModule{
+public class SwerveModule implements Sendable {
 
 
     public int moduleNumber;
@@ -32,7 +33,6 @@ public class SwerveModule{
     private TalonFX mDriveMotor;
     private CANcoder angleEncoder;
 
-    private DoublePublisher CANCoder, angle, velocity, desiredVelocity, desiredAngle;
     private SwerveModuleState desiredSwerveState;
 
     private final SimpleMotorFeedforward driveFeedForward = new SimpleMotorFeedforward(Constants.Swerve.driveKS, Constants.Swerve.driveKV, Constants.Swerve.driveKA);
@@ -44,7 +44,7 @@ public class SwerveModule{
     /* angle motor control requests */
     private final MotionMagicVoltage anglePositionM = new MotionMagicVoltage(0);
     private final PositionVoltage anglePositionP = new PositionVoltage(0);
-    public SwerveModule(int moduleNumber, SwerveModuleConstants moduleConstants, NetworkTable SwerveTable){
+    public SwerveModule(int moduleNumber, SwerveModuleConstants moduleConstants){
         this.moduleNumber = moduleNumber;
         this.angleOffset = moduleConstants.angleOffset;
 
@@ -65,15 +65,16 @@ public class SwerveModule{
         mDriveMotor.setNeutralMode(NeutralModeValue.Brake);
         mDriveMotor.getConfigurator().setPosition(0.0);
 
-        /* Network Tables Logging */
-        NetworkTable swerveModuleTable = SwerveTable.getSubTable("Swerve Module " + moduleNumber);
+    }
 
-        CANCoder = swerveModuleTable.getDoubleTopic("CANCoder").publish();
-        angle = swerveModuleTable.getDoubleTopic("Angle").publish();
-        velocity = swerveModuleTable.getDoubleTopic("Velocity").publish();
-        desiredVelocity = swerveModuleTable.getDoubleTopic("Desired Velocity").publish();
-        desiredAngle = swerveModuleTable.getDoubleTopic("Desired Angle").publish();
+    @Override
+    public void initSendable(SendableBuilder builder) {
+        builder.addDoubleProperty("CANCoder", () -> getCANcoder().getDegrees(), null);
+        builder.addDoubleProperty("Velocity", () -> getState().speedMetersPerSecond, null);
+        builder.addDoubleProperty("Angle", () -> getState().angle.getDegrees(), null);
 
+        SmartDashboard.putNumber("CANCoder", getCANcoder().getDegrees());
+        SmartDashboard.putNumber("Velocity", getState().speedMetersPerSecond);
     }
 
     public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop) {
@@ -119,14 +120,5 @@ public class SwerveModule{
                 Conversions.rotationsToMeters(mDriveMotor.getPosition().getValue().in(Units.Rotation), Constants.Swerve.wheelCircumference),
                 Rotation2d.fromRotations(mAngleMotor.getPosition().getValue().in(Units.Rotation))
         );
-    }
-
-    public void logNetworkTables() {
-        CANCoder.set(getCANcoder().getDegrees());
-        angle.set((getPosition().angle.getDegrees() % 360 < 180) ? getPosition().angle.getDegrees() % 360 : getPosition().angle.getDegrees() % 360 - 360);
-        velocity.set(getState().speedMetersPerSecond);
-        desiredVelocity.set((desiredSwerveState != null) ? desiredSwerveState.speedMetersPerSecond : 0);
-        desiredAngle.set((desiredSwerveState != null) ? desiredSwerveState.angle.getDegrees() : 0);
-
     }
 }

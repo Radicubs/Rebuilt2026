@@ -2,10 +2,13 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import org.littletonrobotics.junction.Logger;
@@ -34,12 +37,14 @@ public class PhotonVision extends SubsystemBase {
     }
 
     private final PhotonCamera camera;
-
     private PhotonPipelineResult result;
 
     private PhotonVision() {
         camera = new PhotonCamera("orange");
         Transform3d robotToCam = new Transform3d(Constants.CameraConfig.cameraOffsetX, Constants.CameraConfig.cameraOffsetY, Constants.CameraConfig.cameraOffsetZ, new Rotation3d());
+
+        UsbCamera server = CameraServer.startAutomaticCapture(0);
+        server.setResolution(640,480);
     }
 
     public Transform3d getTransformToTarget(int targetID) {
@@ -91,7 +96,5 @@ public class PhotonVision extends SubsystemBase {
         }
 
         visionOdometry.update(Swerve.getInstance().getGyroYaw(), Swerve.getInstance().getModulePositions());
-
-        Logger.recordOutput("Vision Odometry", getRobotFieldPose());
     }
 }

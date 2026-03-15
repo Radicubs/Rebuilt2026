@@ -105,6 +105,7 @@ public class Shooter extends SubsystemBase {
         // Right Shooter
         rightShooter = new TalonFX(Constants.Shooter.rightShooterCID);
         rightShooter.getConfigurator().apply(rightConfig);
+
     }
 
     public double getIndexerSpeed(){
