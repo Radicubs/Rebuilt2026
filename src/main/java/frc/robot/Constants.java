@@ -225,9 +225,9 @@ public final class Constants
         public static final int shooterCurrentLimit = 10;
         public static final boolean shooterEnableCurrentLimit = true;
 
-        public static double mainShooterRPS = 30;//60;
+        public static double mainShooterRPS = 60;//60;
         public static final double topShaftRPS = 40; // Tested Speed: 10 RPS
-        public static final double indexerRPS = 60; // Tested Speed:60 RPS
+        public static final double indexerRPS = 100; // Tested Speed:60 RPS
 
         public static final class MainRightShooterPIDFeedforwardConstants {
             public static final double kP = 0.4; // 0.6

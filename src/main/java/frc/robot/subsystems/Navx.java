@@ -16,7 +16,7 @@ public class Navx extends SubsystemBase {
     }
 
     private Navx() {
-        gyro = new AHRS(AHRS.NavXComType.kUSB1);
+        gyro = new AHRS(AHRS.NavXComType.kUSB2);
         gyro.reset();
     }
 
