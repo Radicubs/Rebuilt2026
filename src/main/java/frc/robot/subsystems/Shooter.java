@@ -125,8 +125,7 @@ public class Shooter extends SubsystemBase {
 
         // Left Shooter
         leftShooter = new TalonFX(Constants.Shooter.leftShooterCID);
-        leftShooter.getConfigurator().apply(leftConfig);
-
+        leftShooter.getConfigurator().apply(leftConfig)
         SmartDashboard.putData(new Sendable() {
             @Override
             public void initSendable(SendableBuilder builder) {
