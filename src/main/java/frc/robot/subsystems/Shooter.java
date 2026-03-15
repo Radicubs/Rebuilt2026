@@ -15,9 +15,12 @@ import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.units.Units;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.SwerveModule;
 
 public class Shooter extends SubsystemBase {
 
@@ -102,20 +105,54 @@ public class Shooter extends SubsystemBase {
         indexer = new TalonFX(Constants.Shooter.indexerCID);
         indexer.getConfigurator().apply(indexerConfig);
 
+        SmartDashboard.putData(new Sendable() {
+            @Override
+            public void initSendable(SendableBuilder builder) {
+                builder.addDoubleProperty("Indexer Speed",() -> getIndexerSpeed(), null);
+            }
+        });
+
         // Top Shooter
         topShooter = new TalonFX(Constants.Shooter.topShooterCID);
         topShooter.getConfigurator().apply(topShooterConfig);
+
+        SmartDashboard.putData(new Sendable() {
+            @Override
+            public void initSendable(SendableBuilder builder) {
+                builder.addDoubleProperty("Top Shooter Speed",() -> getTopShooterSpeed(), null);
+            }
+        });
 
         // Left Shooter
         leftShooter = new TalonFX(Constants.Shooter.leftShooterCID);
         leftShooter.getConfigurator().apply(leftConfig);
 
+        SmartDashboard.putData(new Sendable() {
+            @Override
+            public void initSendable(SendableBuilder builder) {
+                builder.addDoubleProperty("Left Shooter Speed",() -> getLeftShooterSpeed(), null);
+            }
+        });
+
         // Right Shooter
         rightShooter = new TalonFX(Constants.Shooter.rightShooterCID);
         rightShooter.getConfigurator().apply(rightConfig);
 
+        SmartDashboard.putData(new Sendable() {
+            @Override
+            public void initSendable(SendableBuilder builder) {
+                builder.addDoubleProperty("Right Shooter Speed",() -> getRightShooterSpeed(), null);
+            }
+        });
+
     }
 
+    public double getRightShooterSpeed(){
+        return rightShooter.getVelocity().getValue().in(Units.RotationsPerSecond);
+    }
+    public double getLeftShooterSpeed(){
+        return leftShooter.getVelocity().getValue().in(Units.RotationsPerSecond);
+    }
     public double getIndexerSpeed(){
         return indexer.getVelocity().getValue().in(Units.RotationsPerSecond);
     }
@@ -160,17 +197,6 @@ public class Shooter extends SubsystemBase {
 
     @Override
     public void periodic() {
-
-        SmartDashboard.putNumber("Left Shooter Speed", leftShooter.getVelocity().getValueAsDouble());
-        SmartDashboard.putNumber("Right Shooter Speed", rightShooter.getVelocity().getValueAsDouble());
-
-        SmartDashboard.putNumber("Indexer speed", getIndexerSpeed());
-
-        SmartDashboard.putNumber("Top Shooter", getTopShooterSpeed());
-
-        SmartDashboard.putNumber("Left shooter current draw", leftShooter.getSupplyCurrent().getValueAsDouble());
-        SmartDashboard.putNumber("Right shooter current draw", rightShooter.getSupplyCurrent().getValueAsDouble());
-
 
     }
 }

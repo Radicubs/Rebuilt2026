@@ -8,6 +8,8 @@ import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -36,6 +38,12 @@ public class Transfer extends SubsystemBase {
 
         transferController = new PIDController(Constants.Transfer.TransferPIDFeedforwardConstants.kP, Constants.Transfer.TransferPIDFeedforwardConstants.kI, Constants.Transfer.TransferPIDFeedforwardConstants.kD);
         transferFeedforward = new SimpleMotorFeedforward(Constants.Transfer.TransferPIDFeedforwardConstants.kS, Constants.Transfer.TransferPIDFeedforwardConstants.kV, Constants.Transfer.TransferPIDFeedforwardConstants.kA);
+        SmartDashboard.putData(new Sendable() {
+            @Override
+            public void initSendable(SendableBuilder builder) {
+                builder.addDoubleProperty("Transfer Speed",() -> getTransferSpeed(), null);
+            }
+        });
     }
 
     public void reset(){
@@ -61,8 +69,6 @@ public class Transfer extends SubsystemBase {
             double transferFeedForwardVal = transferFeedforward.calculate(transferController.getSetpoint());
 
             beltMotor.set(transferMotorSpeed + transferFeedForwardVal);
-
-            SmartDashboard.putNumber("Transfer Speed", getTransferSpeed());
 
         }
     }

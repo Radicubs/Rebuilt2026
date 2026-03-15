@@ -9,6 +9,8 @@ import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -37,6 +39,12 @@ public class Intake extends SubsystemBase {
         intakeConfig.inverted(false);
         intakeConfig.idleMode(SparkBaseConfig.IdleMode.kCoast);
         intakeMotor.configure(intakeConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        SmartDashboard.putData(new Sendable() {
+            @Override
+            public void initSendable(SendableBuilder builder) {
+                builder.addDoubleProperty("Intake Speed",() -> getVelocity(), null);
+            }
+        });
 
         encoder = intakeMotor.getEncoder();
         controller = new PIDController(Constants.Intake.PIDFeedforwardConstants.P, Constants.Intake.PIDFeedforwardConstants.I, Constants.Intake.PIDFeedforwardConstants.D);
