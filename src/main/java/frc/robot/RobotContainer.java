@@ -97,7 +97,7 @@ public class RobotContainer {
 
         mainRT.onTrue(new InstantCommand(() -> {
             Shooter.getInstance().setShooterSpeeds(Constants.Shooter.mainShooterRPS, Constants.Shooter.topShaftRPS, Constants.Shooter.indexerRPS);
-            //Transfer.getInstance().setTransferSpeed(Constants.Transfer.transferSpeed);
+            Transfer.getInstance().setTransferSpeed(Constants.Transfer.transferSpeed);
         })).onFalse(new InstantCommand(() -> {
             Shooter.getInstance().setShooterSpeeds(0,0, 0);
             Transfer.getInstance().setTransferSpeed(0);
@@ -123,7 +123,7 @@ public class RobotContainer {
         }));
 
         mainB.onTrue(new InstantCommand(() -> {
-           // Shooter.getInstance().setShooterSpeeds(Constants.Shooter.mainShooterRPS, Constants.Shooter.topShaftRPS, -0.4);
+           Shooter.getInstance().setShooterSpeeds(Constants.Shooter.mainShooterRPS, Constants.Shooter.topShaftRPS, 0);
         }));
 
         up.onTrue(new InstantCommand(() -> {
