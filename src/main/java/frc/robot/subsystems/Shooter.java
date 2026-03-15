@@ -137,7 +137,7 @@ public class Shooter extends SubsystemBase {
 
     public void setShooterSpeeds(double mainShooterRPS, double topShaftRPS, double indexerRPS){
         indexerController.setSetpoint(indexerRPS);
-        //topShooterController.setSetpoint(topShaftRPS);
+        topShooterController.setSetpoint(topShaftRPS);
 
         leftShooterVel.Velocity = mainShooterRPS;
         leftShooterVel.FeedForward = leftMainShooterFF.calculate(mainShooterRPS);
@@ -145,8 +145,11 @@ public class Shooter extends SubsystemBase {
         rightShooterVel.Velocity = mainShooterRPS;
         rightShooterVel.FeedForward = rightMainShooterFF.calculate(mainShooterRPS);
 
-        //rightShooter.setControl(rightShooterVel);
+        rightShooter.setControl(rightShooterVel);
         leftShooter.setControl(leftShooterVel);
+
+        System.out.println(indexerController.getSetpoint());
+        System.out.println(topShooterController.getSetpoint());
 
         enablePID = true;
     }

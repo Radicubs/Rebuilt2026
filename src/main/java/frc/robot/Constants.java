@@ -210,11 +210,11 @@ public final class Constants
     }
 
     public static final class Shooter{
-        public static final int rightShooterCID = 13;
-        public static final int leftShooterCID = 14;
+        public static final int rightShooterCID = 15;
+        public static final int leftShooterCID = 16;
 
-        public static final int indexerCID = 15;
-        public static final int topShooterCID = 16;
+        public static final int indexerCID = 14;
+        public static final int topShooterCID = 13;
 
         public static final int shooterCurrentLimit = 10;
         public static final int shooterCurrentThreshold = 40;
@@ -278,7 +278,7 @@ public final class Constants
     }
 
     public static final class Intake{
-        public static final int intakeMotorCID = 19;
+        public static final int intakeMotorCID = 20;
 
         public static final double intakeSpeedRPS = 35;
         public static final class PIDFeedforwardConstants {
@@ -292,7 +292,7 @@ public final class Constants
     }
 
     public static final class Pivot{
-        public static final int pivotMotorCID = 17;
+        public static final int pivotMotorCID = 19;
 
         public static final double downPos = 0.27;
         public static final double upPos = 0.05;
