@@ -91,9 +91,6 @@ public class RobotContainer {
     }
 
     private void configureBindings () {
-        rightBumper.onTrue(new InstantCommand(() -> {
-            Shooter.getInstance().cancelPID();
-        }));
 
         mainRT.onTrue(new InstantCommand(() -> {
             Shooter.getInstance().setShooterSpeeds(Constants.Shooter.mainShooterRPS, Constants.Shooter.topShaftRPS, Constants.Shooter.indexerRPS);
@@ -141,6 +138,10 @@ public class RobotContainer {
 //        }));
 
         leftBumper.onTrue(new InstantCommand(() -> Pivot.getInstance().zero()));
+
+        rightBumper.onTrue(new InstantCommand(() -> {
+            Swerve.getInstance().zeroHeading();
+        }));
     }
 
 
