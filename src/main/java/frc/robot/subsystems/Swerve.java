@@ -75,7 +75,7 @@ public class Swerve extends SubsystemBase implements HolonomicPathFollower {
     );
 
         field = new Field2d();
-        Shuffleboard.getTab("Swerve").add(field).withSize(4, 3);
+        SmartDashboard.putData(field);
 
         mSwerveMods = new SwerveModule[]{
                 new SwerveModule(0, Constants.Swerve.Mod0.constants),
