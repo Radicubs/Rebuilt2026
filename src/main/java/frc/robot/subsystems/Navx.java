@@ -16,13 +16,13 @@ public class Navx extends SubsystemBase {
     }
 
     private Navx() {
-        gyro = new AHRS(AHRS.NavXComType.kUSB2);
+        gyro = new AHRS(AHRS.NavXComType.kUSB1);
         gyro.reset();
     }
 
     public double getYaw() {
-        return -gyro.getYaw();
-    } // negated because gyro is upside down
+        return gyro.getYaw();
+    }
 
     public double getRoll() {
         return gyro.getRoll();

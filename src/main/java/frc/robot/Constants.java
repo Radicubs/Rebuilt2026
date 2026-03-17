@@ -154,7 +154,7 @@ public final class Constants
         /**
          * Meters per Second
          */
-        public static final double maxSpeed = 2.5; //TODO: This must be tuned to specific robot
+        public static final double maxSpeed = 5.0; //TODO: This must be tuned to specific robot
         /**
          * Radians per Second
          */
@@ -230,7 +230,7 @@ public final class Constants
         public static final double indexerRPS = 20;
 
         public static final class MainRightShooterPIDFeedforwardConstants {
-            public static final double kP = 0.75;
+            public static final double kP = 0.375;
             public static final double kI = 0;
             public static final double kD = 0.0;
             public static final double kS = 0.15;
@@ -239,7 +239,7 @@ public final class Constants
         }
 
         public static final class MainLeftShooterPIDFeedforwardConstants {
-            public static final double kP = 0.75;
+            public static final double kP = 0.375;
             public static final double kI = 0.0;
             public static final double kD = 0.0;
             public static final double kS = 0.185;
@@ -297,17 +297,21 @@ public final class Constants
 
     public static final class Pivot{
         public static final int pivotMotorCID = 19;
+        public static final int pivotMotorStallCurrentLimit = 20;
 
-        public static final double downPos = 0.27;
-        public static final double upPos = 0.05;
+        public static final int pivotMotorFreeCurrentLimit = 10;
+
+        public static final double downPos = 0.083;
+        public static final double upPos = -.33;
+        public static final double pivotFinalVelocity = 0.0;
 
         public static final class PIDFeedforwardConstants {
-            public static final double P = 1.1;
+            public static final double P = 0.3;
             public static final double I = 0;
             public static final double D = 0;
-            public static final double S = 0;
+            public static final double S = 0.05;
             public static final double V = 0;
-            public static final double G = .019;
+            public static final double G = 0.025;
         }
     }
 }

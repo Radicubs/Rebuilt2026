@@ -76,6 +76,9 @@ public class SwerveModule implements Sendable {
         builder.addDoubleProperty("Velocity", () -> getState().speedMetersPerSecond, null);
         builder.addDoubleProperty("Angle", () -> getState().angle.getDegrees(), null);
         builder.addDoubleProperty("Desired Velocity", () -> (desiredSwerveState!=null) ? desiredSwerveState.speedMetersPerSecond : 0, null);
+        builder.addDoubleProperty("Module " + moduleNumber + " current - Drive Motor", ()  -> mDriveMotor.getSupplyCurrent().getValue().in(Units.Amp), null);
+        builder.addDoubleProperty("Module " + moduleNumber + " current - Angle Motor", ()  -> mAngleMotor.getSupplyCurrent().getValue().in(Units.Amp), null);
+
     }
 
     public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop) {

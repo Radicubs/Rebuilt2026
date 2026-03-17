@@ -70,10 +70,10 @@ public class RobotContainer {
 
             // Intake
             NamedCommands.registerCommand("ExtendIntake", new InstantCommand(() -> {
-                Pivot.getInstance().setSetpoint(Constants.Pivot.downPos);
+                Pivot.getInstance().setGoal(Constants.Pivot.downPos);
             }));
             NamedCommands.registerCommand("RetractIntake", new InstantCommand(() -> {
-                Pivot.getInstance().setSetpoint(Constants.Pivot.upPos);
+                Pivot.getInstance().setGoal(Constants.Pivot.upPos);
             }));
 
             NamedCommands.registerCommand("StartIntake", new InstantCommand(() -> {
@@ -129,21 +129,21 @@ public class RobotContainer {
 
         mainLT.onTrue(new InstantCommand(() -> {
             Intake.getInstance().setIntakeSpeed(Constants.Intake.intakeSpeedRPS);
-            Pivot.getInstance().setSpeed(0.05);
+            //Pivot.getInstance().setSpeed(0.05);
             Transfer.getInstance().setTransferSpeed(Constants.Transfer.transferSpeed);
         })).onFalse(new InstantCommand(() -> {
             Intake.getInstance().cancelPID();
-            Pivot.getInstance().setSpeed(0);
+            //Pivot.getInstance().setSpeed(0);
             Transfer.getInstance().setTransferSpeed(0);
 
         }));
 
         mainX.onTrue(new InstantCommand(() -> {
-            Pivot.getInstance().setSetpoint(Constants.Pivot.downPos);
+            Pivot.getInstance().setGoal(Constants.Pivot.downPos);
         }));
 
         mainY.onTrue(new InstantCommand(() -> {
-            Pivot.getInstance().setSetpoint(Constants.Pivot.upPos);
+            Pivot.getInstance().setGoal(Constants.Pivot.upPos);
         }));
 
         mainB.onTrue(new InstantCommand(() -> {
@@ -152,19 +152,19 @@ public class RobotContainer {
 
         up.onTrue(new InstantCommand(() -> {
             Pivot.getInstance().cancelPID();
-            Pivot.getInstance().setSpeed(-0.3);
+            Pivot.getInstance().setGoal(Constants.Pivot.upPos);
         })).onFalse(new InstantCommand(() -> Pivot.getInstance().setSpeed(0)));
 
         down.onTrue(new InstantCommand(() -> {
             Pivot.getInstance().cancelPID();
-            Pivot.getInstance().setSpeed(0.3);
+            Pivot.getInstance().setGoal(Constants.Pivot.downPos);
         })).onFalse(new InstantCommand(() -> Pivot.getInstance().setSpeed(0)));
 
 //        leftBumper.onTrue(new InstantCommand(() -> {
 //            Swerve.getInstance().setPose(new Pose2d(0, 0, new Rotation2d()));
 //        }));
 
-        leftBumper.onTrue(new InstantCommand(() -> Pivot.getInstance().zero()));
+        leftBumper.onTrue(new InstantCommand(() -> Pivot.getInstance().resetAngle()));
 
         rightBumper.onTrue(new InstantCommand(() -> {
             Swerve.getInstance().zeroHeading();
