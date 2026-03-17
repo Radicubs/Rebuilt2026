@@ -4,40 +4,24 @@
     {
       "anchor": {
         "x": 3.651,
-        "y": 0.613
+        "y": 3.964
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.8344255353589585,
-        "y": -0.005471610587544196
+        "x": 3.9367575188820996,
+        "y": 4.075483252437021
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.3690361445783132,
-        "y": 4.209843373493976
+        "x": 2.318,
+        "y": 3.964
       },
       "prevControl": {
-        "x": 2.706376604850214,
-        "y": 3.8344507845934377
-      },
-      "nextControl": {
-        "x": 2.201935367821318,
-        "y": 4.39579317964394
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 0.429,
-        "y": 4.655
-      },
-      "prevControl": {
-        "x": 0.8561483594864476,
-        "y": 5.218887303851641
+        "x": 2.517739770633661,
+        "y": 3.81365365309655
       },
       "nextControl": null,
       "isLocked": false,
@@ -47,7 +31,30 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "RampShooter",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "RampShooter"
+        }
+      }
+    },
+    {
+      "name": "StartShoot",
+      "waypointRelativePos": 1.0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "StartShoot"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 5.0,
     "maxAcceleration": 1.0,
@@ -58,10 +65,10 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": 0.0
   },
   "reversed": false,
-  "folder": "Start-Depot",
+  "folder": "Start Shoot",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0

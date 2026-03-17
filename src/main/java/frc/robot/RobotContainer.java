@@ -5,10 +5,14 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.path.PathPlannerPath;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -23,6 +27,8 @@ public class RobotContainer {
     private JoystickButton mainA, mainB, mainX, mainY, rightBumper, leftBumper;
     private Trigger up, down, left, right, mainLT, mainRT;
     private double deadband = 0.05;
+
+    private final SendableChooser<Command> auto_chooser = new SendableChooser<>();
 
     public RobotContainer() {
         PhotonVision.getInstance();
@@ -79,11 +85,32 @@ public class RobotContainer {
             }));
         }
 
+        // Auto Chooser
+        try{
+            auto_chooser.setDefaultOption("Left Shoot", AutoBuilder.followPath(PathPlannerPath.fromPathFile("Left Shoot")));
+            auto_chooser.addOption("Right Shoot", AutoBuilder.followPath(PathPlannerPath.fromPathFile("Right Shoot")));
+            auto_chooser.addOption("Middle Shoot", AutoBuilder.followPath(PathPlannerPath.fromPathFile("Middle Shoot")));
+            auto_chooser.addOption("Left to Depot", AutoBuilder.followPath(PathPlannerPath.fromPathFile("Left Depot")));
+            auto_chooser.addOption("Middle to Depot", AutoBuilder.followPath(PathPlannerPath.fromPathFile("Middle Depot")));
+            auto_chooser.addOption("Right to Outpost", AutoBuilder.buildAuto("Right Outpost"));
+            auto_chooser.addOption("Middle to Outpost", AutoBuilder.buildAuto("Middle Outpost"));
+            auto_chooser.addOption("Left to Center", AutoBuilder.followPath(PathPlannerPath.fromPathFile("Left Center")));
+            auto_chooser.addOption("Right to Center", AutoBuilder.followPath(PathPlannerPath.fromPathFile("Right Center")));
+
+
+            SmartDashboard.putData("Auto Chooser", auto_chooser);
+        }
+        catch(Exception e){
+            System.out.println("Error" + e.getMessage());
+            auto_chooser.setDefaultOption("Do Nothing", new InstantCommand());
+        }
+
+
         Swerve.getInstance().setDefaultCommand(new TeleopSwerve(
                 () -> -mainController.getLeftY(),
                 () -> -mainController.getLeftX(),
                 () -> -mainController.getRightX(),
-                () -> false
+                () -> false // Lock on
         ));
 
         configureBindings();
@@ -145,8 +172,7 @@ public class RobotContainer {
     }
 
 
-    public Command getAutonomousCommand ()
-    {
-        return new AlignToTarget(new Transform2d(1, 0, new Rotation2d(0)), Constants.TrajectoryConstants.SLOW);
+    public Command getAutonomousCommand () {
+        return auto_chooser.getSelected();
     }
 }
