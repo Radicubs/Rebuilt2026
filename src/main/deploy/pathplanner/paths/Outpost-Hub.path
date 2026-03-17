@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 2.318,
-        "y": 3.964
+        "x": 2.033566333808844,
+        "y": 1.0785164051355207
       },
       "prevControl": {
-        "x": 2.0823967873044653,
-        "y": 3.8458776111202484
+        "x": 1.7979631211133094,
+        "y": 0.9603940162557691
       },
       "nextControl": null,
       "isLocked": false,
@@ -65,10 +65,10 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 50.0
   },
   "reversed": false,
-  "folder": "To-Hub",
+  "folder": "Outpost Paths",
   "idealStartingState": {
     "velocity": 0,
     "rotation": -90.0

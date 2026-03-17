@@ -3,16 +3,13 @@
   "robotLength": 0.9,
   "holonomicMode": true,
   "pathFolders": [
-    "Depot",
-    "Start-Depot",
-    "Start-Hub",
-    "Start-Outpost",
-    "To-Hub"
+    "Center Paths",
+    "Depot Paths",
+    "Outpost Paths",
+    "Start Shoot"
   ],
   "autoFolders": [
-    "Left",
-    "Middle",
-    "Right"
+    "Outpost Autos"
   ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,
