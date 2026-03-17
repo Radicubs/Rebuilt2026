@@ -59,6 +59,7 @@ public class Pivot extends SubsystemBase {
                 builder.addDoubleProperty("Pivot Motor RPS", relativeEncoder::getVelocity, null);
                 builder.addDoubleProperty("Pivot Motor Desired Angle", () -> getGoal(), null);
                 builder.addDoubleProperty("Pivot Motor current draw", () -> pivotMotor.getOutputCurrent(), null);
+                builder.addBooleanProperty("Pivot Extended", () -> (getPosition() >= Constants.Pivot.downPos - 0.1) && (getPosition() <= Constants.Pivot.downPos + 0.1), null);
 
             }
         });

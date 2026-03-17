@@ -106,12 +106,12 @@ public class RobotContainer {
         }
 
 
-        Swerve.getInstance().setDefaultCommand(new TeleopSwerve(
-                () -> -mainController.getLeftY(),
-                () -> -mainController.getLeftX(),
-                () -> -mainController.getRightX(),
-                () -> false // Lock on
-        ));
+//        Swerve.getInstance().setDefaultCommand(new TeleopSwerve(
+//                () -> -mainController.getLeftY(),
+//                () -> -mainController.getLeftX(),
+//                () -> -mainController.getRightX(),
+//                () -> false // Lock on
+//        ));
 
         configureBindings();
 
@@ -161,10 +161,10 @@ public class RobotContainer {
         })).onFalse(new InstantCommand(() -> Pivot.getInstance().setSpeed(0)));
 
         right.onTrue(new InstantCommand(() -> {
-            Pivot.getInstance().setSpeed(.1);
+            Pivot.getInstance().setSpeed(.2);
         })).onFalse(new InstantCommand(() -> {Pivot.getInstance().setSpeed(0);}));
         left.onTrue(new InstantCommand(() -> {
-            Pivot.getInstance().setSpeed(-.1);
+            Pivot.getInstance().setSpeed(-.2);
         })).onFalse(new InstantCommand(() -> {Pivot.getInstance().setSpeed(0);}));
 
 //        leftBumper.onTrue(new InstantCommand(() -> {

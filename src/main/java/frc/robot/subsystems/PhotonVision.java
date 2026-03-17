@@ -7,6 +7,8 @@ import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -45,6 +47,14 @@ public class PhotonVision extends SubsystemBase {
 
         UsbCamera server = CameraServer.startAutomaticCapture(0);
         server.setResolution(640,480);
+
+        SmartDashboard.putData("Photon Vision", new Sendable() {
+            @Override
+            public void initSendable(SendableBuilder builder) {
+                builder.addBooleanProperty("Has Tag", () -> getBestTag() != -1, null);
+                builder.addIntegerProperty("Best Tag", () -> getBestTag(), null);
+            }
+        });
     }
 
     public Transform3d getTransformToTarget(int targetID) {
@@ -96,5 +106,7 @@ public class PhotonVision extends SubsystemBase {
         }
 
         visionOdometry.update(Swerve.getInstance().getGyroYaw(), Swerve.getInstance().getModulePositions());
+
+
     }
 }

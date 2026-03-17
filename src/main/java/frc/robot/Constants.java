@@ -225,8 +225,8 @@ public final class Constants
         public static final int shooterCurrentLimit = 35;
         public static final boolean shooterEnableCurrentLimit = true;
 
-        public static double mainShooterRPS = 60; // Real: 60 Test: 10
-        public static final double topShaftRPS = 20; // Real: 20 Test: 20
+        public static double mainShooterRPS = 10; // Real: 60 Test: 10
+        public static final double topShaftRPS = 10; // Real: 20 Test: 10
         public static final double indexerRPS = 20; // Real: 20 Test: 20
 
         public static final class MainRightShooterPIDFeedforwardConstants {
@@ -269,9 +269,9 @@ public final class Constants
     public static final class Transfer{
         public static final int beltMotorCID = 18;
 
-        public static final double transferSpeed = 30;
+        public static final double transferSpeed = 60;
 
-        public static final class TransferPIDFeedforwardConstants { // FIX WHEN BELTS ON AND TRANSFER DONE
+        public static final class TransferPIDFeedforwardConstants {
             public static final double kP = 0.0;
             public static final double kI = 0.0;
             public static final double kD = 0.0;
