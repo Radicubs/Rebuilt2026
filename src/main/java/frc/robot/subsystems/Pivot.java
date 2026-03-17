@@ -28,7 +28,6 @@ public class Pivot extends SubsystemBase {
     private final RelativeEncoder relativeEncoder;
 
     private boolean moveToTargetAngle = false;
-    private double targetRotation = 0.0;
 
     public static Pivot getInstance(){
         if(INSTANCE == null) {INSTANCE = new Pivot();}
@@ -39,17 +38,17 @@ public class Pivot extends SubsystemBase {
         pivotMotor = new SparkMax(Constants.Pivot.pivotMotorCID, SparkLowLevel.MotorType.kBrushless);
         SparkMaxConfig pivotMotorConfig = new SparkMaxConfig();
         pivotMotorConfig.inverted(false); //TODO: CHANGE IF NEEDED
-        pivotMotorConfig.idleMode(SparkBaseConfig.IdleMode.kCoast);
+        pivotMotorConfig.idleMode(SparkBaseConfig.IdleMode.kBrake);
         pivotMotorConfig.encoder.positionConversionFactor(1.0/135);
         pivotMotorConfig.encoder.velocityConversionFactor(1.0/135);
         pivotMotorConfig.smartCurrentLimit(Constants.Pivot.pivotMotorStallCurrentLimit, Constants.Pivot.pivotMotorFreeCurrentLimit);
         pivotMotor.configure(pivotMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         relativeEncoder = pivotMotor.getEncoder();
-        //relativeEncoder.setPosition(Constants.Pivot.upPos);
+        relativeEncoder.setPosition(Constants.Pivot.upPos);
 
         pid = new ProfiledPIDController(Constants.Pivot.PIDFeedforwardConstants.P, Constants.Pivot.PIDFeedforwardConstants.I, Constants.Pivot.PIDFeedforwardConstants.D, new TrapezoidProfile.Constraints(1000, 1000));
-        pid.setTolerance(0.05);
+        pid.setTolerance(0.01);
 
         feedforward = new ArmFeedforward(Constants.Pivot.PIDFeedforwardConstants.S, Constants.Pivot.PIDFeedforwardConstants.G, Constants.Pivot.PIDFeedforwardConstants.V);
 
@@ -73,7 +72,6 @@ public class Pivot extends SubsystemBase {
     public void setGoal(double targetRotation){
         reset();
         moveToTargetAngle = true;
-        this.targetRotation = targetRotation;
         pid.setGoal(new TrapezoidProfile.State(targetRotation, Constants.Pivot.pivotFinalVelocity));
     }
     public void reset() {

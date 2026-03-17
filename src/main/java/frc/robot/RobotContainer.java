@@ -147,7 +147,7 @@ public class RobotContainer {
         }));
 
         mainB.onTrue(new InstantCommand(() -> {
-           Shooter.getInstance().setShooterSpeeds(Constants.Shooter.mainShooterRPS, Constants.Shooter.topShaftRPS, 0);
+           Shooter.getInstance().setShooterSpeeds(Constants.Shooter.mainShooterRPS, Constants.Shooter.topShaftRPS, -3);
         }));
 
         up.onTrue(new InstantCommand(() -> {
@@ -159,6 +159,13 @@ public class RobotContainer {
             Pivot.getInstance().cancelPID();
             Pivot.getInstance().setGoal(Constants.Pivot.downPos);
         })).onFalse(new InstantCommand(() -> Pivot.getInstance().setSpeed(0)));
+
+        right.onTrue(new InstantCommand(() -> {
+            Pivot.getInstance().setSpeed(.1);
+        })).onFalse(new InstantCommand(() -> {Pivot.getInstance().setSpeed(0);}));
+        left.onTrue(new InstantCommand(() -> {
+            Pivot.getInstance().setSpeed(-.1);
+        })).onFalse(new InstantCommand(() -> {Pivot.getInstance().setSpeed(0);}));
 
 //        leftBumper.onTrue(new InstantCommand(() -> {
 //            Swerve.getInstance().setPose(new Pose2d(0, 0, new Rotation2d()));

@@ -225,9 +225,9 @@ public final class Constants
         public static final int shooterCurrentLimit = 35;
         public static final boolean shooterEnableCurrentLimit = true;
 
-        public static double mainShooterRPS = 10;
-        public static final double topShaftRPS = 20;
-        public static final double indexerRPS = 20;
+        public static double mainShooterRPS = 60; // Real: 60 Test: 10
+        public static final double topShaftRPS = 20; // Real: 20 Test: 20
+        public static final double indexerRPS = 20; // Real: 20 Test: 20
 
         public static final class MainRightShooterPIDFeedforwardConstants {
             public static final double kP = 0.375;
@@ -301,12 +301,12 @@ public final class Constants
 
         public static final int pivotMotorFreeCurrentLimit = 10;
 
-        public static final double downPos = 0.083;
-        public static final double upPos = -.33;
+        public static final double downPos = 0;
+        public static final double upPos = -0.3275097608566284;
         public static final double pivotFinalVelocity = 0.0;
 
         public static final class PIDFeedforwardConstants {
-            public static final double P = 0.3;
+            public static final double P = 1;
             public static final double I = 0;
             public static final double D = 0;
             public static final double S = 0.05;
