@@ -75,7 +75,7 @@ public class Swerve extends SubsystemBase implements HolonomicPathFollower {
     );
 
         field = new Field2d();
-        SmartDashboard.putData(field);
+
 
         mSwerveMods = new SwerveModule[]{
                 new SwerveModule(0, Constants.Swerve.Mod0.constants),
@@ -84,17 +84,15 @@ public class Swerve extends SubsystemBase implements HolonomicPathFollower {
                 new SwerveModule(3, Constants.Swerve.Mod3.constants)
         };
 
-        for(SwerveModule swerveModule : mSwerveMods){
-            SmartDashboard.putData(swerveModule);
-        }
-        SmartDashboard.putData(new Sendable() {
-            @Override
-            public void initSendable(SendableBuilder builder) {
-                builder.addDoubleProperty("Heading",() -> ((getHeading()!= null) ? getHeading().getDegrees() : 0), null);
-            }
-        });
 
         swerveOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getGyroYaw(), getModulePositions());
+
+        SmartDashboard.putData("Heading", builder -> {
+            builder.setSmartDashboardType("Gyro");
+            builder.addDoubleProperty("Value", () -> ((getHeading()!= null) ? getHeading().getDegrees() : 0), null);
+        });
+
+        SmartDashboard.putData(field);
 
     }
 
@@ -195,4 +193,5 @@ public class Swerve extends SubsystemBase implements HolonomicPathFollower {
         swerveOdometry.update(getGyroYaw(), getModulePositions());
         field.setRobotPose(getPose());
     }
+
 }

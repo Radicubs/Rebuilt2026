@@ -103,11 +103,11 @@ public class RobotContainer {
         mainLT.onTrue(new InstantCommand(() -> {
             Intake.getInstance().setIntakeSpeed(Constants.Intake.intakeSpeedRPS);
             Pivot.getInstance().setSpeed(0.05);
-            //Transfer.getInstance().setTransferSpeeds(Constants.Transfer.transferSpeed);
+            Transfer.getInstance().setTransferSpeed(Constants.Transfer.transferSpeed);
         })).onFalse(new InstantCommand(() -> {
             Intake.getInstance().cancelPID();
             Pivot.getInstance().setSpeed(0);
-            //Transfer.getInstance().setTransferSpeeds(0);
+            Transfer.getInstance().setTransferSpeed(0);
 
         }));
 
@@ -125,12 +125,12 @@ public class RobotContainer {
 
         up.onTrue(new InstantCommand(() -> {
             Pivot.getInstance().cancelPID();
-            Pivot.getInstance().setSpeed(-0.15);
+            Pivot.getInstance().setSpeed(-0.3);
         })).onFalse(new InstantCommand(() -> Pivot.getInstance().setSpeed(0)));
 
         down.onTrue(new InstantCommand(() -> {
             Pivot.getInstance().cancelPID();
-            Pivot.getInstance().setSpeed(0.05);
+            Pivot.getInstance().setSpeed(0.3);
         })).onFalse(new InstantCommand(() -> Pivot.getInstance().setSpeed(0)));
 
 //        leftBumper.onTrue(new InstantCommand(() -> {

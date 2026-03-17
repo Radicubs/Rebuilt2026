@@ -65,20 +65,21 @@ public class SwerveModule implements Sendable {
         mDriveMotor.setNeutralMode(NeutralModeValue.Brake);
         mDriveMotor.getConfigurator().setPosition(0.0);
 
+        SmartDashboard.putData("Swerve Module " + moduleNumber, this);
+
     }
 
     @Override
     public void initSendable(SendableBuilder builder) {
+        builder.setSmartDashboardType("Swerve Module");
         builder.addDoubleProperty("CANCoder", () -> getCANcoder().getDegrees(), null);
         builder.addDoubleProperty("Velocity", () -> getState().speedMetersPerSecond, null);
         builder.addDoubleProperty("Angle", () -> getState().angle.getDegrees(), null);
-
-        SmartDashboard.putNumber("CANCoder", getCANcoder().getDegrees());
-        SmartDashboard.putNumber("Velocity", getState().speedMetersPerSecond);
+        builder.addDoubleProperty("Desired Velocity", () -> (desiredSwerveState!=null) ? desiredSwerveState.speedMetersPerSecond : 0, null);
     }
 
     public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop) {
-        desiredState = SwerveModuleState.optimize(desiredState, getState().angle);
+        desiredState.optimize(getState().angle);
         desiredSwerveState = desiredState;
         if (Constants.Swerve.useMagicMotion) {
             mAngleMotor.setControl(anglePositionM.withPosition(desiredState.angle.getRotations()));

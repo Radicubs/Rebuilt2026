@@ -105,7 +105,7 @@ public class Shooter extends SubsystemBase {
         indexer = new TalonFX(Constants.Shooter.indexerCID);
         indexer.getConfigurator().apply(indexerConfig);
 
-        SmartDashboard.putData(new Sendable() {
+        SmartDashboard.putData("Indexer",new Sendable() {
             @Override
             public void initSendable(SendableBuilder builder) {
                 builder.addDoubleProperty("Indexer Speed",() -> getIndexerSpeed(), null);
@@ -116,7 +116,7 @@ public class Shooter extends SubsystemBase {
         topShooter = new TalonFX(Constants.Shooter.topShooterCID);
         topShooter.getConfigurator().apply(topShooterConfig);
 
-        SmartDashboard.putData(new Sendable() {
+        SmartDashboard.putData("Top Shooter", new Sendable() {
             @Override
             public void initSendable(SendableBuilder builder) {
                 builder.addDoubleProperty("Top Shooter Speed",() -> getTopShooterSpeed(), null);
@@ -126,7 +126,7 @@ public class Shooter extends SubsystemBase {
         // Left Shooter
         leftShooter = new TalonFX(Constants.Shooter.leftShooterCID);
         leftShooter.getConfigurator().apply(leftConfig);
-        SmartDashboard.putData(new Sendable() {
+        SmartDashboard.putData("Left Shooter", new Sendable() {
             @Override
             public void initSendable(SendableBuilder builder) {
                 builder.addDoubleProperty("Left Shooter Speed",() -> getLeftShooterSpeed(), null);
@@ -137,10 +137,35 @@ public class Shooter extends SubsystemBase {
         rightShooter = new TalonFX(Constants.Shooter.rightShooterCID);
         rightShooter.getConfigurator().apply(rightConfig);
 
-        SmartDashboard.putData(new Sendable() {
+        SmartDashboard.putData("Right Shooter", new Sendable() {
             @Override
             public void initSendable(SendableBuilder builder) {
                 builder.addDoubleProperty("Right Shooter Speed",() -> getRightShooterSpeed(), null);
+                builder.addDoubleProperty("Right Shooter Desired Speed",() -> rightShooterVel.Velocity, null);
+            }
+        });
+
+        SmartDashboard.putData("Left Shooter", new Sendable() {
+            @Override
+            public void initSendable(SendableBuilder builder) {
+                builder.addDoubleProperty("Left Shooter Speed",() -> getLeftShooterSpeed(), null);
+                builder.addDoubleProperty("Left Shooter Desired Speed",() -> leftShooterVel.Velocity, null);
+            }
+        });
+
+        SmartDashboard.putData("Indexer", new Sendable() {
+            @Override
+            public void initSendable(SendableBuilder builder) {
+                builder.addDoubleProperty("Indexer Speed",() -> getIndexerSpeed(), null);
+                builder.addDoubleProperty("Indexer Desired Speed",() -> indexerVel.Velocity, null);
+            }
+        });
+
+        SmartDashboard.putData("Top Shooter", new Sendable() {
+            @Override
+            public void initSendable(SendableBuilder builder) {
+                builder.addDoubleProperty("Top Shooter Speed",() -> getTopShooterSpeed(), null);
+                builder.addDoubleProperty("Top Shooter Desired Speed",() -> topShooterVel.Velocity, null);
             }
         });
 
@@ -175,8 +200,8 @@ public class Shooter extends SubsystemBase {
         indexerVel.Velocity = indexerRPS;
         indexerVel.FeedForward = indexerFF.calculate(indexerRPS);
 
-        topShooterVel.Velocity = indexerRPS;
-        topShooterVel.FeedForward = topShooterFF.calculate(indexerRPS);
+        topShooterVel.Velocity = topShaftRPS;
+        topShooterVel.FeedForward = topShooterFF.calculate(topShaftRPS);
 
         leftShooterVel.Velocity = mainShooterRPS;
         leftShooterVel.FeedForward = leftMainShooterFF.calculate(mainShooterRPS);
@@ -185,9 +210,12 @@ public class Shooter extends SubsystemBase {
         rightShooterVel.FeedForward = rightMainShooterFF.calculate(mainShooterRPS);
 
         rightShooter.setControl(rightShooterVel);
+
+
         leftShooter.setControl(leftShooterVel);
 
         indexer.setControl(indexerVel);
+
         topShooter.setControl(topShooterVel);
 
         enablePID = true;

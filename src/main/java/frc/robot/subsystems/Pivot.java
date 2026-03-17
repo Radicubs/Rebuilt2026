@@ -41,21 +41,20 @@ public class Pivot extends SubsystemBase {
         pivotMotorConfig.encoder.positionConversionFactor(1.0/45);
         pivotMotorConfig.encoder.velocityConversionFactor(1.0/45);
         pivotMotor.configure(pivotMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        SmartDashboard.putData(new Sendable() {
-            @Override
-            public void initSendable(SendableBuilder builder) {
-                builder.addDoubleProperty("Pivot Angle",() -> getPosition(), null);
-            }
-        });
-
 
         relativeEncoder = pivotMotor.getEncoder();
 
         pid = new PIDController(Constants.Pivot.PIDFeedforwardConstants.P, Constants.Pivot.PIDFeedforwardConstants.I, Constants.Pivot.PIDFeedforwardConstants.D);
         pid.setTolerance(0.05);
 
-
         feedforward = new ArmFeedforward(Constants.Pivot.PIDFeedforwardConstants.S, Constants.Pivot.PIDFeedforwardConstants.G, Constants.Pivot.PIDFeedforwardConstants.V);
+
+        SmartDashboard.putData("Pivot", new Sendable() {
+            @Override
+            public void initSendable(SendableBuilder builder) {
+                builder.addDoubleProperty("Pivot Angle",() -> getPosition(), null);
+            }
+        });
     }
     public double getPosition() {
         return relativeEncoder.getPosition();

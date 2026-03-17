@@ -146,8 +146,8 @@ public final class Constants
         public static final double driveKF = 0.0;
 
         /* Drive Motor Characterization Values From SYSID */
-        public static final double driveKS = 0.2; //TODO: This must be tuned to specific robot
-        public static final double driveKV = 1.925; //2.1 overshoots
+        public static final double driveKS = 0.184; //TODO: This must be tuned to specific robot
+        public static final double driveKV = 2.3; //2.1 overshoots
         public static final double driveKA = 0.0;
 
         /* Swerve Profiling Values */
@@ -172,7 +172,7 @@ public final class Constants
             public static final int canCoderID = 11;
             public static InvertedValue driveMotorInvert = InvertedValue.Clockwise_Positive;
             public static InvertedValue angleMotorInvert = InvertedValue.CounterClockwise_Positive;
-            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(133.9 + 180);
+            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(-46.582);
             public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset, angleMotorInvert, driveMotorInvert);
         }
 
@@ -183,7 +183,7 @@ public final class Constants
             public static final int canCoderID = 12;
             public static InvertedValue driveMotorInvert = InvertedValue.Clockwise_Positive;
             public static InvertedValue angleMotorInvert = InvertedValue.CounterClockwise_Positive;
-            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(-122.6 + 180);
+            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(55.986);
             public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset, angleMotorInvert, driveMotorInvert);
 
         }
@@ -193,7 +193,7 @@ public final class Constants
             public static final int driveMotorID = 4;
             public static final int angleMotorID = 3;
             public static final int canCoderID = 10;
-            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(5.8 + 180);
+            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(-177.18);
             public static final SwerveModuleConstants constants =
                     new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
@@ -203,7 +203,7 @@ public final class Constants
             public static final int driveMotorID = 2;
             public static final int angleMotorID = 1;
             public static final int canCoderID = 9;
-            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(151.5 + 180);
+            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(-28.125);
             public static final SwerveModuleConstants constants =
                     new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
@@ -222,46 +222,46 @@ public final class Constants
         public static final int indexerShooterCurrenLimit = 35;
         public static final boolean indexerEnableCurrentLimit = true;
 
-        public static final int shooterCurrentLimit = 10;
+        public static final int shooterCurrentLimit = 35;
         public static final boolean shooterEnableCurrentLimit = true;
 
-        public static double mainShooterRPS = 60;//60;
-        public static final double topShaftRPS = 40; // Tested Speed: 10 RPS
-        public static final double indexerRPS = 100; // Tested Speed:60 RPS
+        public static double mainShooterRPS = 10;
+        public static final double topShaftRPS = 20;
+        public static final double indexerRPS = 20;
 
         public static final class MainRightShooterPIDFeedforwardConstants {
-            public static final double kP = 0.4; // 0.6
+            public static final double kP = 0.75;
             public static final double kI = 0;
-            public static final double kD = -0.01;
-            public static final double kS = .15;
-            public static final double kV = 0.11;
+            public static final double kD = 0.0;
+            public static final double kS = 0.15;
+            public static final double kV = 0.108;
             public static final double kA = 0;
         }
 
         public static final class MainLeftShooterPIDFeedforwardConstants {
-            public static final double kP = 0.3; // 0.6
+            public static final double kP = 0.75;
             public static final double kI = 0.0;
-            public static final double kD = 0.0008;
-            public static final double kS = 0.15;
-            public static final double kV = 0.11;
+            public static final double kD = 0.0;
+            public static final double kS = 0.185;
+            public static final double kV = 0.108;
             public static final double kA = 0.0;
         }
 
         public static final class IndexerPIDFeedforwardConstants {
-            public static final double kP = 0.01;
+            public static final double kP = 0.02;
             public static final double kI = 0.0;
-            public static final double kD = 0.0008;
-            public static final double kS = 0.0375;
-            public static final double kV = 0.0125;
+            public static final double kD = 0.0;
+            public static final double kS = .2;
+            public static final double kV = .115;
             public static final double kA = 0.0;
         }
 
         public static final class TopShooterPIDFeedforwardConstants {
-            public static final double kP = 0.015;
+            public static final double kP = 0.02;
             public static final double kI = 0.0;
-            public static final double kD = 0.0008;
-            public static final double kS = 0.01875;
-            public static final double kV = 0.0125;
+            public static final double kD = 0;
+            public static final double kS = 0.17;
+            public static final double kV = 0.115;
             public static final double kA = 0.0;
         }
     }
@@ -271,12 +271,12 @@ public final class Constants
 
         public static final double transferSpeed = 30;
 
-        public static final class TransferPIDFeedforwardConstants {
+        public static final class TransferPIDFeedforwardConstants { // FIX WHEN BELTS ON AND TRANSFER DONE
             public static final double kP = 0.0;
             public static final double kI = 0.0;
             public static final double kD = 0.0;
-            public static final double kS = 0.0375;
-            public static final double kV = 0.01675;
+            public static final double kS = 0.03;
+            public static final double kV = 0.0097;
             public static final double kA = 0.0;
         }
     }
@@ -286,11 +286,11 @@ public final class Constants
 
         public static final double intakeSpeedRPS = 35;
         public static final class PIDFeedforwardConstants {
-            public static final double P = 0;
+            public static final double P = 0.0;
             public static final double I = 0;
             public static final double D = 0;
-            public static final double S = .01;
-            public static final double V = .011;
+            public static final double S = .0175;
+            public static final double V = 0.0105;
             public static final double A = 0;
         }
     }

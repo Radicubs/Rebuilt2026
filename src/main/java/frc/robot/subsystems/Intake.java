@@ -39,18 +39,20 @@ public class Intake extends SubsystemBase {
         intakeConfig.inverted(false);
         intakeConfig.idleMode(SparkBaseConfig.IdleMode.kCoast);
         intakeMotor.configure(intakeConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        SmartDashboard.putData(new Sendable() {
-            @Override
-            public void initSendable(SendableBuilder builder) {
-                builder.addDoubleProperty("Intake Speed",() -> getVelocity(), null);
-            }
-        });
 
         encoder = intakeMotor.getEncoder();
         controller = new PIDController(Constants.Intake.PIDFeedforwardConstants.P, Constants.Intake.PIDFeedforwardConstants.I, Constants.Intake.PIDFeedforwardConstants.D);
         controller.setTolerance(0.05);
 
         feedforward = new SimpleMotorFeedforward(Constants.Intake.PIDFeedforwardConstants.S, Constants.Intake.PIDFeedforwardConstants.V, Constants.Intake.PIDFeedforwardConstants.A);
+        SmartDashboard.putData("Intake", new Sendable() {
+            @Override
+            public void initSendable(SendableBuilder builder) {
+                builder.addDoubleProperty("Intake Speed",() -> getVelocity(), null);
+                builder.addDoubleProperty("Desired Intake Speed", () -> getSetpoint(),null);
+            }
+        });
+
     }
 
     public void setIntakeSpeed(double RPS){
