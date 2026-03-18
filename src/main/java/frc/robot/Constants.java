@@ -314,17 +314,17 @@ public final class Constants
 
         public static final int pivotMotorFreeCurrentLimit = 10;
 
-        public static final double downPos = 0;
+        public static final double downPos = 0.001587;
         public static final double upPos = -0.3275097608566284;
         public static final double pivotFinalVelocity = 0.0;
 
         public static final class PIDFeedforwardConstants {
-            public static final double P = 1;
+            public static final double P = 2.5;
             public static final double I = 0;
             public static final double D = 0;
-            public static final double S = 0.05;
-            public static final double V = 0;
-            public static final double G = 0.025;
+            public static final double S = 0;
+            public static final double V = 0.1;
+            public static final double G = -0.05;
         }
     }
 }

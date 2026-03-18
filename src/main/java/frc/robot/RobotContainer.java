@@ -126,12 +126,12 @@ public class RobotContainer {
         }
 
 
-        Swerve.getInstance().setDefaultCommand(new TeleopSwerve(
-                () -> -mainController.getLeftY(),
-                () -> -mainController.getLeftX(),
-                () -> -mainController.getRightX(),
-                () -> mainX.getAsBoolean()
-        ));
+//        Swerve.getInstance().setDefaultCommand(new TeleopSwerve(
+//                () -> -mainController.getLeftY(),
+//                () -> -mainController.getLeftX(),
+//                () -> -mainController.getRightX(),
+//                () -> mainX.getAsBoolean()
+//        ));
 
         configureBindings();
 
@@ -175,21 +175,19 @@ public class RobotContainer {
             }));
 
             // PID Retract Intake
-            secondaryA.onTrue(new InstantCommand(() -> {
+            mainA.onTrue(new InstantCommand(() -> {
                 Pivot.getInstance().cancelPID();
                 Pivot.getInstance().setGoal(Constants.Pivot.upPos);
             })).onFalse(new InstantCommand(() -> {
                 Pivot.getInstance().setSpeed(0);
-                Pivot.getInstance().cancelPID();
             }));
 
             // PID Extend Intake
-            secondaryB.onTrue(new InstantCommand(() -> {
+            mainB.onTrue(new InstantCommand(() -> {
                 Pivot.getInstance().cancelPID();
                 Pivot.getInstance().setGoal(Constants.Pivot.downPos);
             })).onFalse(new InstantCommand(() -> {
                 Pivot.getInstance().setSpeed(0);
-                Pivot.getInstance().cancelPID();
             }));
 
             // Zero Pivot PID
@@ -197,6 +195,7 @@ public class RobotContainer {
 
             // Manual Extend Intake
             mainDown.onTrue(new InstantCommand(() -> {
+                Pivot.getInstance().cancelPID();
                 Pivot.getInstance().setSpeed(.2);
             })).onFalse(new InstantCommand(() -> {
                 Pivot.getInstance().setSpeed(0);
@@ -204,6 +203,7 @@ public class RobotContainer {
 
             // Manual Retract Intake
             mainUp.onTrue(new InstantCommand(() -> {
+                Pivot.getInstance().cancelPID();
                 Pivot.getInstance().setSpeed(-.2);
             })).onFalse(new InstantCommand(() -> {
                 Pivot.getInstance().setSpeed(0);

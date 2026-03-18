@@ -47,7 +47,7 @@ public class Pivot extends SubsystemBase {
         relativeEncoder = pivotMotor.getEncoder();
         relativeEncoder.setPosition(Constants.Pivot.upPos);
 
-        pid = new ProfiledPIDController(Constants.Pivot.PIDFeedforwardConstants.P, Constants.Pivot.PIDFeedforwardConstants.I, Constants.Pivot.PIDFeedforwardConstants.D, new TrapezoidProfile.Constraints(1000, 1000));
+        pid = new ProfiledPIDController(Constants.Pivot.PIDFeedforwardConstants.P, Constants.Pivot.PIDFeedforwardConstants.I, Constants.Pivot.PIDFeedforwardConstants.D, new TrapezoidProfile.Constraints(1, 3));
         pid.setTolerance(0.01);
 
         feedforward = new ArmFeedforward(Constants.Pivot.PIDFeedforwardConstants.S, Constants.Pivot.PIDFeedforwardConstants.G, Constants.Pivot.PIDFeedforwardConstants.V);
@@ -60,6 +60,7 @@ public class Pivot extends SubsystemBase {
                 builder.addDoubleProperty("Pivot Motor Desired Angle", () -> getGoal(), null);
                 builder.addDoubleProperty("Pivot Motor current draw", () -> pivotMotor.getOutputCurrent(), null);
                 builder.addBooleanProperty("Pivot Extended", () -> (getPosition() >= Constants.Pivot.downPos - 0.05), null);
+                builder.addDoubleProperty("Pivot desired speed", () -> pid.getSetpoint().velocity, null);
             }
         });
     }
@@ -99,6 +100,8 @@ public class Pivot extends SubsystemBase {
             double feedforwardVal = feedforward.calculate(pid.getSetpoint().position, pid.getSetpoint().velocity);
 
             pivotMotor.set(motorSpeed + feedforwardVal);
+
+            if(pid.atGoal()){cancelPID();}
         }
     }
 }
