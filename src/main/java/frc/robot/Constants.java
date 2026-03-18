@@ -225,9 +225,22 @@ public final class Constants
         public static final int shooterCurrentLimit = 35;
         public static final boolean shooterEnableCurrentLimit = true;
 
-        public static double mainShooterRPS = 10; // Real: 60 Test: 10
-        public static final double topShaftRPS = 10; // Real: 20 Test: 10
-        public static final double indexerRPS = 20; // Real: 20 Test: 20
+        public static final class CloseShootSpeeds{
+            public static double mainShooterRPS = 10; // Real: 60 Test: 10
+            public static final double topShaftRPS = 10; // Real: 20 Test: 10
+            public static final double indexerRPS = 20; // Real: 20 Test: 20
+        }
+        public static final class TrenchShootSpeeds{
+            public static double mainShooterRPS = 10; // Real: 60 Test: 10
+            public static final double topShaftRPS = 10; // Real: 20 Test: 10
+            public static final double indexerRPS = 20; // Real: 20 Test: 20
+        }
+        public static final class PassSpeeds{
+            public static double mainShooterRPS = 10; // Real: 60 Test: 10
+            public static final double topShaftRPS = 10; // Real: 20 Test: 10
+            public static final double indexerRPS = 20; // Real: 20 Test: 20
+        }
+
 
         public static final class MainRightShooterPIDFeedforwardConstants {
             public static final double kP = 0.375;

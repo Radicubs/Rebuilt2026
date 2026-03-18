@@ -46,6 +46,13 @@ public class Shooter extends SubsystemBase {
     private final SimpleMotorFeedforward leftMainShooterFF = new SimpleMotorFeedforward(Constants.Shooter.MainLeftShooterPIDFeedforwardConstants.kS, Constants.Shooter.MainLeftShooterPIDFeedforwardConstants.kV, Constants.Shooter.MainLeftShooterPIDFeedforwardConstants.kA);
     private final SimpleMotorFeedforward rightMainShooterFF = new SimpleMotorFeedforward(Constants.Shooter.MainRightShooterPIDFeedforwardConstants.kS, Constants.Shooter.MainRightShooterPIDFeedforwardConstants.kV, Constants.Shooter.MainRightShooterPIDFeedforwardConstants.kA);
 
+    enum ShootSpeeds{
+        CLOSE,
+        TRENCH,
+        PASS
+    }
+
+    ShootSpeeds shootSpeed;
 
     private boolean enablePID = false;
 
@@ -55,6 +62,8 @@ public class Shooter extends SubsystemBase {
     }
 
     private Shooter(){
+        shootSpeed = ShootSpeeds.CLOSE;
+
         // Indexer Config
         indexerConfig = new TalonFXConfiguration();
         indexerConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
@@ -169,6 +178,8 @@ public class Shooter extends SubsystemBase {
             }
         });
 
+        SmartDashboard.putString("Shooter Distance", shootSpeed.toString()); // TODO: PUT THIS INTO ELASTIC
+
     }
 
     public double getRightShooterSpeed(){
@@ -221,6 +232,51 @@ public class Shooter extends SubsystemBase {
         enablePID = true;
     }
 
+    public void cycleSpeeds(){
+        switch(shootSpeed) {
+            case CLOSE:
+                shootSpeed = ShootSpeeds.TRENCH;
+                break;
+            case TRENCH:
+                shootSpeed = ShootSpeeds.PASS;
+                break;
+            case PASS:
+                shootSpeed = ShootSpeeds.CLOSE;
+                break;
+        }
+    }
+
+    public void Shoot(){
+        switch (shootSpeed){
+            case CLOSE:
+                setShooterSpeeds(Constants.Shooter.CloseShootSpeeds.mainShooterRPS, Constants.Shooter.CloseShootSpeeds.topShaftRPS, Constants.Shooter.CloseShootSpeeds.indexerRPS);
+                break;
+            case TRENCH:
+                setShooterSpeeds(Constants.Shooter.TrenchShootSpeeds.mainShooterRPS, Constants.Shooter.TrenchShootSpeeds.topShaftRPS, Constants.Shooter.TrenchShootSpeeds.indexerRPS);
+                break;
+            case PASS:
+                setShooterSpeeds(Constants.Shooter.PassSpeeds.mainShooterRPS, Constants.Shooter.PassSpeeds.topShaftRPS, Constants.Shooter.PassSpeeds.indexerRPS);
+                break;
+        }
+    }
+
+    public void Ramp(){
+        switch (shootSpeed){
+            case CLOSE:
+                setShooterSpeeds(Constants.Shooter.CloseShootSpeeds.mainShooterRPS, Constants.Shooter.CloseShootSpeeds.topShaftRPS, -3);
+                break;
+            case TRENCH:
+                setShooterSpeeds(Constants.Shooter.TrenchShootSpeeds.mainShooterRPS, Constants.Shooter.TrenchShootSpeeds.topShaftRPS, -3);
+                break;
+            case PASS:
+                setShooterSpeeds(Constants.Shooter.PassSpeeds.mainShooterRPS, Constants.Shooter.PassSpeeds.topShaftRPS, -3);
+                break;
+        }
+    }
+
+    public void Stop(){
+        setShooterSpeeds(0, 0, 0);
+    }
 
     @Override
     public void periodic() {

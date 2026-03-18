@@ -70,16 +70,16 @@ public class RobotContainer {
         {
             // Shooter
             NamedCommands.registerCommand("RampShooter", new InstantCommand(() -> {
-                Shooter.getInstance().setShooterSpeeds(Constants.Shooter.mainShooterRPS, Constants.Shooter.topShaftRPS, 0);
-            }));
+                Shooter.getInstance().setShooterSpeeds(Constants.Shooter.CloseShootSpeeds.mainShooterRPS, Constants.Shooter.CloseShootSpeeds.topShaftRPS, -3);
+            })); // TODO: MAYBE MAKE A SEPARATE CONSTANT FOR AUTO SHOOTING
 
             NamedCommands.registerCommand("StartShoot", new InstantCommand(() -> {
-                Shooter.getInstance().setShooterSpeeds(Constants.Shooter.mainShooterRPS, Constants.Shooter.topShaftRPS, Constants.Shooter.indexerRPS);
+                Shooter.getInstance().setShooterSpeeds(Constants.Shooter.CloseShootSpeeds.mainShooterRPS, Constants.Shooter.CloseShootSpeeds.topShaftRPS, Constants.Shooter.CloseShootSpeeds.indexerRPS);
                 Transfer.getInstance().setTransferSpeed(Constants.Transfer.transferSpeed);
-            }));
+            })); // TODO: MAYBE MAKE A SEPARATE CONSTANT FOR AUTO SHOOTING
 
             NamedCommands.registerCommand("StopShoot", new InstantCommand(() -> {
-                Shooter.getInstance().setShooterSpeeds(0, 0, 0);
+                Shooter.getInstance().Stop();
                 Transfer.getInstance().setTransferSpeed(0);
             }));
 
@@ -116,16 +116,16 @@ public class RobotContainer {
         // Main Controller Binds
         {
             // Shoot
-            mainRT.onTrue(new InstantCommand(() -> {
-                Shooter.getInstance().setShooterSpeeds(Constants.Shooter.mainShooterRPS, Constants.Shooter.topShaftRPS, Constants.Shooter.indexerRPS);
+            mainRB.onTrue(new InstantCommand(() -> {
+                Shooter.getInstance().Shoot();
                 Transfer.getInstance().setTransferSpeed(Constants.Transfer.transferSpeed);
             })).onFalse(new InstantCommand(() -> {
-                Shooter.getInstance().setShooterSpeeds(0, 0, 0);
+                Shooter.getInstance().Stop();
                 Transfer.getInstance().setTransferSpeed(0);
             }));
 
             // Zero Heading
-            mainRB.onTrue(new InstantCommand(() -> {
+            mainLB.onTrue(new InstantCommand(() -> {
                 Swerve.getInstance().zeroHeading();
             }));
         }
@@ -145,8 +145,8 @@ public class RobotContainer {
 
 
             // Ramp Shooter
-            secondaryDown.onTrue(new InstantCommand(() -> {
-                Shooter.getInstance().setShooterSpeeds(Constants.Shooter.mainShooterRPS, Constants.Shooter.topShaftRPS, -3);
+            secondaryRB.onTrue(new InstantCommand(() -> {
+                Shooter.getInstance().Ramp();
             }));
 
             // PID Retract Intake
@@ -167,26 +167,26 @@ public class RobotContainer {
                 Pivot.getInstance().cancelPID();
             }));
 
+            // Zero Pivot PID
+            secondaryLT.onTrue(new InstantCommand(() -> Pivot.getInstance().resetAngle()));
+
             // Manual Extend Intake
-            mainDown.onTrue(new InstantCommand(() -> {
+            secondaryDown.onTrue(new InstantCommand(() -> {
                 Pivot.getInstance().setSpeed(.2);
             })).onFalse(new InstantCommand(() -> {
                 Pivot.getInstance().setSpeed(0);
             }));
 
             // Manual Retract Intake
-            mainUp.onTrue(new InstantCommand(() -> {
+            secondaryUp.onTrue(new InstantCommand(() -> {
                 Pivot.getInstance().setSpeed(-.2);
             })).onFalse(new InstantCommand(() -> {
                 Pivot.getInstance().setSpeed(0);
             }));
+
+            // Toggle Shooting Distance
+            secondaryY.onTrue(new InstantCommand(() -> Shooter.getInstance().cycleSpeeds()));
         }
-
-//        leftBumper.onTrue(new InstantCommand(() -> {
-//            Swerve.getInstance().setPose(new Pose2d(0, 0, new Rotation2d()));
-//        }));
-
-//        mainLB.onTrue(new InstantCommand(() -> Pivot.getInstance().resetAngle()));
     }
 
 
