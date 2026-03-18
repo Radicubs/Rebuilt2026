@@ -269,7 +269,7 @@ public final class Constants
     public static final class Transfer{
         public static final int beltMotorCID = 18;
 
-        public static final double transferSpeed = 60;
+        public static final double transferSpeed = 45;
 
         public static final class TransferPIDFeedforwardConstants {
             public static final double kP = 0.0;
@@ -284,7 +284,7 @@ public final class Constants
     public static final class Intake{
         public static final int intakeMotorCID = 20;
 
-        public static final double intakeSpeedRPS = 35;
+        public static final double intakeSpeedRPS = 35; // 35
         public static final class PIDFeedforwardConstants {
             public static final double P = 0.0;
             public static final double I = 0;

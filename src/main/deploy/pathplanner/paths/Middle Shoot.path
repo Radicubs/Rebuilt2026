@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.9367575188820996,
-        "y": 4.075483252437021
+        "x": 3.9537619932198598,
+        "y": 3.9755408280478735
       },
       "isLocked": false,
       "linkedName": null
@@ -20,8 +20,8 @@
         "y": 3.964
       },
       "prevControl": {
-        "x": 2.517739770633661,
-        "y": 3.81365365309655
+        "x": 2.5679995082574436,
+        "y": 3.964495853845894
       },
       "nextControl": null,
       "isLocked": false,
@@ -44,6 +44,39 @@
       }
     },
     {
+      "name": "ExtendIntake",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "ExtendIntake"
+        }
+      }
+    },
+    {
+      "name": "StartIntake",
+      "waypointRelativePos": 0.2290400972053469,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "StartIntake"
+        }
+      }
+    },
+    {
+      "name": "StopIntake",
+      "waypointRelativePos": 0.6567436208991521,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "StopIntake"
+        }
+      }
+    },
+    {
       "name": "StartShoot",
       "waypointRelativePos": 1.0,
       "endWaypointRelativePos": null,
@@ -56,10 +89,10 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 5.0,
-    "maxAcceleration": 1.0,
-    "maxAngularVelocity": 100.0,
-    "maxAngularAcceleration": 200.0,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },

@@ -7,6 +7,18 @@
         {
           "type": "path",
           "data": {
+            "pathName": "Right Shoot"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 5.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
             "pathName": "Right-Outpost"
           }
         },

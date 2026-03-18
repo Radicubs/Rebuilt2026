@@ -17,7 +17,7 @@ public class TeleopSwerve extends Command {
     DoubleSupplier translationX;
     DoubleSupplier translationY;
     DoubleSupplier rotation;
-    BooleanSupplier alignToggle;
+    BooleanSupplier toggleAlign;
 
     private Swerve swerve;
     private PhotonVision photonVision;
@@ -26,21 +26,25 @@ public class TeleopSwerve extends Command {
 
     private double targetRobotAngle, rotSpeed;
     private boolean lockOn;
+    private boolean prevState;
 
-    public TeleopSwerve(DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier rotation, BooleanSupplier alignToggle) {
+    public TeleopSwerve(DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier rotation, BooleanSupplier toggleAlign) {
         this.translationX = translationX;
         this.translationY = translationY;
         this.rotation = rotation;
-        this.alignToggle = alignToggle;
+        this.toggleAlign = toggleAlign;
+
         swerve = Swerve.getInstance();
         photonVision = PhotonVision.getInstance();
+        prevState = false;
         addRequirements(swerve);
     }
 
+
     @Override
     public void execute() {
-        if(alignToggle.getAsBoolean())
-            lockOn = true;
+        if(!prevState && toggleAlign.getAsBoolean())
+            lockOn = !lockOn;
 
         if(rotation.getAsDouble() != 0)
             lockOn = false;
@@ -85,6 +89,9 @@ public class TeleopSwerve extends Command {
                 rotSpeed * Constants.Swerve.maxAngularVelocity,
                 true,
                 false);
+
+        SmartDashboard.putBoolean("Lock on Active", lockOn);
+        prevState = toggleAlign.getAsBoolean();
     }
     public void initialize() {swerve.resetModulesToAbsolute();}
 }

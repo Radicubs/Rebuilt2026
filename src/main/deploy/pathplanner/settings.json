@@ -9,6 +9,9 @@
     "Start Shoot"
   ],
   "autoFolders": [
+    "Center Autos",
+    "Depot Autos",
+    "Shoot Autos",
     "Outpost Autos"
   ],
   "defaultMaxVel": 3.0,

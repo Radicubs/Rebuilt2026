@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.651,
-        "y": 0.613
+        "x": 2.978,
+        "y": 1.92
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.483484362978949,
-        "y": 0.6882458003970158
+        "x": 2.1162281075675766,
+        "y": 0.7080533630290973
       },
       "isLocked": false,
       "linkedName": null
@@ -20,8 +20,8 @@
         "y": 0.713
       },
       "prevControl": {
-        "x": 0.17969061782313606,
-        "y": 0.7315696515473606
+        "x": 1.3845821577815747,
+        "y": 1.167503069804078
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,22 +33,22 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "ExtendIntake",
-      "waypointRelativePos": 0.22649572649572824,
+      "name": "StopShoot",
+      "waypointRelativePos": 0.0,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "ExtendIntake"
+          "name": "StopShoot"
         }
       }
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 5.0,
-    "maxAcceleration": 1.0,
-    "maxAngularVelocity": 100.0,
-    "maxAngularAcceleration": 200.0,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
@@ -60,7 +60,7 @@
   "folder": "Outpost Paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 55.0
   },
   "useDefaultConstraints": true
 }
