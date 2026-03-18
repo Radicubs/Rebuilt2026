@@ -9,6 +9,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -21,19 +22,41 @@ public class RobotContainer {
 
     XboxController mainController;
     private JoystickButton mainA, mainB, mainX, mainY, mainRB, mainLB;
-    private Trigger mainUp, mainDown, mainLeft, mainRight, mainLT, mainRT;
+    private Trigger mainUp, mainDown, mainLeft, mainRight, mainLT, mainRT, mainBack;
 
     XboxController secondaryController;
     private JoystickButton secondaryA, secondaryB, secondaryX, secondaryY, secondaryRB, secondaryLB;
-    private Trigger secondaryUp, secondaryDown, secondaryLeft, secondaryRight, secondaryLT, secondaryRT;
+    private Trigger secondaryUp, secondaryDown, secondaryLeft, secondaryRight, secondaryLT, secondaryRT, secondaryBack;
 
-    private final SendableChooser<Command> auto_chooser;
+    private final SendableChooser<Command> auto_chooser = new SendableChooser<Command>();
 
     public RobotContainer() {
         PhotonVision.getInstance();
         Pivot.getInstance();
         Swerve.getInstance();
-        auto_chooser = AutoBuilder.buildAutoChooser("Left Shoot Auto");
+        Shooter.getInstance();
+        Transfer.getInstance();
+
+        // Auto Chooser
+        {
+            try{
+                auto_chooser.setDefaultOption("Left Shoot", AutoBuilder.buildAuto("Left Shoot Auto"));
+                auto_chooser.addOption("Right Shoot", AutoBuilder.buildAuto("Right Shoot Auto"));
+                auto_chooser.addOption("Middle Shoot", AutoBuilder.buildAuto("Middle Shoot Auto"));
+                auto_chooser.addOption("Left to Depot", AutoBuilder.buildAuto("Left Depot Auto"));
+                auto_chooser.addOption("Middle to Depot", AutoBuilder.buildAuto("Middle Depot Auto"));
+                auto_chooser.addOption("Right to Outpost", AutoBuilder.buildAuto("Right Outpost Auto"));
+                auto_chooser.addOption("Middle to Outpost", AutoBuilder.buildAuto("Middle Outpost Auto"));
+                auto_chooser.addOption("Left to Center", AutoBuilder.buildAuto("Left Center Auto "));
+                auto_chooser.addOption("Right to Center", AutoBuilder.buildAuto("Right Center Auto"));
+            }
+            catch(Exception e) {
+                System.out.println("Error" + e.getMessage());
+                auto_chooser.setDefaultOption("Auto Error", new InstantCommand());
+            }
+
+            SmartDashboard.putData("Auto Chooser", auto_chooser);
+        }
 
         // Button Initialization
         {
@@ -50,6 +73,7 @@ public class RobotContainer {
             mainLeft = new Trigger(() -> mainController.getPOV() == 270);
             mainRT = new Trigger(() -> mainController.getRightTriggerAxis() > 0.1);
             mainLT = new Trigger(() -> mainController.getLeftTriggerAxis() > 0.1);
+            mainBack = new Trigger(() -> mainController.getBackButton());
 
             secondaryController = new XboxController(1);
             secondaryRB = new JoystickButton(secondaryController, XboxController.Button.kRightBumper.value);
@@ -64,6 +88,7 @@ public class RobotContainer {
             secondaryLeft = new Trigger(() -> secondaryController.getPOV() == 270);
             secondaryRT = new Trigger(() -> secondaryController.getRightTriggerAxis() > 0.1);
             secondaryLT = new Trigger(() -> secondaryController.getLeftTriggerAxis() > 0.1);
+            secondaryBack = new Trigger(() -> secondaryController.getBackButton());
         }
 
         // Named Commands
@@ -105,7 +130,7 @@ public class RobotContainer {
                 () -> -mainController.getLeftY(),
                 () -> -mainController.getLeftX(),
                 () -> -mainController.getRightX(),
-                () -> secondaryX.getAsBoolean()
+                () -> mainX.getAsBoolean()
         ));
 
         configureBindings();
@@ -116,24 +141,24 @@ public class RobotContainer {
         // Main Controller Binds
         {
             // Shoot
-            mainRB.onTrue(new InstantCommand(() -> {
-                Shooter.getInstance().Shoot();
-                Transfer.getInstance().setTransferSpeed(Constants.Transfer.transferSpeed);
-            })).onFalse(new InstantCommand(() -> {
-                Shooter.getInstance().Stop();
-                Transfer.getInstance().setTransferSpeed(0);
-            }));
+//            mainRB.onTrue(new InstantCommand(() -> {
+//                Shooter.getInstance().Shoot();
+//                Transfer.getInstance().setTransferSpeed(Constants.Transfer.transferSpeed);
+//            })).onFalse(new InstantCommand(() -> {
+//                Shooter.getInstance().Stop();
+//                Transfer.getInstance().setTransferSpeed(0);
+//            }));
 
             // Zero Heading
-            mainLB.onTrue(new InstantCommand(() -> {
-                Swerve.getInstance().zeroHeading();
-            }));
+//            mainLB.onTrue(new InstantCommand(() -> {
+//                Swerve.getInstance().zeroHeading();
+//            }));
         }
 
         // Secondary Controller Binds
         {
             // Intake
-            secondaryLB.onTrue(new InstantCommand(() -> {
+            mainLB.onTrue(new InstantCommand(() -> {
                 Intake.getInstance().setIntakeSpeed(Constants.Intake.intakeSpeedRPS);
                 Transfer.getInstance().setTransferSpeed(Constants.Transfer.transferSpeed);
 
@@ -168,24 +193,24 @@ public class RobotContainer {
             }));
 
             // Zero Pivot PID
-            secondaryLT.onTrue(new InstantCommand(() -> Pivot.getInstance().resetAngle()));
+            mainBack.onTrue(new InstantCommand(() -> Pivot.getInstance().resetAngle()));
 
             // Manual Extend Intake
-            secondaryDown.onTrue(new InstantCommand(() -> {
+            mainDown.onTrue(new InstantCommand(() -> {
                 Pivot.getInstance().setSpeed(.2);
             })).onFalse(new InstantCommand(() -> {
                 Pivot.getInstance().setSpeed(0);
             }));
 
             // Manual Retract Intake
-            secondaryUp.onTrue(new InstantCommand(() -> {
+            mainUp.onTrue(new InstantCommand(() -> {
                 Pivot.getInstance().setSpeed(-.2);
             })).onFalse(new InstantCommand(() -> {
                 Pivot.getInstance().setSpeed(0);
             }));
 
             // Toggle Shooting Distance
-            secondaryY.onTrue(new InstantCommand(() -> Shooter.getInstance().cycleSpeeds()));
+            mainY.onTrue(new InstantCommand(() -> Shooter.getInstance().cycleSpeeds()));
         }
     }
 

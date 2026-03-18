@@ -85,8 +85,6 @@ public class Swerve extends SubsystemBase implements HolonomicPathFollower {
         );
 
 
-        SmartDashboard.putData(field);
-
     }
 
     public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {

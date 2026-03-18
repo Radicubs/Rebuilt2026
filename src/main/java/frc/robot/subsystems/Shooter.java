@@ -54,8 +54,6 @@ public class Shooter extends SubsystemBase {
 
     ShootSpeeds shootSpeed;
 
-    private boolean enablePID = false;
-
     public static Shooter getInstance() {
         if(INSTANCE == null) {INSTANCE = new Shooter();}
         return INSTANCE;
@@ -178,7 +176,12 @@ public class Shooter extends SubsystemBase {
             }
         });
 
-        SmartDashboard.putString("Shooter Distance", shootSpeed.toString()); // TODO: PUT THIS INTO ELASTIC
+        SmartDashboard.putData("Distances", new Sendable() {
+            @Override
+            public void initSendable(SendableBuilder builder) {
+                builder.addStringProperty("Shooter Distance", () -> shootSpeed.toString(), null);
+            }
+        });
 
     }
 
@@ -202,8 +205,6 @@ public class Shooter extends SubsystemBase {
         indexer.set(0);
 
         topShooter.set(0);
-
-        enablePID = false;
     }
 
     public void setShooterSpeeds(double mainShooterRPS, double topShaftRPS, double indexerRPS){
@@ -228,8 +229,6 @@ public class Shooter extends SubsystemBase {
         indexer.setControl(indexerVel);
 
         topShooter.setControl(topShooterVel);
-
-        enablePID = true;
     }
 
     public void cycleSpeeds(){

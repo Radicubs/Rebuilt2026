@@ -37,10 +37,10 @@ public class Pivot extends SubsystemBase {
     private Pivot(){
         pivotMotor = new SparkMax(Constants.Pivot.pivotMotorCID, SparkLowLevel.MotorType.kBrushless);
         SparkMaxConfig pivotMotorConfig = new SparkMaxConfig();
-        pivotMotorConfig.inverted(false); //TODO: CHANGE IF NEEDED
+        pivotMotorConfig.inverted(false);
         pivotMotorConfig.idleMode(SparkBaseConfig.IdleMode.kBrake);
-        pivotMotorConfig.encoder.positionConversionFactor(1.0/135);
-        pivotMotorConfig.encoder.velocityConversionFactor(1.0/135);
+        pivotMotorConfig.encoder.positionConversionFactor(1.0/60);
+        pivotMotorConfig.encoder.velocityConversionFactor(1.0/60);
         pivotMotorConfig.smartCurrentLimit(Constants.Pivot.pivotMotorStallCurrentLimit, Constants.Pivot.pivotMotorFreeCurrentLimit);
         pivotMotor.configure(pivotMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
@@ -59,8 +59,7 @@ public class Pivot extends SubsystemBase {
                 builder.addDoubleProperty("Pivot Motor RPS", relativeEncoder::getVelocity, null);
                 builder.addDoubleProperty("Pivot Motor Desired Angle", () -> getGoal(), null);
                 builder.addDoubleProperty("Pivot Motor current draw", () -> pivotMotor.getOutputCurrent(), null);
-                builder.addBooleanProperty("Pivot Extended", () -> (getPosition() >= Constants.Pivot.downPos - 0.1) && (getPosition() <= Constants.Pivot.downPos + 0.1), null);
-
+                builder.addBooleanProperty("Pivot Extended", () -> (getPosition() >= Constants.Pivot.downPos - 0.05), null);
             }
         });
     }
