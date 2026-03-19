@@ -9,6 +9,18 @@
           "data": {
             "pathName": "Left Center"
           }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "RetractIntake"
+          }
         }
       ]
     }

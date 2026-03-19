@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 2.033566333808844,
-        "y": 1.0785164051355207
+        "x": 2.2147075606276743,
+        "y": 1.2984736091298146
       },
       "prevControl": {
-        "x": 1.7979631211133094,
-        "y": 0.9603940162557691
+        "x": 1.9791043479321395,
+        "y": 1.180351220250063
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,24 +33,24 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "RampShooter",
+      "name": "RampTrenchShooter",
       "waypointRelativePos": 0,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "RampShooter"
+          "name": "RampTrenchShooter"
         }
       }
     },
     {
-      "name": "StartShoot",
+      "name": "StartTrenchShooter",
       "waypointRelativePos": 1.0,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "StartShoot"
+          "name": "StartTrenchShooter"
         }
       }
     }
@@ -65,7 +65,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 50.0
+    "rotation": -130.0
   },
   "reversed": false,
   "folder": "Outpost Paths",

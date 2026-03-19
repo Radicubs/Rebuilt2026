@@ -16,11 +16,11 @@
     },
     {
       "anchor": {
-        "x": 2.318,
+        "x": 2.8,
         "y": 3.964
       },
       "prevControl": {
-        "x": 2.5679995082574436,
+        "x": 3.0499995082574434,
         "y": 3.964495853845894
       },
       "nextControl": null,
@@ -66,17 +66,6 @@
       }
     },
     {
-      "name": "StopIntake",
-      "waypointRelativePos": 0.6567436208991521,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "StopIntake"
-        }
-      }
-    },
-    {
       "name": "StartShoot",
       "waypointRelativePos": 1.0,
       "endWaypointRelativePos": null,
@@ -98,13 +87,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 180.0
   },
   "reversed": false,
   "folder": "Start Shoot",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

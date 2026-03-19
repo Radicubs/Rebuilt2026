@@ -61,7 +61,7 @@ public final class Constants
         public static final Pose2d leftStart = new Pose2d(3.651, 7.444, new Rotation2d());
 
         /* Positions */
-        public static final Pose2d hubCenter = new Pose2d(1, 0, new Rotation2d()); // x: 4.634 y: 4.003
+        public static final Pose2d hubCenter = new Pose2d(4.634, 4.003, new Rotation2d()); // x: 4.634 y: 4.003
         public static final Pose2d hub = new Pose2d(2.318, 3.964, new Rotation2d());
 
         public static final Pose2d depotLeft = new Pose2d(0.429, 7.1408, new Rotation2d(90));
@@ -131,7 +131,7 @@ public final class Constants
         /* Lock on values*/
         public static final double lockKP = 0.75; //TODO: This must be tuned to specific robot
         public static final double lockDeadband = 0.025;
-        public static final double lockOnMaxSpeed = 1;
+        public static final double lockOnMaxSpeed = 2;
 
         /* Angle Motor Magic Motion Values */
         public static final double magicMotionAccel = 18;
@@ -154,11 +154,11 @@ public final class Constants
         /**
          * Meters per Second
          */
-        public static final double maxSpeed = 5.0; //TODO: This must be tuned to specific robot
+        public static final double maxSpeed = 2; //TODO: This must be tuned to specific robot
         /**
          * Radians per Second
          */
-        public static final double maxAngularVelocity = 6; //TODO: This must be tuned to specific robot
+        public static final double maxAngularVelocity = 3; //TODO: This must be tuned to specific robot
 
         /* Neutral Modes */
         public static final NeutralModeValue angleNeutralMode = NeutralModeValue.Brake;
@@ -226,18 +226,18 @@ public final class Constants
         public static final boolean shooterEnableCurrentLimit = true;
 
         public static final class CloseShootSpeeds{
-            public static double mainShooterRPS = 10; // Real: 60 Test: 10
-            public static final double topShaftRPS = 10; // Real: 20 Test: 10
+            public static double mainShooterRPS = 47; // Real: 47 Test: 10
+            public static final double topShaftRPS = 2; // Real: 2 Test: 10
             public static final double indexerRPS = 20; // Real: 20 Test: 20
         }
         public static final class TrenchShootSpeeds{
-            public static double mainShooterRPS = 10; // Real: 60 Test: 10
-            public static final double topShaftRPS = 10; // Real: 20 Test: 10
+            public static double mainShooterRPS = 55; // Real: 55 Test: 10
+            public static final double topShaftRPS = 10; // Real: 10 Test: 10
             public static final double indexerRPS = 20; // Real: 20 Test: 20
         }
         public static final class PassSpeeds{
-            public static double mainShooterRPS = 10; // Real: 60 Test: 10
-            public static final double topShaftRPS = 10; // Real: 20 Test: 10
+            public static double mainShooterRPS = 60; // Real: 60 Test: 10
+            public static final double topShaftRPS = 45; // Real: 45 Test: 10
             public static final double indexerRPS = 20; // Real: 20 Test: 20
         }
 
@@ -297,7 +297,7 @@ public final class Constants
     public static final class Intake{
         public static final int intakeMotorCID = 20;
 
-        public static final double intakeSpeedRPS = 35; // 35
+        public static final double intakeSpeedRPS = 45; // 35
         public static final class PIDFeedforwardConstants {
             public static final double P = 0.0;
             public static final double I = 0;

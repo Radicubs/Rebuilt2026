@@ -179,7 +179,7 @@ public class Shooter extends SubsystemBase {
         SmartDashboard.putData("Distances", new Sendable() {
             @Override
             public void initSendable(SendableBuilder builder) {
-                builder.addStringProperty("Shooter Distance", () -> shootSpeed.toString(), null);
+                builder.addStringProperty("Shooter Distance", () -> shootSpeed.name(), null);
             }
         });
 
@@ -231,6 +231,14 @@ public class Shooter extends SubsystemBase {
         topShooter.setControl(topShooterVel);
     }
 
+    public void setIndexerSpeed(double indexerRPS){
+
+        indexerVel.Velocity = indexerRPS;
+        indexerVel.FeedForward = indexerFF.calculate(indexerRPS);
+
+        indexer.setControl(indexerVel);
+    }
+
     public void cycleSpeeds(){
         switch(shootSpeed) {
             case CLOSE:
@@ -259,23 +267,19 @@ public class Shooter extends SubsystemBase {
         }
     }
 
-    public void Ramp(){
-        switch (shootSpeed){
-            case CLOSE:
-                setShooterSpeeds(Constants.Shooter.CloseShootSpeeds.mainShooterRPS, Constants.Shooter.CloseShootSpeeds.topShaftRPS, -3);
-                break;
-            case TRENCH:
-                setShooterSpeeds(Constants.Shooter.TrenchShootSpeeds.mainShooterRPS, Constants.Shooter.TrenchShootSpeeds.topShaftRPS, -3);
-                break;
-            case PASS:
-                setShooterSpeeds(Constants.Shooter.PassSpeeds.mainShooterRPS, Constants.Shooter.PassSpeeds.topShaftRPS, -3);
-                break;
-        }
+    public void CloseRamp(){
+            setShooterSpeeds(Constants.Shooter.CloseShootSpeeds.mainShooterRPS, Constants.Shooter.CloseShootSpeeds.topShaftRPS, -3);
+
+    }
+
+    public void TrenchRamp(){
+        setShooterSpeeds(Constants.Shooter.TrenchShootSpeeds.mainShooterRPS, Constants.Shooter.TrenchShootSpeeds.topShaftRPS, -3);
     }
 
     public void Stop(){
         setShooterSpeeds(0, 0, 0);
     }
+
 
     @Override
     public void periodic() {

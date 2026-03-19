@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.9392724679029953,
-        "y": 1.233780313837375
+        "x": 3.318504860915278,
+        "y": 0.9355411135028675
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.978,
-        "y": 1.92
+        "x": 3.0039657631954344,
+        "y": 0.71623395149786
       },
       "prevControl": {
-        "x": 3.1054542400002685,
-        "y": 1.7045258863777004
+        "x": 3.083275574369016,
+        "y": 0.47914756671035075
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,13 +33,13 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "RampShooter",
+      "name": "RampTrenchShooter",
       "waypointRelativePos": 0,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "RampShooter"
+          "name": "RampTrenchShooter"
         }
       }
     },
@@ -56,7 +56,7 @@
     },
     {
       "name": "StartIntake",
-      "waypointRelativePos": 0.3,
+      "waypointRelativePos": 0.08,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -66,24 +66,13 @@
       }
     },
     {
-      "name": "StopIntake",
-      "waypointRelativePos": 0.6,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "StopIntake"
-        }
-      }
-    },
-    {
-      "name": "StartShoot",
+      "name": "StartTrenchShooter",
       "waypointRelativePos": 1.0,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "StartShoot"
+          "name": "StartTrenchShooter"
         }
       }
     }
@@ -98,13 +87,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 55.0
+    "rotation": -125.00000000000001
   },
   "reversed": false,
   "folder": "Start Shoot",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

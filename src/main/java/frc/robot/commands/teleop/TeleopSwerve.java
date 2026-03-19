@@ -1,6 +1,7 @@
 package frc.robot.commands.teleop;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -49,21 +50,21 @@ public class TeleopSwerve extends Command {
         if(rotation.getAsDouble() != 0)
             lockOn = false;
 
+        Pose2d curPose = photonVision.getRobotFieldPose();
         if(lockOn){
             double xTranslation = Constants.Field.hubCenter.getX() - swerve.getPose().getX();
             double yTranslation = Constants.Field.hubCenter.getY() - swerve.getPose().getY();
             int tagId = photonVision.getBestTag();
             if(tagId != -1){
-                swerve.setPose(photonVision.getRobotFieldPose());
                 Pose2d tagPose = photonVision.APRIL_TAG_LAYOUT.getTagPose(tagId).get().toPose2d();
-                xTranslation = tagPose.getX() - swerve.getPose().getX();
-                yTranslation = tagPose.getY() - swerve.getPose().getY();
+                xTranslation = tagPose.getX() - curPose.getX();
+                yTranslation = tagPose.getY() - curPose.getY();
             }
 
             targetRobotAngle = new Translation2d(
                     xTranslation,
                     yTranslation
-            ).getAngle().getRadians();
+            ).getAngle().plus(Rotation2d.k180deg).getRadians();
 
             rotSpeed = (targetRobotAngle - swerve.getHeading().getRadians()) * Constants.Swerve.lockKP;
             if(rotSpeed < -Constants.Swerve.lockOnMaxSpeed) rotSpeed = -Constants.Swerve.lockOnMaxSpeed;

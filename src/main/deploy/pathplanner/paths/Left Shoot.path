@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.7321317231045494,
-        "y": 7.715136397049284
+        "x": 3.9433365101666062,
+        "y": 7.562064726344116
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.592,
-        "y": 6.215
+        "x": 2.8487018544935796,
+        "y": 7.276134094151213
       },
       "prevControl": {
-        "x": 2.445210108723383,
-        "y": 6.012632196683862
+        "x": 2.732274213397448,
+        "y": 7.054899819255142
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,13 +33,13 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "RampShooter",
+      "name": "RampTrenchShooter",
       "waypointRelativePos": 0,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "RampShooter"
+          "name": "RampTrenchShooter"
         }
       }
     },
@@ -66,24 +66,13 @@
       }
     },
     {
-      "name": "StopIntake",
-      "waypointRelativePos": 0.5,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "StopIntake"
-        }
-      }
-    },
-    {
-      "name": "StartShoot",
+      "name": "StartTrenchShooter",
       "waypointRelativePos": 1.0,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "StartShoot"
+          "name": "StartTrenchShooter"
         }
       }
     }
@@ -98,13 +87,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -45.0
+    "rotation": 125.00000000000001
   },
   "reversed": false,
   "folder": "Start Shoot",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }
