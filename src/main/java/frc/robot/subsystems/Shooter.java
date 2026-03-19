@@ -171,7 +171,7 @@ public class Shooter extends SubsystemBase {
             }
         });
 
-        SmartDashboard.putNumber("Custom Shoot Speed", customShootSpeed);
+
 
     }
 
@@ -253,4 +253,8 @@ public class Shooter extends SubsystemBase {
         setShooterSpeeds(0, 0, 0);
     }
 
+    @Override
+    public void periodic() {
+        SmartDashboard.putNumber("Custom Shoot Speed", customShootSpeed);
+    }
 }

@@ -282,14 +282,18 @@ public final class Constants
     public static final class Transfer{
         public static final int beltMotorCID = 18;
 
-        public static final double transferSpeed = 45;
+        public static final int beltMotorStallCurrentLimit = 35;
+        public static final int beltMotorFreeCurrentLimit = 20;
+
+        public static final double shootTransferSpeed = 60;
+        public static final double intakeTransferSpeed = 20;
 
         public static final class TransferPIDFeedforwardConstants {
             public static final double kP = 0.0;
             public static final double kI = 0.0;
             public static final double kD = 0.0;
             public static final double kS = 0.03;
-            public static final double kV = 0.0097;
+            public static final double kV = 0.01;
             public static final double kA = 0.0;
         }
     }
@@ -310,12 +314,11 @@ public final class Constants
 
     public static final class Pivot{
         public static final int pivotMotorCID = 19;
-        public static final int pivotMotorStallCurrentLimit = 20;
-
+        public static final int pivotMotorStallCurrentLimit = 15;
         public static final int pivotMotorFreeCurrentLimit = 10;
 
         public static final double downPos = 0.001587;
-        public static final double upPos = -0.3275097608566284;
+        public static final double upPos = -0.3662683069705963;
         public static final double pivotFinalVelocity = 0.0;
 
         public static final class PIDFeedforwardConstants {

@@ -34,6 +34,7 @@ public class Transfer extends SubsystemBase {
         SparkMaxConfig beltMotorConfig = new SparkMaxConfig();
         beltMotorConfig.inverted(false);
         beltMotorConfig.idleMode(SparkBaseConfig.IdleMode.kCoast);
+        beltMotorConfig.smartCurrentLimit(Constants.Transfer.beltMotorStallCurrentLimit, Constants.Transfer.beltMotorFreeCurrentLimit);
         beltMotor.configure(beltMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         transferController = new PIDController(Constants.Transfer.TransferPIDFeedforwardConstants.kP, Constants.Transfer.TransferPIDFeedforwardConstants.kI, Constants.Transfer.TransferPIDFeedforwardConstants.kD);
@@ -43,6 +44,7 @@ public class Transfer extends SubsystemBase {
             public void initSendable(SendableBuilder builder) {
                 builder.addDoubleProperty("Transfer Speed",() -> getTransferSpeed(), null);
                 builder.addDoubleProperty("Desired Transfer Speed", transferController::getSetpoint, null);
+                builder.addDoubleProperty("Transfer Current Draw", () -> beltMotor.getOutputCurrent(), null);
             }
         });
     }

@@ -46,7 +46,7 @@ public class RobotContainer {
 
             NamedCommands.registerCommand("StartShoot", new InstantCommand(() -> {
                 Shooter.getInstance().setShooterSpeeds(Constants.Shooter.CloseShootSpeeds.mainShooterRPS, Constants.Shooter.CloseShootSpeeds.topShaftRPS, Constants.Shooter.CloseShootSpeeds.indexerRPS);
-                Transfer.getInstance().setTransferSpeed(Constants.Transfer.transferSpeed);
+                Transfer.getInstance().setTransferSpeed(Constants.Transfer.shootTransferSpeed);
             }));
 
             NamedCommands.registerCommand("RampTrenchShooter", new InstantCommand(() -> {
@@ -55,7 +55,7 @@ public class RobotContainer {
 
             NamedCommands.registerCommand("StartTrenchShooter", new InstantCommand(() -> {
                 Shooter.getInstance().setShooterSpeeds(Constants.Shooter.TrenchShootSpeeds.mainShooterRPS, Constants.Shooter.TrenchShootSpeeds.topShaftRPS, Constants.Shooter.TrenchShootSpeeds.indexerRPS);
-                Transfer.getInstance().setTransferSpeed(Constants.Transfer.transferSpeed);
+                Transfer.getInstance().setTransferSpeed(Constants.Transfer.shootTransferSpeed);
             }));
 
             NamedCommands.registerCommand("StopShoot", new InstantCommand(() -> {
@@ -74,7 +74,7 @@ public class RobotContainer {
 
             NamedCommands.registerCommand("StartIntake", new InstantCommand(() -> {
                 Intake.getInstance().setIntakeSpeed(Constants.Intake.intakeSpeedRPS);
-                Pivot.getInstance().setSpeed(-0.1);
+                Pivot.getInstance().setSpeed(0.07);
             }));
 
             NamedCommands.registerCommand("StopIntake", new InstantCommand(() -> {
@@ -157,7 +157,7 @@ public class RobotContainer {
             // Shoot
             mainRB.onTrue(new InstantCommand(() -> {
                 Shooter.getInstance().setIndexerSpeed(Constants.Shooter.CloseShootSpeeds.indexerRPS);
-                Transfer.getInstance().setTransferSpeed(Constants.Transfer.transferSpeed);
+                Transfer.getInstance().setTransferSpeed(Constants.Transfer.shootTransferSpeed);
             })).onFalse(new InstantCommand(() -> {
                 Shooter.getInstance().Stop();
                 Transfer.getInstance().setTransferSpeed(0);
@@ -174,12 +174,13 @@ public class RobotContainer {
             // Intake
             secondaryX.onTrue(new InstantCommand(() -> {
                 Intake.getInstance().setIntakeSpeed(Constants.Intake.intakeSpeedRPS);
-                Transfer.getInstance().setTransferSpeed(Constants.Transfer.transferSpeed);
+                Transfer.getInstance().setTransferSpeed(Constants.Transfer.intakeTransferSpeed);
+                Pivot.getInstance().setSpeed(0.07);
 
             })).onFalse(new InstantCommand(() -> {
                 Intake.getInstance().cancelPID();
                 Transfer.getInstance().setTransferSpeed(0);
-
+                Pivot.getInstance().setSpeed(0);
             }));
 
 
@@ -236,8 +237,6 @@ public class RobotContainer {
                 Pivot.getInstance().setSpeed(.2);
             })).onFalse(new InstantCommand(() -> {
                 Pivot.getInstance().setSpeed(0);
-                Intake.getInstance().setIntakeSpeed(0);
-                Intake.getInstance().cancelPID();
             }));
 
             // Manual Retract Intake
@@ -247,6 +246,7 @@ public class RobotContainer {
                 Intake.getInstance().setIntakeSpeed(Constants.Intake.intakeSpeedRPS);
             })).onFalse(new InstantCommand(() -> {
                 Pivot.getInstance().setSpeed(0);
+                Intake.getInstance().setIntakeSpeed(0);
             }));
 
             // Manual Shoot Shift Up
