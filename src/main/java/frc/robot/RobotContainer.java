@@ -26,7 +26,7 @@ public class RobotContainer {
 
     XboxController secondaryController;
     private JoystickButton secondaryA, secondaryB, secondaryX, secondaryY, secondaryRB, secondaryLB;
-    private Trigger secondaryUp, secondaryDown, secondaryLeft, secondaryRight, secondaryLT, secondaryRT, secondaryBack;
+    private Trigger secondaryUp, secondaryDown, secondaryLeft, secondaryRight, secondaryLT, secondaryRT, secondaryBack, secondaryStickUp, secondaryStickDown;
 
     private final SendableChooser<Command> auto_chooser = new SendableChooser<Command>();
 
@@ -134,6 +134,9 @@ public class RobotContainer {
             secondaryRT = new Trigger(() -> secondaryController.getRightTriggerAxis() > 0.1);
             secondaryLT = new Trigger(() -> secondaryController.getLeftTriggerAxis() > 0.1);
             secondaryBack = new Trigger(() -> secondaryController.getBackButton());
+            secondaryStickUp = new Trigger(() -> secondaryController.getLeftY() < -0.5);
+            secondaryStickDown = new Trigger(() -> secondaryController.getLeftY() > 0.5);
+
         }
 
 
@@ -169,7 +172,7 @@ public class RobotContainer {
         // Secondary Controller Binds
         {
             // Intake
-            secondaryLB.onTrue(new InstantCommand(() -> {
+            secondaryX.onTrue(new InstantCommand(() -> {
                 Intake.getInstance().setIntakeSpeed(Constants.Intake.intakeSpeedRPS);
                 Transfer.getInstance().setTransferSpeed(Constants.Transfer.transferSpeed);
 
@@ -180,7 +183,7 @@ public class RobotContainer {
             }));
 
 
-            // Close Ramp Shooter
+            // Close Ramp
             secondaryRB.onTrue(new InstantCommand(() -> {
                 Shooter.getInstance().CloseRamp();
             })).onFalse(new InstantCommand(()->{
@@ -191,6 +194,20 @@ public class RobotContainer {
             secondaryRT.onTrue(new InstantCommand(() -> {
                 Shooter.getInstance().TrenchRamp();
             })).onFalse(new InstantCommand(()->{
+                Shooter.getInstance().cancelPID();
+            }));
+
+            // Pass Ramp
+            secondaryRT.onTrue(new InstantCommand(() -> {
+                Shooter.getInstance().PassRamp();
+            })).onFalse(new InstantCommand(() -> {
+                Shooter.getInstance().cancelPID();
+            }));
+
+            // Custom Ramp
+            secondaryLB.onTrue(new InstantCommand(() -> {
+                Shooter.getInstance().CustomRamp();
+            })).onFalse(new InstantCommand(() -> {
                 Shooter.getInstance().cancelPID();
             }));
 
@@ -214,7 +231,7 @@ public class RobotContainer {
             secondaryBack.onTrue(new InstantCommand(() -> Pivot.getInstance().resetAngle()));
 
             // Manual Extend Intake
-            secondaryDown.onTrue(new InstantCommand(() -> {
+            secondaryStickDown.onTrue(new InstantCommand(() -> {
                 Pivot.getInstance().cancelPID();
                 Pivot.getInstance().setSpeed(.2);
             })).onFalse(new InstantCommand(() -> {
@@ -224,7 +241,7 @@ public class RobotContainer {
             }));
 
             // Manual Retract Intake
-            secondaryUp.onTrue(new InstantCommand(() -> {
+            secondaryStickUp.onTrue(new InstantCommand(() -> {
                 Pivot.getInstance().cancelPID();
                 Pivot.getInstance().setSpeed(-.2);
                 Intake.getInstance().setIntakeSpeed(Constants.Intake.intakeSpeedRPS);
@@ -232,8 +249,19 @@ public class RobotContainer {
                 Pivot.getInstance().setSpeed(0);
             }));
 
-            // Toggle Shooting Distance
-            secondaryY.onTrue(new InstantCommand(() -> Shooter.getInstance().cycleSpeeds()));
+            // Manual Shoot Shift Up
+            secondaryUp.onTrue(new InstantCommand(() -> {
+                Shooter.getInstance().ChangeShooterSpeeds(2);
+            })).onFalse(new InstantCommand(() -> {
+                Shooter.getInstance().ChangeShooterSpeeds(0);
+            }));
+
+            // Manual Shoot Shift Down
+            secondaryDown.onTrue(new InstantCommand(() -> {
+                Shooter.getInstance().ChangeShooterSpeeds(-2);
+            })).onFalse(new InstantCommand(() -> {
+                Shooter.getInstance().ChangeShooterSpeeds(0);
+            }));
         }
     }
 

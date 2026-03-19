@@ -52,14 +52,8 @@ public class TeleopSwerve extends Command {
 
         Pose2d curPose = photonVision.getRobotFieldPose();
         if(lockOn){
-            double xTranslation = Constants.Field.hubCenter.getX() - swerve.getPose().getX();
-            double yTranslation = Constants.Field.hubCenter.getY() - swerve.getPose().getY();
-            int tagId = photonVision.getBestTag();
-            if(tagId != -1){
-                Pose2d tagPose = photonVision.APRIL_TAG_LAYOUT.getTagPose(tagId).get().toPose2d();
-                xTranslation = tagPose.getX() - curPose.getX();
-                yTranslation = tagPose.getY() - curPose.getY();
-            }
+            double xTranslation = Constants.Field.hubCenter.getX() - curPose.getX();
+            double yTranslation = Constants.Field.hubCenter.getY() - curPose.getY();
 
             targetRobotAngle = new Translation2d(
                     xTranslation,

@@ -46,13 +46,7 @@ public class Shooter extends SubsystemBase {
     private final SimpleMotorFeedforward leftMainShooterFF = new SimpleMotorFeedforward(Constants.Shooter.MainLeftShooterPIDFeedforwardConstants.kS, Constants.Shooter.MainLeftShooterPIDFeedforwardConstants.kV, Constants.Shooter.MainLeftShooterPIDFeedforwardConstants.kA);
     private final SimpleMotorFeedforward rightMainShooterFF = new SimpleMotorFeedforward(Constants.Shooter.MainRightShooterPIDFeedforwardConstants.kS, Constants.Shooter.MainRightShooterPIDFeedforwardConstants.kV, Constants.Shooter.MainRightShooterPIDFeedforwardConstants.kA);
 
-    enum ShootSpeeds{
-        CLOSE,
-        TRENCH,
-        PASS
-    }
-
-    ShootSpeeds shootSpeed;
+    private double customShootSpeed;
 
     public static Shooter getInstance() {
         if(INSTANCE == null) {INSTANCE = new Shooter();}
@@ -60,7 +54,8 @@ public class Shooter extends SubsystemBase {
     }
 
     private Shooter(){
-        shootSpeed = ShootSpeeds.CLOSE;
+
+        customShootSpeed = Constants.Shooter.TrenchShootSpeeds.mainShooterRPS;
 
         // Indexer Config
         indexerConfig = new TalonFXConfiguration();
@@ -176,12 +171,7 @@ public class Shooter extends SubsystemBase {
             }
         });
 
-        SmartDashboard.putData("Distances", new Sendable() {
-            @Override
-            public void initSendable(SendableBuilder builder) {
-                builder.addStringProperty("Shooter Distance", () -> shootSpeed.name(), null);
-            }
-        });
+        SmartDashboard.putNumber("Custom Shoot Speed", customShootSpeed);
 
     }
 
@@ -239,50 +229,28 @@ public class Shooter extends SubsystemBase {
         indexer.setControl(indexerVel);
     }
 
-    public void cycleSpeeds(){
-        switch(shootSpeed) {
-            case CLOSE:
-                shootSpeed = ShootSpeeds.TRENCH;
-                break;
-            case TRENCH:
-                shootSpeed = ShootSpeeds.PASS;
-                break;
-            case PASS:
-                shootSpeed = ShootSpeeds.CLOSE;
-                break;
-        }
-    }
-
-    public void Shoot(){
-        switch (shootSpeed){
-            case CLOSE:
-                setShooterSpeeds(Constants.Shooter.CloseShootSpeeds.mainShooterRPS, Constants.Shooter.CloseShootSpeeds.topShaftRPS, Constants.Shooter.CloseShootSpeeds.indexerRPS);
-                break;
-            case TRENCH:
-                setShooterSpeeds(Constants.Shooter.TrenchShootSpeeds.mainShooterRPS, Constants.Shooter.TrenchShootSpeeds.topShaftRPS, Constants.Shooter.TrenchShootSpeeds.indexerRPS);
-                break;
-            case PASS:
-                setShooterSpeeds(Constants.Shooter.PassSpeeds.mainShooterRPS, Constants.Shooter.PassSpeeds.topShaftRPS, Constants.Shooter.PassSpeeds.indexerRPS);
-                break;
-        }
-    }
-
     public void CloseRamp(){
-            setShooterSpeeds(Constants.Shooter.CloseShootSpeeds.mainShooterRPS, Constants.Shooter.CloseShootSpeeds.topShaftRPS, -3);
-
+        setShooterSpeeds(Constants.Shooter.CloseShootSpeeds.mainShooterRPS, Constants.Shooter.CloseShootSpeeds.topShaftRPS, -3);
     }
 
     public void TrenchRamp(){
         setShooterSpeeds(Constants.Shooter.TrenchShootSpeeds.mainShooterRPS, Constants.Shooter.TrenchShootSpeeds.topShaftRPS, -3);
     }
 
+    public void PassRamp(){
+        setShooterSpeeds(Constants.Shooter.PassSpeeds.mainShooterRPS, Constants.Shooter.TrenchShootSpeeds.topShaftRPS, -3);
+    }
+
+    public void CustomRamp(){
+        setShooterSpeeds(customShootSpeed, Constants.Shooter.TrenchShootSpeeds.topShaftRPS, -3);
+    }
+
+    public void ChangeShooterSpeeds(double changeAmount){
+        customShootSpeed += changeAmount;
+    }
+
     public void Stop(){
         setShooterSpeeds(0, 0, 0);
     }
 
-
-    @Override
-    public void periodic() {
-
-    }
 }
