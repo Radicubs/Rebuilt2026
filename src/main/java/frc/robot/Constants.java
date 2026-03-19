@@ -154,7 +154,7 @@ public final class Constants
         /**
          * Meters per Second
          */
-        public static final double maxSpeed = 2; //TODO: This must be tuned to specific robot
+        public static final double maxSpeed = 2.8; //TODO: This must be tuned to specific robot
         /**
          * Radians per Second
          */
@@ -301,7 +301,7 @@ public final class Constants
     public static final class Intake{
         public static final int intakeMotorCID = 20;
 
-        public static final double intakeSpeedRPS = 45; // 35
+        public static final double intakeSpeedRPS = 45;
         public static final class PIDFeedforwardConstants {
             public static final double P = 0.0;
             public static final double I = 0;
