@@ -92,8 +92,10 @@ public class RobotContainer {
                 auto_chooser.addOption("Middle to Depot", AutoBuilder.buildAuto("Middle Depot Auto"));
                 auto_chooser.addOption("Right to Outpost", AutoBuilder.buildAuto("Right Outpost Auto"));
                 auto_chooser.addOption("Middle to Outpost", AutoBuilder.buildAuto("Middle Outpost Auto"));
-                auto_chooser.addOption("Left to Center", AutoBuilder.buildAuto("Left Center Auto "));
-                auto_chooser.addOption("Right to Center", AutoBuilder.buildAuto("Right Center Auto"));
+                auto_chooser.addOption("Left to Center Rush", AutoBuilder.buildAuto("Left Center Rush Auto "));
+                auto_chooser.addOption("Right to Center Rush", AutoBuilder.buildAuto("Right Center Rush Auto"));
+                auto_chooser.addOption("Left to Center Cycle", AutoBuilder.buildAuto("Left Center Cycle Auto"));
+                auto_chooser.addOption("Right to Center Cycle", AutoBuilder.buildAuto("Right Center Cycle Auto"));
             }
             catch(Exception e) {
                 System.out.println("Error" + e.getMessage());

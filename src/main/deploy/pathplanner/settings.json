@@ -9,10 +9,11 @@
     "Start Shoot"
   ],
   "autoFolders": [
-    "Center Autos",
+    "Center Rush Autos",
     "Depot Autos",
-    "Shoot Autos",
-    "Outpost Autos"
+    "Center Cycle Auto",
+    "Outpost Autos",
+    "Shoot Autos"
   ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,
