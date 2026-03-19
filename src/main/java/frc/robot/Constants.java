@@ -314,7 +314,7 @@ public final class Constants
 
     public static final class Pivot{
         public static final int pivotMotorCID = 19;
-        public static final int pivotMotorStallCurrentLimit = 15;
+        public static final int pivotMotorStallCurrentLimit = 20;
         public static final int pivotMotorFreeCurrentLimit = 10;
 
         public static final double downPos = 0.001587;

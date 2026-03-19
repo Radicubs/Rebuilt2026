@@ -156,10 +156,9 @@ public class RobotContainer {
         {
             // Shoot
             mainRB.onTrue(new InstantCommand(() -> {
-                Shooter.getInstance().setIndexerSpeed(Constants.Shooter.CloseShootSpeeds.indexerRPS);
+                //Shooter.getInstance().setIndexerSpeed(Constants.Shooter.CloseShootSpeeds.indexerRPS);
                 Transfer.getInstance().setTransferSpeed(Constants.Transfer.shootTransferSpeed);
             })).onFalse(new InstantCommand(() -> {
-                Shooter.getInstance().Stop();
                 Transfer.getInstance().setTransferSpeed(0);
             }));
 
