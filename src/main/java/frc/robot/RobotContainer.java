@@ -186,48 +186,33 @@ public class RobotContainer {
 
 
             // Close Ramp
-            secondaryRB.onTrue(new InstantCommand(() -> {
-                Shooter.getInstance().CloseRamp();
-            })).onFalse(new InstantCommand(()->{
-                Shooter.getInstance().cancelPID();
-            }));
+            secondaryRB.onTrue(new InstantCommand(() -> Shooter.getInstance().CloseRamp()))
+                    .onFalse(new InstantCommand(()-> Shooter.getInstance().cancelPID()));
 
             // Trench Ramp
-            secondaryRT.onTrue(new InstantCommand(() -> {
-                Shooter.getInstance().TrenchRamp();
-            })).onFalse(new InstantCommand(()->{
-                Shooter.getInstance().cancelPID();
-            }));
+            secondaryRT.onTrue(new InstantCommand(() -> Shooter.getInstance().TrenchRamp()))
+                    .onFalse(new InstantCommand(()->Shooter.getInstance().cancelPID()));
 
             // Pass Ramp
-            secondaryRT.onTrue(new InstantCommand(() -> {
-                Shooter.getInstance().PassRamp();
-            })).onFalse(new InstantCommand(() -> {
-                Shooter.getInstance().cancelPID();
-            }));
+            secondaryRT.onTrue(new InstantCommand(() -> Shooter.getInstance().PassRamp()))
+                    .onFalse(new InstantCommand(() -> Shooter.getInstance().cancelPID()));
 
             // Custom Ramp
             secondaryLB.onTrue(new InstantCommand(() -> {
                 Shooter.getInstance().CustomRamp();
-            })).onFalse(new InstantCommand(() -> {
-                Shooter.getInstance().cancelPID();
-            }));
+            })).onFalse(new InstantCommand(() -> Shooter.getInstance().cancelPID()));
 
             // PID Retract Intake
             secondaryB.onTrue(new InstantCommand(() -> {
                 Pivot.getInstance().cancelPID();
                 Pivot.getInstance().setGoal(Constants.Pivot.upPos);
-            })).onFalse(new InstantCommand(() -> {
-                Pivot.getInstance().setSpeed(0);
-            }));
+            })).onFalse(new InstantCommand(() -> Pivot.getInstance().setSpeed(0)));
 
             // PID Extend Intake
             secondaryA.onTrue(new InstantCommand(() -> {
                 Pivot.getInstance().cancelPID();
                 Pivot.getInstance().setGoal(Constants.Pivot.downPos);
-            })).onFalse(new InstantCommand(() -> {
-                Pivot.getInstance().setSpeed(0);
-            }));
+            })).onFalse(new InstantCommand(() -> Pivot.getInstance().setSpeed(0)));
 
             // Zero Pivot PID
             secondaryBack.onTrue(new InstantCommand(() -> Pivot.getInstance().resetAngle()));
@@ -236,9 +221,7 @@ public class RobotContainer {
             secondaryStickDown.onTrue(new InstantCommand(() -> {
                 Pivot.getInstance().cancelPID();
                 Pivot.getInstance().setSpeed(.2);
-            })).onFalse(new InstantCommand(() -> {
-                Pivot.getInstance().setSpeed(0);
-            }));
+            })).onFalse(new InstantCommand(() -> Pivot.getInstance().setSpeed(0)));
 
             // Manual Retract Intake
             secondaryStickUp.onTrue(new InstantCommand(() -> {
@@ -251,19 +234,22 @@ public class RobotContainer {
             }));
 
             // Manual Shoot Shift Up
-            secondaryUp.onTrue(new InstantCommand(() -> {
-                Shooter.getInstance().ChangeShooterSpeeds(2);
-            })).onFalse(new InstantCommand(() -> {
-                Shooter.getInstance().ChangeShooterSpeeds(0);
-            }));
+            secondaryUp.onTrue(new InstantCommand(() -> Shooter.getInstance().ChangeShooterSpeeds(2)))
+                    .onFalse(new InstantCommand(() -> Shooter.getInstance().ChangeShooterSpeeds(0)));
 
             // Manual Shoot Shift Down
-            secondaryDown.onTrue(new InstantCommand(() -> {
-                Shooter.getInstance().ChangeShooterSpeeds(-2);
-            })).onFalse(new InstantCommand(() -> {
-                Shooter.getInstance().ChangeShooterSpeeds(0);
-            }));
+            secondaryDown.onTrue(new InstantCommand(() -> Shooter.getInstance().ChangeShooterSpeeds(-2)))
+                    .onFalse(new InstantCommand(() -> Shooter.getInstance().ChangeShooterSpeeds(0)));
+
+            // Spit Shooter
+            secondaryLeft.onTrue(new InstantCommand(() -> Shooter.getInstance().setShooterSpeeds(-10, -2, -7)))
+                .onFalse(new InstantCommand(() -> Shooter.getInstance().Stop()));
+
+            // Spit Intake
+            secondaryRight.onTrue(new InstantCommand(() -> Intake.getInstance().setIntakeSpeed(-15)))
+                    .onFalse(new InstantCommand(() -> Intake.getInstance().setIntakeSpeed(0)));
         }
+
     }
 
 
