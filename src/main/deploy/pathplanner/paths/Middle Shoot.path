@@ -44,17 +44,6 @@
       }
     },
     {
-      "name": "ExtendIntake",
-      "waypointRelativePos": 0,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "ExtendIntake"
-        }
-      }
-    },
-    {
       "name": "StartIntake",
       "waypointRelativePos": 0.2290400972053469,
       "endWaypointRelativePos": null,

@@ -64,6 +64,10 @@ public class RobotContainer {
                 Transfer.getInstance().setTransferSpeed(0);
             }));
 
+            NamedCommands.registerCommand("ReverseShoot", new InstantCommand(() -> {
+                Shooter.getInstance().setShooterSpeeds(-10, -10, -10);
+        }));
+
             // Intake
             NamedCommands.registerCommand("ExtendIntake", new InstantCommand(() -> {
                 Pivot.getInstance().setGoal(Constants.Pivot.downPos);
@@ -175,7 +179,7 @@ public class RobotContainer {
         {
             // Intake
             secondaryX.onTrue(new InstantCommand(() -> {
-                if(Pivot.getInstance().getSpeed() == 0){
+                if(Math.abs(Pivot.getInstance().getSpeed()) < 0.05){
                     Intake.getInstance().setIntakeSpeed(Constants.Intake.intakeSpeedRPS);
                     Transfer.getInstance().setTransferSpeed(Constants.Transfer.intakeTransferSpeed);
                     Pivot.getInstance().setSpeed(0.07);
@@ -256,8 +260,6 @@ public class RobotContainer {
 
 
     public Command getAutonomousCommand () {
-        return auto_chooser.getSelected().andThen(new InstantCommand(() -> {
-            Swerve.getInstance().setHeading(Rotation2d.k180deg);
-        }));
+        return auto_chooser.getSelected();
     }
 }

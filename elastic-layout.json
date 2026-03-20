@@ -254,14 +254,14 @@
             }
           },
           {
-            "title": "Field",
+            "title": "PhotonPose",
             "x": 384.0,
             "y": 0.0,
             "width": 640.0,
             "height": 384.0,
             "type": "Field",
             "properties": {
-              "topic": "/SmartDashboard/Field",
+              "topic": "/SmartDashboard/PhotonPose",
               "period": 0.06,
               "field_game": "Rebuilt",
               "robot_width": 0.85,

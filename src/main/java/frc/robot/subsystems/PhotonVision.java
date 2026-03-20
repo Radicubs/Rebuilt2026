@@ -32,7 +32,7 @@ public class PhotonVision extends SubsystemBase {
 
     public SwerveDriveOdometry visionOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, Swerve.getInstance().getGyroYaw(), Swerve.getInstance().getModulePositions());;
 
-    private static final Transform3d cameraOffset = new Transform3d(Constants.CameraConfig.cameraOffsetX, Constants.CameraConfig.cameraOffsetY, Constants.CameraConfig.cameraOffsetZ, new Rotation3d(0, 0, 0));
+    private static final Transform3d cameraOffset = new Transform3d(Constants.CameraConfig.cameraOffsetX, Constants.CameraConfig.cameraOffsetY, Constants.CameraConfig.cameraOffsetZ, new Rotation3d(Rotation2d.k180deg));
     private Field2d field2d;
     public static PhotonVision getInstance() {
         if (instance == null) instance = new PhotonVision();
@@ -47,7 +47,7 @@ public class PhotonVision extends SubsystemBase {
         field2d = new Field2d();
         SmartDashboard.putData("PhotonPose", field2d);
 
-        Transform3d robotToCam = new Transform3d(Constants.CameraConfig.cameraOffsetX, Constants.CameraConfig.cameraOffsetY, Constants.CameraConfig.cameraOffsetZ, new Rotation3d());
+        Transform3d robotToCam = new Transform3d(Constants.CameraConfig.cameraOffsetX, Constants.CameraConfig.cameraOffsetY, Constants.CameraConfig.cameraOffsetZ, new Rotation3d(Rotation2d.k180deg));
 
 //        UsbCamera server = CameraServer.startAutomaticCapture(0);
 //        server.setResolution(640,480);
@@ -93,14 +93,15 @@ public class PhotonVision extends SubsystemBase {
                     this.result = res;
                     Optional<Pose3d> option = APRIL_TAG_LAYOUT.getTagPose(result.getBestTarget().getFiducialId());
 
-                    if(option.isPresent()){
-                        visionOdometry.resetPosition(
-                                Swerve.getInstance().getGyroYaw(),
-                                Swerve.getInstance().getModulePositions(),
-                                option.get().plus(
-                                        result.getBestTarget().getBestCameraToTarget().inverse()
-                                                .plus(cameraOffset.inverse())).toPose2d());
-
+                    if(option.isPresent() && result.getBestTarget().poseAmbiguity < .1){
+                        if(result.getBestTarget().getBestCameraToTarget().getX() < 4){
+                            visionOdometry.resetPosition(
+                                    Swerve.getInstance().getGyroYaw(),
+                                    Swerve.getInstance().getModulePositions(),
+                                    option.get().plus(
+                                            result.getBestTarget().getBestCameraToTarget().inverse()
+                                                    .plus(cameraOffset.inverse())).toPose2d());
+                        }
                     }
                 }
                 else{
