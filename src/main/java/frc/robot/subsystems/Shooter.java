@@ -230,19 +230,19 @@ public class Shooter extends SubsystemBase {
     }
 
     public void CloseRamp(){
-        setShooterSpeeds(Constants.Shooter.CloseShootSpeeds.mainShooterRPS, Constants.Shooter.CloseShootSpeeds.topShaftRPS, -3);
+        setShooterSpeeds(Constants.Shooter.CloseShootSpeeds.mainShooterRPS, Constants.Shooter.CloseShootSpeeds.topShaftRPS, 0);
     }
 
     public void TrenchRamp(){
-        setShooterSpeeds(Constants.Shooter.TrenchShootSpeeds.mainShooterRPS, Constants.Shooter.TrenchShootSpeeds.topShaftRPS, -3);
+        setShooterSpeeds(Constants.Shooter.TrenchShootSpeeds.mainShooterRPS, Constants.Shooter.TrenchShootSpeeds.topShaftRPS, 0);
     }
 
     public void PassRamp(){
-        setShooterSpeeds(Constants.Shooter.PassSpeeds.mainShooterRPS, Constants.Shooter.TrenchShootSpeeds.topShaftRPS, -3);
+        setShooterSpeeds(Constants.Shooter.PassSpeeds.mainShooterRPS, Constants.Shooter.PassSpeeds.topShaftRPS, 0);
     }
 
     public void CustomRamp(){
-        setShooterSpeeds(customShootSpeed, Constants.Shooter.TrenchShootSpeeds.topShaftRPS, -3);
+        setShooterSpeeds(customShootSpeed, Constants.Shooter.TrenchShootSpeeds.topShaftRPS, 0);
     }
 
     public void ChangeShooterSpeeds(double changeAmount){

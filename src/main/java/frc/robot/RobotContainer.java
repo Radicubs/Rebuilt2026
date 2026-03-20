@@ -197,7 +197,7 @@ public class RobotContainer {
                     .onFalse(new InstantCommand(()->Shooter.getInstance().cancelPID()));
 
             // Pass Ramp
-            secondaryRT.onTrue(new InstantCommand(() -> Shooter.getInstance().PassRamp()))
+            secondaryLT.onTrue(new InstantCommand(() -> Shooter.getInstance().PassRamp()))
                     .onFalse(new InstantCommand(() -> Shooter.getInstance().cancelPID()));
 
             // Custom Ramp

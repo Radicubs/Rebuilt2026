@@ -44,12 +44,13 @@ public class PhotonVision extends SubsystemBase {
 
     private PhotonVision() {
         camera = new PhotonCamera("orange");
-        SmartDashboard.putData("PhotonPose", field2d);
         field2d = new Field2d();
+        SmartDashboard.putData("PhotonPose", field2d);
+
         Transform3d robotToCam = new Transform3d(Constants.CameraConfig.cameraOffsetX, Constants.CameraConfig.cameraOffsetY, Constants.CameraConfig.cameraOffsetZ, new Rotation3d());
 
-        UsbCamera server = CameraServer.startAutomaticCapture(0);
-        server.setResolution(640,480);
+//        UsbCamera server = CameraServer.startAutomaticCapture(0);
+//        server.setResolution(640,480);
 
         SmartDashboard.putData("Photon Vision", new Sendable() {
             @Override

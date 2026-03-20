@@ -232,13 +232,13 @@ public final class Constants
             public static final double indexerRPS = 20; // Real: 20 Test: 20
         }
         public static final class TrenchShootSpeeds{
-            public static double mainShooterRPS = 55; // Real: 55 Test: 10
+            public static double mainShooterRPS = 54; // Real: 55 Test: 10
             public static final double topShaftRPS = 10; // Real: 10 Test: 10
             public static final double indexerRPS = 20; // Real: 20 Test: 20
         }
         public static final class PassSpeeds{
             public static double mainShooterRPS = 60; // Real: 60 Test: 10
-            public static final double topShaftRPS = 45; // Real: 45 Test: 10
+            public static final double topShaftRPS = 20; // Real: 45 Test: 10
             public static final double indexerRPS = 20; // Real: 20 Test: 20
         }
 
