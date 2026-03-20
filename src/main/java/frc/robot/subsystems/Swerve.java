@@ -40,7 +40,7 @@ public class Swerve extends SubsystemBase implements HolonomicPathFollower {
         gyro.reset();
 
         field = new Field2d();
-
+        SmartDashboard.putData(field);
 
         mSwerveMods = new SwerveModule[]{
                 new SwerveModule(0, Constants.Swerve.Mod0.constants),
@@ -182,8 +182,7 @@ public class Swerve extends SubsystemBase implements HolonomicPathFollower {
     @Override
     public void periodic() {
         swerveOdometry.update(getGyroYaw(), getModulePositions());
-        field.setRobotPose(getPose());
-        SmartDashboard.putData("Field", field);
+        field.setRobotPose(swerveOdometry.getPoseMeters());
     }
 
 }

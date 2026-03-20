@@ -10,6 +10,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -32,7 +33,7 @@ public class PhotonVision extends SubsystemBase {
     public SwerveDriveOdometry visionOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, Swerve.getInstance().getGyroYaw(), Swerve.getInstance().getModulePositions());;
 
     private static final Transform3d cameraOffset = new Transform3d(Constants.CameraConfig.cameraOffsetX, Constants.CameraConfig.cameraOffsetY, Constants.CameraConfig.cameraOffsetZ, new Rotation3d(0, 0, 0));
-
+    private Field2d field2d;
     public static PhotonVision getInstance() {
         if (instance == null) instance = new PhotonVision();
         return instance;
@@ -43,6 +44,8 @@ public class PhotonVision extends SubsystemBase {
 
     private PhotonVision() {
         camera = new PhotonCamera("orange");
+        SmartDashboard.putData("PhotonPose", field2d);
+        field2d = new Field2d();
         Transform3d robotToCam = new Transform3d(Constants.CameraConfig.cameraOffsetX, Constants.CameraConfig.cameraOffsetY, Constants.CameraConfig.cameraOffsetZ, new Rotation3d());
 
         UsbCamera server = CameraServer.startAutomaticCapture(0);
@@ -106,7 +109,7 @@ public class PhotonVision extends SubsystemBase {
         }
 
         visionOdometry.update(Swerve.getInstance().getGyroYaw(), Swerve.getInstance().getModulePositions());
-
+        field2d.setRobotPose(visionOdometry.getPoseMeters());
 
     }
 }

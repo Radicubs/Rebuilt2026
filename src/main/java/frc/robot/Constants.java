@@ -61,7 +61,8 @@ public final class Constants
         public static final Pose2d leftStart = new Pose2d(3.651, 7.444, new Rotation2d());
 
         /* Positions */
-        public static final Pose2d hubCenter = new Pose2d(4.634, 4.003, new Rotation2d()); // x: 4.634 y: 4.003
+        public static final Pose2d hubCenterBlue = new Pose2d(4.634, 4.003, new Rotation2d());
+        public static final Pose2d hubCenterRed = new Pose2d(11.945, 4.041, new Rotation2d());
         public static final Pose2d hub = new Pose2d(2.318, 3.964, new Rotation2d());
 
         public static final Pose2d depotLeft = new Pose2d(0.429, 7.1408, new Rotation2d(90));

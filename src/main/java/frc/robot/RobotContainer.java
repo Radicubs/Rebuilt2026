@@ -7,6 +7,7 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -158,7 +159,7 @@ public class RobotContainer {
         {
             // Shoot
             mainRB.onTrue(new InstantCommand(() -> {
-                //Shooter.getInstance().setIndexerSpeed(Constants.Shooter.CloseShootSpeeds.indexerRPS);
+                Shooter.getInstance().setIndexerSpeed(Constants.Shooter.CloseShootSpeeds.indexerRPS);
                 Transfer.getInstance().setTransferSpeed(Constants.Transfer.shootTransferSpeed);
             })).onFalse(new InstantCommand(() -> {
                 Transfer.getInstance().setTransferSpeed(0);
@@ -174,9 +175,11 @@ public class RobotContainer {
         {
             // Intake
             secondaryX.onTrue(new InstantCommand(() -> {
-                Intake.getInstance().setIntakeSpeed(Constants.Intake.intakeSpeedRPS);
-                Transfer.getInstance().setTransferSpeed(Constants.Transfer.intakeTransferSpeed);
-                Pivot.getInstance().setSpeed(0.07);
+                if(Pivot.getInstance().getSpeed() == 0){
+                    Intake.getInstance().setIntakeSpeed(Constants.Intake.intakeSpeedRPS);
+                    Transfer.getInstance().setTransferSpeed(Constants.Transfer.intakeTransferSpeed);
+                    Pivot.getInstance().setSpeed(0.07);
+                }
 
             })).onFalse(new InstantCommand(() -> {
                 Intake.getInstance().cancelPID();
@@ -227,7 +230,6 @@ public class RobotContainer {
             secondaryStickUp.onTrue(new InstantCommand(() -> {
                 Pivot.getInstance().cancelPID();
                 Pivot.getInstance().setSpeed(-.2);
-                Intake.getInstance().setIntakeSpeed(Constants.Intake.intakeSpeedRPS);
             })).onFalse(new InstantCommand(() -> {
                 Pivot.getInstance().setSpeed(0);
                 Intake.getInstance().setIntakeSpeed(0);
@@ -254,6 +256,8 @@ public class RobotContainer {
 
 
     public Command getAutonomousCommand () {
-        return auto_chooser.getSelected();
+        return auto_chooser.getSelected().andThen(new InstantCommand(() -> {
+            Swerve.getInstance().setHeading(Rotation2d.k180deg);
+        }));
     }
 }

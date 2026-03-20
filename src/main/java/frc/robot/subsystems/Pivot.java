@@ -82,6 +82,9 @@ public class Pivot extends SubsystemBase {
         relativeEncoder.setPosition(Constants.Pivot.downPos);
     }
 
+    public double getSpeed(){
+        return pivotMotor.get();
+    }
 
     public void setSpeed(double speed){
         pivotMotor.set(speed);
