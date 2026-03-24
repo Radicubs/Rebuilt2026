@@ -240,21 +240,29 @@ public class RobotContainer {
             }));
 
             // Manual Shoot Shift Up
-            secondaryUp.onTrue(new InstantCommand(() -> Shooter.getInstance().ChangeShooterSpeeds(2)))
+            secondaryUp.onTrue(new InstantCommand(() -> Shooter.getInstance().ChangeShooterSpeeds(.5)))
                     .onFalse(new InstantCommand(() -> Shooter.getInstance().ChangeShooterSpeeds(0)));
 
             // Manual Shoot Shift Down
-            secondaryDown.onTrue(new InstantCommand(() -> Shooter.getInstance().ChangeShooterSpeeds(-2)))
+            secondaryDown.onTrue(new InstantCommand(() -> Shooter.getInstance().ChangeShooterSpeeds(-.5)))
                     .onFalse(new InstantCommand(() -> Shooter.getInstance().ChangeShooterSpeeds(0)));
 
             // Spit Shooter
-            secondaryLeft.onTrue(new InstantCommand(() -> Shooter.getInstance().setShooterSpeeds(-10, -2, -7)))
-                .onFalse(new InstantCommand(() -> Shooter.getInstance().Stop()));
+//            secondaryLeft.onTrue(new InstantCommand(() -> Shooter.getInstance().setShooterSpeeds(-10, -2, -7)))
+//                .onFalse(new InstantCommand(() -> Shooter.getInstance().Stop()));
+
+            secondaryLeft.onTrue(new InstantCommand(() -> Shooter.getInstance().ChangeIndexerSpeeds(.5)));
+            secondaryRight.onTrue(new InstantCommand(() -> Shooter.getInstance().ChangeIndexerSpeeds(-.5)));
 
             // Spit Intake
-            secondaryRight.onTrue(new InstantCommand(() -> Intake.getInstance().setIntakeSpeed(-15)))
-                    .onFalse(new InstantCommand(() -> Intake.getInstance().setIntakeSpeed(0)));
+//            secondaryRight.onTrue(new InstantCommand(() -> Intake.getInstance().setIntakeSpeed(-15)))
+//                    .onFalse(new InstantCommand(() -> Intake.getInstance().setIntakeSpeed(0)));
+
+            // Regression Shooting
+            secondaryY.onTrue(new InstantCommand(() -> Shooter.getInstance().regressionRamp()))
+                    .onFalse(new InstantCommand(() -> Shooter.getInstance().Stop()));
         }
+
 
     }
 

@@ -84,6 +84,10 @@ public class PhotonVision extends SubsystemBase {
         return -1;
     }
 
+    public double getDistanceFromHub(){
+        return 0; // TODO: CHANGE
+    }
+
     @Override
     public void periodic() {
         List<PhotonPipelineResult> results = camera.getAllUnreadResults();

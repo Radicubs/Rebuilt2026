@@ -47,6 +47,7 @@ public class Shooter extends SubsystemBase {
     private final SimpleMotorFeedforward rightMainShooterFF = new SimpleMotorFeedforward(Constants.Shooter.MainRightShooterPIDFeedforwardConstants.kS, Constants.Shooter.MainRightShooterPIDFeedforwardConstants.kV, Constants.Shooter.MainRightShooterPIDFeedforwardConstants.kA);
 
     private double customShootSpeed;
+    private double customTopshaftSpeed;
 
     public static Shooter getInstance() {
         if(INSTANCE == null) {INSTANCE = new Shooter();}
@@ -55,7 +56,8 @@ public class Shooter extends SubsystemBase {
 
     private Shooter(){
 
-        customShootSpeed = Constants.Shooter.TrenchShootSpeeds.mainShooterRPS;
+        customShootSpeed = Constants.Shooter.CloseShootSpeeds.mainShooterRPS;
+        customTopshaftSpeed = Constants.Shooter.CloseShootSpeeds.topShaftRPS;
 
         // Indexer Config
         indexerConfig = new TalonFXConfiguration();
@@ -242,19 +244,28 @@ public class Shooter extends SubsystemBase {
     }
 
     public void CustomRamp(){
-        setShooterSpeeds(customShootSpeed, Constants.Shooter.TrenchShootSpeeds.topShaftRPS, 0);
+        setShooterSpeeds(customShootSpeed, customTopshaftSpeed, 0);
     }
 
     public void ChangeShooterSpeeds(double changeAmount){
         customShootSpeed += changeAmount;
     }
 
+    public void ChangeIndexerSpeeds(double changeAmount){
+        customTopshaftSpeed += changeAmount;
+    }
+
     public void Stop(){
         setShooterSpeeds(0, 0, 0);
+    }
+
+    public void regressionRamp(){
+        double distance = 0; // TODO: CHANGE
     }
 
     @Override
     public void periodic() {
         SmartDashboard.putNumber("Custom Shoot Speed", customShootSpeed);
+        SmartDashboard.putNumber("Custom Top Shaft Speed", customTopshaftSpeed);
     }
 }
