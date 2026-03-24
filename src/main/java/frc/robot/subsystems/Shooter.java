@@ -14,6 +14,9 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
@@ -260,7 +263,14 @@ public class Shooter extends SubsystemBase {
     }
 
     public void regressionRamp(){
-        double distance = 0; // TODO: CHANGE
+        Transform3d toTarget = PhotonVision.getInstance().getTransformToTarget(PhotonVision.getInstance().getBestTag());
+        double distance = Math.sqrt(toTarget.getX() * toTarget.getX() + toTarget.getY() * toTarget.getY()) * 39.37 - 12;
+        double mainSpeeds = 65.18538 / (1 + Math.exp(-(0.011221*distance + 0.170253)));
+        double topSpeeds = 11.22378 / (1 + Math.exp(-(0.0653418*distance - 3.16788)));
+
+        System.out.println("Main: " + mainSpeeds + " Top: " + topSpeeds);
+        System.out.println(distance);
+        setShooterSpeeds(mainSpeeds, topSpeeds, 0);
     }
 
     @Override
