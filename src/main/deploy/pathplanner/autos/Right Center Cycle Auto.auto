@@ -33,11 +33,17 @@
           "data": {
             "name": "RetractIntake"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Reset Heading"
+          }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Center Rush Autos",
+  "folder": "Center Autos",
   "choreoAuto": false
 }

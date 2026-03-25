@@ -1,5 +1,6 @@
 package frc.robot.commands.teleop;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -29,11 +30,16 @@ public class TeleopSwerve extends Command {
     private boolean lockOn;
     private boolean prevState;
 
+    private PIDController lockOnPID;
+
     public TeleopSwerve(DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier rotation, BooleanSupplier toggleAlign) {
         this.translationX = translationX;
         this.translationY = translationY;
         this.rotation = rotation;
         this.toggleAlign = toggleAlign;
+
+        lockOnPID = new PIDController(Constants.Swerve.lockKP, 0, 0);
+        lockOnPID.enableContinuousInput(-Math.PI, Math.PI);
 
         swerve = Swerve.getInstance();
         photonVision = PhotonVision.getInstance();
@@ -67,9 +73,10 @@ public class TeleopSwerve extends Command {
             targetRobotAngle = new Translation2d(
                     xTranslation,
                     yTranslation
-            ).getAngle().plus(Rotation2d.kPi).getRadians();
+            ).getAngle().plus(Rotation2d.k180deg).getRadians();
 
-            rotSpeed = (targetRobotAngle - swerve.getHeading().getRadians()) * Constants.Swerve.lockKP;
+            rotSpeed = lockOnPID.calculate(photonVision.visionOdometry.getPoseMeters().getRotation().getRadians(), targetRobotAngle);
+            //rotSpeed = (targetRobotAngle - swerve.getHeading().getRadians()) * Constants.Swerve.lockKP;
             if(rotSpeed < -Constants.Swerve.lockOnMaxSpeed) rotSpeed = -Constants.Swerve.lockOnMaxSpeed;
             if(rotSpeed > Constants.Swerve.lockOnMaxSpeed) rotSpeed = Constants.Swerve.lockOnMaxSpeed;
             if(Math.abs(rotSpeed) - Constants.Swerve.lockDeadband < 0) rotSpeed = 0;

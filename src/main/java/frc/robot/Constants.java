@@ -130,7 +130,7 @@ public final class Constants
         public static final double angleKD = chosenModule.angleKD;
 
         /* Lock on values*/
-        public static final double lockKP = 0.75; //TODO: This must be tuned to specific robot
+        public static final double lockKP = 0.9; //TODO: This must be tuned to specific robot
         public static final double lockDeadband = 0.025;
         public static final double lockOnMaxSpeed = 2;
 
@@ -159,7 +159,7 @@ public final class Constants
         /**
          * Radians per Second
          */
-        public static final double maxAngularVelocity = 3; //TODO: This must be tuned to specific robot
+        public static final double maxAngularVelocity = 6; //TODO: This must be tuned to specific robot
 
         /* Neutral Modes */
         public static final NeutralModeValue angleNeutralMode = NeutralModeValue.Brake;
@@ -302,7 +302,7 @@ public final class Constants
     public static final class Intake{
         public static final int intakeMotorCID = 20;
 
-        public static final double intakeSpeedRPS = 45;
+        public static final double intakeSpeedRPS = 55;
         public static final class PIDFeedforwardConstants {
             public static final double P = 0.0;
             public static final double I = 0;

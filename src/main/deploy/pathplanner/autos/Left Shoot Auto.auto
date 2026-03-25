@@ -39,6 +39,12 @@
           "data": {
             "name": "RetractIntake"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Reset Heading"
+          }
         }
       ]
     }

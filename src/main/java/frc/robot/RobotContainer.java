@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -60,7 +61,7 @@ public class RobotContainer {
             }));
 
             NamedCommands.registerCommand("StopShoot", new InstantCommand(() -> {
-                Shooter.getInstance().Stop();
+                Shooter.getInstance().stop();
                 Transfer.getInstance().setTransferSpeed(0);
             }));
 
@@ -85,6 +86,8 @@ public class RobotContainer {
             NamedCommands.registerCommand("StopIntake", new InstantCommand(() -> {
                 Intake.getInstance().setIntakeSpeed(0);
             }));
+
+            NamedCommands.registerCommand("Reset Heading", new InstantCommand(() -> Swerve.getInstance().setHeading(Swerve.getInstance().getHeading().plus(Rotation2d.k180deg))));
         }
 
         // Auto Chooser
@@ -173,6 +176,8 @@ public class RobotContainer {
             mainLB.onTrue(new InstantCommand(() -> {
                 Swerve.getInstance().zeroHeading();
             }));
+
+            mainDown.onTrue(new InstantCommand(() -> Swerve.getInstance().setHeading(Rotation2d.k180deg)));
         }
 
         // Secondary Controller Binds
@@ -193,20 +198,20 @@ public class RobotContainer {
 
 
             // Close Ramp
-            secondaryRB.onTrue(new InstantCommand(() -> Shooter.getInstance().CloseRamp()))
+            secondaryRB.onTrue(new InstantCommand(() -> Shooter.getInstance().closeRamp()))
                     .onFalse(new InstantCommand(()-> Shooter.getInstance().cancelPID()));
 
             // Trench Ramp
-            secondaryRT.onTrue(new InstantCommand(() -> Shooter.getInstance().TrenchRamp()))
+            secondaryRT.onTrue(new InstantCommand(() -> Shooter.getInstance().trenchRamp()))
                     .onFalse(new InstantCommand(()->Shooter.getInstance().cancelPID()));
 
             // Pass Ramp
-            secondaryLT.onTrue(new InstantCommand(() -> Shooter.getInstance().PassRamp()))
+            secondaryLT.onTrue(new InstantCommand(() -> Shooter.getInstance().passRamp()))
                     .onFalse(new InstantCommand(() -> Shooter.getInstance().cancelPID()));
 
             // Custom Ramp
             secondaryLB.onTrue(new InstantCommand(() -> {
-                Shooter.getInstance().CustomRamp();
+                Shooter.getInstance().customRamp();
             })).onFalse(new InstantCommand(() -> Shooter.getInstance().cancelPID()));
 
             // PID Retract Intake
@@ -240,27 +245,27 @@ public class RobotContainer {
             }));
 
             // Manual Shoot Shift Up
-            secondaryUp.onTrue(new InstantCommand(() -> Shooter.getInstance().ChangeShooterSpeeds(.5)))
-                    .onFalse(new InstantCommand(() -> Shooter.getInstance().ChangeShooterSpeeds(0)));
+            secondaryUp.onTrue(new InstantCommand(() -> Shooter.getInstance().changeShooterSpeeds(.5)))
+                    .onFalse(new InstantCommand(() -> Shooter.getInstance().changeShooterSpeeds(0)));
 
             // Manual Shoot Shift Down
-            secondaryDown.onTrue(new InstantCommand(() -> Shooter.getInstance().ChangeShooterSpeeds(-.5)))
-                    .onFalse(new InstantCommand(() -> Shooter.getInstance().ChangeShooterSpeeds(0)));
+            secondaryDown.onTrue(new InstantCommand(() -> Shooter.getInstance().changeShooterSpeeds(-.5)))
+                    .onFalse(new InstantCommand(() -> Shooter.getInstance().changeShooterSpeeds(0)));
 
             // Spit Shooter
 //            secondaryLeft.onTrue(new InstantCommand(() -> Shooter.getInstance().setShooterSpeeds(-10, -2, -7)))
 //                .onFalse(new InstantCommand(() -> Shooter.getInstance().Stop()));
 
-            secondaryLeft.onTrue(new InstantCommand(() -> Shooter.getInstance().ChangeIndexerSpeeds(.5)));
-            secondaryRight.onTrue(new InstantCommand(() -> Shooter.getInstance().ChangeIndexerSpeeds(-.5)));
+            secondaryLeft.onTrue(new InstantCommand(() -> Shooter.getInstance().changeIndexerSpeeds(.5)));
+            secondaryRight.onTrue(new InstantCommand(() -> Shooter.getInstance().changeIndexerSpeeds(-.5)));
 
             // Spit Intake
 //            secondaryRight.onTrue(new InstantCommand(() -> Intake.getInstance().setIntakeSpeed(-15)))
 //                    .onFalse(new InstantCommand(() -> Intake.getInstance().setIntakeSpeed(0)));
 
             // Regression Shooting
-            secondaryY.onTrue(new InstantCommand(() -> Shooter.getInstance().regressionRamp()))
-                    .onFalse(new InstantCommand(() -> Shooter.getInstance().Stop()));
+            secondaryY.whileTrue(Commands.runEnd(() -> Shooter.getInstance().regressionRamp(), () -> Shooter.getInstance().stop()));
+
         }
 
 

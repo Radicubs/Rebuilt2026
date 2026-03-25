@@ -6,7 +6,6 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -88,7 +87,7 @@ public class Robot extends LoggedRobot
     
     @Override
     public void autonomousExit() {
-        Shooter.getInstance().Stop();
+        Shooter.getInstance().stop();
         Transfer.getInstance().setTransferSpeed(0);
         Pivot.getInstance().cancelPID();
         Intake.getInstance().setIntakeSpeed(0);
