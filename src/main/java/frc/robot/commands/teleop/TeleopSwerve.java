@@ -56,7 +56,7 @@ public class TeleopSwerve extends Command {
         if(!prevState && toggleAlign.getAsBoolean())
             lockOn = !lockOn;
 
-        if(MathUtil.applyDeadband(rotation.getAsDouble(), .05) != 0)
+        if(rotation.getAsDouble() != 0)
             lockOn = false;
 
         Pose2d curPose = photonVision.getRobotFieldPose();
@@ -88,7 +88,7 @@ public class TeleopSwerve extends Command {
             //rotSpeed = rotation.getAsDouble();
         }
         else{
-            rotSpeed = MathUtil.applyDeadband(rotation.getAsDouble(), .05);
+            rotSpeed = rotation.getAsDouble();
         }
 
         SmartDashboard.putNumber("Last Tag", photonVision.getBestTag());
@@ -97,10 +97,9 @@ public class TeleopSwerve extends Command {
 
 
         swerve.drive(
-                // TODO: REMOVE DEADBAND!!!
                 new Translation2d(
-                        MathUtil.applyDeadband(translationX.getAsDouble(), .05) * Constants.Swerve.maxSpeed,
-                        MathUtil.applyDeadband(translationY.getAsDouble(), .05) * Constants.Swerve.maxSpeed
+                        translationX.getAsDouble() * Constants.Swerve.maxSpeed,
+                        translationY.getAsDouble()* Constants.Swerve.maxSpeed
                 ),
                 rotSpeed * Constants.Swerve.maxAngularVelocity,
                 true,
