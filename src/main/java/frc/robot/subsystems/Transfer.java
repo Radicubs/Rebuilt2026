@@ -23,7 +23,7 @@ public class Transfer extends SubsystemBase {
     private final PIDController transferController;
     private final SimpleMotorFeedforward transferFeedforward;
 
-    private boolean goToTransferTerget = false;
+    private boolean goToTransferTarget = false;
     public static Transfer getInstance(){
         if(INSTANCE == null) {INSTANCE = new Transfer();}
         return INSTANCE;
@@ -54,7 +54,7 @@ public class Transfer extends SubsystemBase {
     }
     public void setTransferSetpoint(double transferTarget){
         reset();
-        goToTransferTerget = true;
+        goToTransferTarget = true;
         transferController.setSetpoint(transferTarget);
     }
 
@@ -67,7 +67,7 @@ public class Transfer extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if(goToTransferTerget){
+        if(goToTransferTarget){
             double transferMotorSpeed = transferController.calculate(getTransferSpeed());
             double transferFeedForwardVal = transferFeedforward.calculate(transferController.getSetpoint());
 
