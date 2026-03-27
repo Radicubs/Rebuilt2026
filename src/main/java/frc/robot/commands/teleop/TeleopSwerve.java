@@ -1,10 +1,12 @@
 package frc.robot.commands.teleop;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.drive.RobotDriveBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
@@ -38,6 +40,7 @@ public class TeleopSwerve extends Command {
         this.rotation = rotation;
         this.toggleAlign = toggleAlign;
 
+
         lockOnPID = new PIDController(Constants.Swerve.lockKP, 0, 0);
         lockOnPID.enableContinuousInput(-Math.PI, Math.PI);
 
@@ -53,7 +56,7 @@ public class TeleopSwerve extends Command {
         if(!prevState && toggleAlign.getAsBoolean())
             lockOn = !lockOn;
 
-        if(rotation.getAsDouble() != 0)
+        if(MathUtil.applyDeadband(rotation.getAsDouble(), .05) != 0)
             lockOn = false;
 
         Pose2d curPose = photonVision.getRobotFieldPose();
@@ -85,17 +88,19 @@ public class TeleopSwerve extends Command {
             //rotSpeed = rotation.getAsDouble();
         }
         else{
-            rotSpeed = rotation.getAsDouble();
+            rotSpeed = MathUtil.applyDeadband(rotation.getAsDouble(), .05);
         }
 
         SmartDashboard.putNumber("Last Tag", photonVision.getBestTag());
         Logger.recordOutput("Actual Speed Gyro", Swerve.getInstance().getGyroYaw());
         Logger.recordOutput("Actual Speed Heading", Swerve.getInstance().getHeading());
 
+
         swerve.drive(
+                // TODO: REMOVE DEADBAND!!!
                 new Translation2d(
-                        translationX.getAsDouble() * Constants.Swerve.maxSpeed,
-                        translationY.getAsDouble() * Constants.Swerve.maxSpeed
+                        MathUtil.applyDeadband(translationX.getAsDouble(), .05) * Constants.Swerve.maxSpeed,
+                        MathUtil.applyDeadband(translationY.getAsDouble(), .05) * Constants.Swerve.maxSpeed
                 ),
                 rotSpeed * Constants.Swerve.maxAngularVelocity,
                 true,
