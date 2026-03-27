@@ -79,7 +79,6 @@ public class TeleopSwerve extends Command {
             ).getAngle().plus(Rotation2d.k180deg).getRadians();
 
             rotSpeed = lockOnPID.calculate(photonVision.visionOdometry.getPoseMeters().getRotation().getRadians(), targetRobotAngle);
-            //rotSpeed = (targetRobotAngle - swerve.getHeading().getRadians()) * Constants.Swerve.lockKP;
             if(rotSpeed < -Constants.Swerve.lockOnMaxSpeed) rotSpeed = -Constants.Swerve.lockOnMaxSpeed;
             if(rotSpeed > Constants.Swerve.lockOnMaxSpeed) rotSpeed = Constants.Swerve.lockOnMaxSpeed;
             if(Math.abs(rotSpeed) - Constants.Swerve.lockDeadband < 0) rotSpeed = 0;

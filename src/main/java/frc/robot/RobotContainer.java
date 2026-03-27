@@ -8,6 +8,9 @@ package frc.robot;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -19,6 +22,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.teleop.TeleopSwerve;
 import frc.robot.subsystems.*;
 
+import java.util.Optional;
+
 
 public class RobotContainer {
 
@@ -28,7 +33,7 @@ public class RobotContainer {
 
     XboxController secondaryController;
     private JoystickButton secondaryA, secondaryB, secondaryX, secondaryY, secondaryRB, secondaryLB;
-    private Trigger secondaryUp, secondaryDown, secondaryLeft, secondaryRight, secondaryLT, secondaryRT, secondaryBack, secondaryStickUp, secondaryStickDown;
+    private Trigger secondaryUp, secondaryDown, secondaryLeft, secondaryRight, secondaryLT, secondaryRT, secondaryBack, secondaryStickUp, secondaryStickDown, secondaryStart;
 
     private final SendableChooser<Command> auto_chooser = new SendableChooser<Command>();
 
@@ -111,6 +116,13 @@ public class RobotContainer {
             }
 
             SmartDashboard.putData("Auto Chooser", auto_chooser);
+            SmartDashboard.putData("Field Elements", new Sendable() {
+                @Override
+                public void initSendable(SendableBuilder builder) {
+                    builder.addBooleanProperty("Hub Active", () -> isHubActive(), null);
+                }
+            });
+
         }
 
         // Button Initialization
@@ -146,6 +158,7 @@ public class RobotContainer {
             secondaryBack = new Trigger(() -> secondaryController.getBackButton());
             secondaryStickUp = new Trigger(() -> secondaryController.getLeftY() < -0.5);
             secondaryStickDown = new Trigger(() -> secondaryController.getLeftY() > 0.5);
+            secondaryStart = new Trigger(() -> secondaryController.getStartButton());
 
         }
 
@@ -263,6 +276,13 @@ public class RobotContainer {
 //            secondaryRight.onTrue(new InstantCommand(() -> Intake.getInstance().setIntakeSpeed(-15)))
 //                    .onFalse(new InstantCommand(() -> Intake.getInstance().setIntakeSpeed(0)));
 
+            secondaryStart.onTrue(new InstantCommand(() -> {
+                //Shooter.getInstance().setIndexerSpeed(Constants.Shooter.CloseShootSpeeds.indexerRPS);
+                Transfer.getInstance().setTransferSpeed(1);//Constants.Transfer.shootTransferSpeed
+            })).onFalse(new InstantCommand(() -> {
+                Transfer.getInstance().setTransferSpeed(0);
+            }));
+
             // Regression Shooting
             secondaryY.whileTrue(Commands.runEnd(() -> Shooter.getInstance().regressionRamp(), () -> Shooter.getInstance().stop()));
 
@@ -274,5 +294,64 @@ public class RobotContainer {
 
     public Command getAutonomousCommand () {
         return auto_chooser.getSelected();
+    }
+
+    public boolean isHubActive() {
+        Optional<DriverStation.Alliance> alliance = DriverStation.getAlliance();
+        // If we have no alliance, we cannot be enabled, therefore no hub.
+        if (alliance.isEmpty()) {
+            return false;
+        }
+        // Hub is always enabled in autonomous.
+        if (DriverStation.isAutonomousEnabled()) {
+            return true;
+        }
+        // At this point, if we're not teleop enabled, there is no hub.
+        if (!DriverStation.isTeleopEnabled()) {
+            return false;
+        }
+
+        // We're teleop enabled, compute.
+        double matchTime = DriverStation.getMatchTime();
+        String gameData = DriverStation.getGameSpecificMessage();
+        // If we have no game data, we cannot compute, assume hub is active, as its likely early in teleop.
+        if (gameData.isEmpty()) {
+            return true;
+        }
+        boolean redInactiveFirst = false;
+        switch (gameData.charAt(0)) {
+            case 'R' -> redInactiveFirst = true;
+            case 'B' -> redInactiveFirst = false;
+            default -> {
+                // If we have invalid game data, assume hub is active.
+                return true;
+            }
+        }
+
+        // Shift was is active for blue if red won auto, or red if blue won auto.
+        boolean shift1Active = switch (alliance.get()) {
+            case Red -> !redInactiveFirst;
+            case Blue -> redInactiveFirst;
+        };
+
+        if (matchTime > 130) {
+            // Transition shift, hub is active.
+            return true;
+        } else if (matchTime > 105) {
+            // Shift 1
+            return shift1Active;
+        } else if (matchTime > 80) {
+            // Shift 2
+            return !shift1Active;
+        } else if (matchTime > 55) {
+            // Shift 3
+            return shift1Active;
+        } else if (matchTime > 30) {
+            // Shift 4
+            return !shift1Active;
+        } else {
+            // End game, hub always active.
+            return true;
+        }
     }
 }

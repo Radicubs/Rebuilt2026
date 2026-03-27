@@ -5,6 +5,7 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.CANBus;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -50,6 +51,12 @@ public class Robot extends LoggedRobot
     public void robotPeriodic()
     {
         CommandScheduler.getInstance().run();
+
+        SmartDashboard.putNumber("CAN BUS Utilization", CANBus.roboRIO().getStatus().BusUtilization);
+        SmartDashboard.putNumber("CAN BUS REC", CANBus.roboRIO().getStatus().REC);
+        SmartDashboard.putNumber("CAN BUS TEC", CANBus.roboRIO().getStatus().TEC);
+
+        SmartDashboard.putNumber("CAN BUS TxCount", CANBus.roboRIO().getStatus().TxFullCount);
 
         SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
     }

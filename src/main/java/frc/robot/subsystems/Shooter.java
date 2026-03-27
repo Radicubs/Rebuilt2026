@@ -48,9 +48,7 @@ public class Shooter extends SubsystemBase {
     private double regressionTopSpeeds;
 
     public static Shooter getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new Shooter();
-        }
+        if (INSTANCE == null) {INSTANCE = new Shooter();}
         return INSTANCE;
     }
 

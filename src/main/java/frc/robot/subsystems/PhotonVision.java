@@ -4,6 +4,7 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -42,13 +43,13 @@ public class PhotonVision extends SubsystemBase {
 
     private final PhotonCamera camera;
     private PhotonPipelineResult result;
+    private PhotonPoseEstimator photonEstimator;
 
     private PhotonVision() {
         camera = new PhotonCamera("orange");
+        photonEstimator = new PhotonPoseEstimator(APRIL_TAG_LAYOUT, cameraOffset);
         field2d = new Field2d();
         SmartDashboard.putData("PhotonPose", field2d);
-
-        Transform3d robotToCam = new Transform3d(Constants.CameraConfig.cameraOffsetX, Constants.CameraConfig.cameraOffsetY, Constants.CameraConfig.cameraOffsetZ, new Rotation3d(Rotation2d.k180deg));
 
 //        UsbCamera server = CameraServer.startAutomaticCapture(0);
 //        server.setResolution(640,480);
@@ -100,22 +101,38 @@ public class PhotonVision extends SubsystemBase {
     @Override
     public void periodic() {
         List<PhotonPipelineResult> results = camera.getAllUnreadResults();
+        Optional<EstimatedRobotPose> visionEst = Optional.empty();
+
         if(!results.isEmpty()){
             for(PhotonPipelineResult res : results){
+
                 if(res.hasTargets()){
                     this.result = res;
-                    Optional<Pose3d> option = APRIL_TAG_LAYOUT.getTagPose(result.getBestTarget().getFiducialId());
 
-                    if(option.isPresent() && result.getBestTarget().poseAmbiguity < .1){
-                        if(result.getBestTarget().getBestCameraToTarget().getX() < 10){
-                            visionOdometry.resetPosition(
-                                    Swerve.getInstance().getGyroYaw(),
-                                    Swerve.getInstance().getModulePositions(),
-                                    option.get().plus(
-                                            result.getBestTarget().getBestCameraToTarget().inverse()
-                                                    .plus(cameraOffset.inverse())).toPose2d());
-                        }
+                    visionEst = photonEstimator.estimateCoprocMultiTagPose(result);
+                    if (visionEst.isEmpty()) {
+                        visionEst = photonEstimator.estimateLowestAmbiguityPose(result);
                     }
+
+                    if(visionEst.isPresent()) {
+                        visionOdometry.resetPosition(
+                                Swerve.getInstance().getGyroYaw(),
+                                Swerve.getInstance().getModulePositions(),
+                                visionEst.get().estimatedPose.toPose2d()
+                        );
+                    }
+
+//                    Optional<Pose3d> option = APRIL_TAG_LAYOUT.getTagPose(result.getBestTarget().getFiducialId());
+//                    if(option.isPresent() && result.getBestTarget().poseAmbiguity < .1){
+//                        if(result.getBestTarget().getBestCameraToTarget().getX() < 10){
+//                            visionOdometry.resetPosition(
+//                                    Swerve.getInstance().getGyroYaw(),
+//                                    Swerve.getInstance().getModulePositions(),
+//                                    option.get().plus(
+//                                            result.getBestTarget().getBestCameraToTarget().inverse()
+//                                                    .plus(cameraOffset.inverse())).toPose2d());
+//                        }
+//                    }
                 }
                 else{
                     this.result = null;

@@ -13,6 +13,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.Unit;
 import frc.lib.util.COTSTalonFXSwerveConstants;
 import frc.lib.util.SwerveModuleConstants;
 
@@ -76,7 +77,7 @@ public final class Constants
 
     public static final class CameraConfig {
         public static double cameraOffsetY = 0;
-        public static double cameraOffsetX = 0;
+        public static double cameraOffsetX = Units.inchesToMeters(-2.75);
         public static double cameraOffsetZ = 0;
 
     }
@@ -294,7 +295,7 @@ public final class Constants
             public static final double kI = 0.0;
             public static final double kD = 0.0;
             public static final double kS = 0.03;
-            public static final double kV = 0.01;
+            public static final double kV = 0.0109;
             public static final double kA = 0.0;
         }
     }
