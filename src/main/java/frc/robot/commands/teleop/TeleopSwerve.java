@@ -1,10 +1,12 @@
 package frc.robot.commands.teleop;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.drive.RobotDriveBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
@@ -37,6 +39,7 @@ public class TeleopSwerve extends Command {
         this.translationY = translationY;
         this.rotation = rotation;
         this.toggleAlign = toggleAlign;
+
 
         lockOnPID = new PIDController(Constants.Swerve.lockKP, 0, 0);
         lockOnPID.enableContinuousInput(-Math.PI, Math.PI);
@@ -92,10 +95,11 @@ public class TeleopSwerve extends Command {
         Logger.recordOutput("Actual Speed Gyro", Swerve.getInstance().getGyroYaw());
         Logger.recordOutput("Actual Speed Heading", Swerve.getInstance().getHeading());
 
+
         swerve.drive(
                 new Translation2d(
                         translationX.getAsDouble() * Constants.Swerve.maxSpeed,
-                        translationY.getAsDouble() * Constants.Swerve.maxSpeed
+                        translationY.getAsDouble()* Constants.Swerve.maxSpeed
                 ),
                 rotSpeed * Constants.Swerve.maxAngularVelocity,
                 true,
