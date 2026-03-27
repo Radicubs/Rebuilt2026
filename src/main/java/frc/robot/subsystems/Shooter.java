@@ -296,7 +296,7 @@ public class Shooter extends SubsystemBase {
         }
 
         distanceToHub = (Math.sqrt(toTarget.getX() * toTarget.getX() + toTarget.getY() * toTarget.getY()) * 39.37) - 32;
-        regressionMainSpeeds = 65.18538 / (1 + Math.exp(-(0.011221 * distanceToHub + 0.170253)));
-        regressionTopSpeeds = 11.22378 / (1 + Math.exp(-(0.0653418 * distanceToHub - 3.16788)));
+        regressionMainSpeeds = 65.185 / (1 + Math.exp(-0.358845 * distanceToHub + -0.291163));
+        regressionTopSpeeds = 10.36912 / (1 + Math.exp(-(1.83055 * distanceToHub - 2.48482)));
     }
 }
