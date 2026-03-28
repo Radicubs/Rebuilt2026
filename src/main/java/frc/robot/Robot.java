@@ -64,7 +64,7 @@ public class Robot extends LoggedRobot
     
     @Override
     public void disabledInit() {
-        Pivot.getInstance().cancelPID();
+
     }
     
     
@@ -116,7 +116,9 @@ public class Robot extends LoggedRobot
     
     
     @Override
-    public void teleopExit() {}
+    public void teleopExit() {
+        Pivot.getInstance().cancelPID();
+    }
     
     
     @Override
