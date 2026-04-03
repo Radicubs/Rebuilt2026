@@ -34,7 +34,7 @@ public class PhotonVision extends SubsystemBase {
 
     public SwerveDriveOdometry visionOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, Swerve.getInstance().getGyroYaw(), Swerve.getInstance().getModulePositions());;
 
-    private static final Transform3d cameraOffset = new Transform3d(Constants.CameraConfig.cameraOffsetX, Constants.CameraConfig.cameraOffsetY, Constants.CameraConfig.cameraOffsetZ, new Rotation3d(Rotation2d.k180deg));
+    private static final Transform3d cameraOffset = new Transform3d(Constants.CameraConfig.cameraOffsetX, Constants.CameraConfig.cameraOffsetY, Constants.CameraConfig.cameraOffsetZ, new Rotation3d(Rotation2d.kZero));
     private Field2d field2d;
     public static PhotonVision getInstance() {
         if (instance == null) instance = new PhotonVision();
@@ -98,6 +98,13 @@ public class PhotonVision extends SubsystemBase {
         return dist;
     }
 
+    public boolean hasMultiTag(){
+        if(result == null){return false;}
+        return photonEstimator.estimateCoprocMultiTagPose(result).isPresent();
+    }
+
+
+
     @Override
     public void periodic() {
         List<PhotonPipelineResult> results = camera.getAllUnreadResults();
@@ -110,9 +117,9 @@ public class PhotonVision extends SubsystemBase {
                     this.result = res;
 
                     visionEst = photonEstimator.estimateCoprocMultiTagPose(result);
-                    if (visionEst.isEmpty()) {
-                        visionEst = photonEstimator.estimateLowestAmbiguityPose(result);
-                    }
+//                    if (visionEst.isEmpty()) {
+//                        visionEst = photonEstimator.estimateLowestAmbiguityPose(result);
+//                    }
 
                     if(visionEst.isPresent()) {
                         visionOdometry.resetPosition(

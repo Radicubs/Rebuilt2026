@@ -47,7 +47,7 @@ public class Pivot extends SubsystemBase {
         relativeEncoder = pivotMotor.getEncoder();
         relativeEncoder.setPosition(Constants.Pivot.upPos);
 
-        pid = new ProfiledPIDController(Constants.Pivot.PIDFeedforwardConstants.P, Constants.Pivot.PIDFeedforwardConstants.I, Constants.Pivot.PIDFeedforwardConstants.D, new TrapezoidProfile.Constraints(1, 3));
+        pid = new ProfiledPIDController(Constants.Pivot.PIDFeedforwardConstants.P, Constants.Pivot.PIDFeedforwardConstants.I, Constants.Pivot.PIDFeedforwardConstants.D, new TrapezoidProfile.Constraints(.5, 3));
         pid.setTolerance(0.01);
 
         feedforward = new ArmFeedforward(Constants.Pivot.PIDFeedforwardConstants.S, Constants.Pivot.PIDFeedforwardConstants.G, Constants.Pivot.PIDFeedforwardConstants.V);

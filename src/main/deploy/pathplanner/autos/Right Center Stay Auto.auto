@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "ExtendIntake"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Right Shoot"
@@ -26,12 +32,6 @@
           "type": "wait",
           "data": {
             "waitTime": 1.5
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Reset Heading"
           }
         }
       ]

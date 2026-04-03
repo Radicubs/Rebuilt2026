@@ -185,6 +185,7 @@ public class RobotContainer {
                 Transfer.getInstance().setTransferSpeed(Constants.Transfer.shootTransferSpeed);
             })).onFalse(new InstantCommand(() -> {
                 Transfer.getInstance().setTransferSpeed(0);
+                Shooter.getInstance().setIndexerSpeed(0);
             }));
 
             // Zero Heading
@@ -268,15 +269,21 @@ public class RobotContainer {
                     .onFalse(new InstantCommand(() -> Shooter.getInstance().changeShooterSpeeds(0)));
 
             // Spit Shooter
-//            secondaryLeft.onTrue(new InstantCommand(() -> Shooter.getInstance().setShooterSpeeds(-10, -2, -7)))
-//                .onFalse(new InstantCommand(() -> Shooter.getInstance().Stop()));
+            secondaryLeft.onTrue(new InstantCommand(() -> {
+                Shooter.getInstance().setShooterSpeeds(-10, -2, -7);
+                Transfer.getInstance().setTransferSetpoint(-10);
+            }))
+                .onFalse(new InstantCommand(() -> {
+                    Shooter.getInstance().stop();
+                    Transfer.getInstance().setTransferSetpoint(0);
+                }));
 
-            secondaryLeft.onTrue(new InstantCommand(() -> Shooter.getInstance().changeIndexerSpeeds(.5)));
-            secondaryRight.onTrue(new InstantCommand(() -> Shooter.getInstance().changeIndexerSpeeds(-.5)));
+//            secondaryLeft.onTrue(new InstantCommand(() -> Shooter.getInstance().changeIndexerSpeeds(.5)));
+//            secondaryRight.onTrue(new InstantCommand(() -> Shooter.getInstance().changeIndexerSpeeds(-.5)));
 
             // Spit Intake
-//            secondaryRight.onTrue(new InstantCommand(() -> Intake.getInstance().setIntakeSpeed(-15)))
-//                    .onFalse(new InstantCommand(() -> Intake.getInstance().setIntakeSpeed(0)));
+            secondaryRight.onTrue(new InstantCommand(() -> Intake.getInstance().setIntakeSpeed(-15)))
+                    .onFalse(new InstantCommand(() -> Intake.getInstance().setIntakeSpeed(0)));
 
             secondaryStart.onTrue(new InstantCommand(() -> {
                 //Shooter.getInstance().setIndexerSpeed(Constants.Shooter.CloseShootSpeeds.indexerRPS);

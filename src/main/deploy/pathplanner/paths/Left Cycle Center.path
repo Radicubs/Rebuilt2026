@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.055842120724193,
-        "y": 7.416414874904044
+        "x": 3.1851069900142646,
+        "y": 7.133808844507846
       },
       "isLocked": false,
       "linkedName": null
@@ -20,28 +20,28 @@
         "y": 7.017360912981456
       },
       "prevControl": {
-        "x": 5.583485165499715,
-        "y": 7.684764955455975
+        "x": 6.232691761011956,
+        "y": 7.936976729291131
       },
       "nextControl": {
-        "x": 8.65468584817523,
-        "y": 6.604398854018075
+        "x": 7.7265763195435095,
+        "y": 6.836219686162625
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 6.9502567760342355,
-        "y": 4.61077032810271
+        "x": 6.963195435092723,
+        "y": 4.74015691868759
       },
       "prevControl": {
-        "x": 7.863095454804362,
-        "y": 4.122102265390436
+        "x": 7.713637660485022,
+        "y": 4.688402282453637
       },
       "nextControl": {
-        "x": 6.389607590583634,
-        "y": 4.910901509752992
+        "x": 6.328772952592176,
+        "y": 4.783910193342801
       },
       "isLocked": false,
       "linkedName": null
@@ -84,8 +84,8 @@
         "y": 7.276
       },
       "prevControl": {
-        "x": 3.8708559201141224,
-        "y": 7.5996005706134095
+        "x": 3.8579172610556345,
+        "y": 7.4702139800285305
       },
       "nextControl": null,
       "isLocked": false,
@@ -129,30 +129,14 @@
       }
     },
     {
-      "name": "RampTrenchShooter",
-      "waypointRelativePos": 3.781895504252759,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "RampTrenchShooter"
-        }
-      }
-    },
-    {
-      "name": "StartTrenchShooter",
+      "name": "StopIntake",
       "waypointRelativePos": 5.0,
       "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "StartTrenchShooter"
-        }
-      }
+      "command": null
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
+    "maxVelocity": 2.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -161,13 +145,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 135.0
+    "rotation": 125.00000000000001
   },
   "reversed": false,
   "folder": "Center Paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 135.0
+    "rotation": 125.00000000000001
   },
   "useDefaultConstraints": true
 }

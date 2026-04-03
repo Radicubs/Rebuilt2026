@@ -62,7 +62,7 @@ public final class Constants
         public static final Pose2d leftStart = new Pose2d(3.651, 7.444, new Rotation2d());
 
         /* Positions */
-        public static final Pose2d hubCenterBlue = new Pose2d(4.634, 4.003, new Rotation2d());
+        public static final Pose2d hubCenterBlue = new Pose2d(4.615, 4.049, new Rotation2d());
         public static final Pose2d hubCenterRed = new Pose2d(11.945, 4.041, new Rotation2d());
         public static final Pose2d hub = new Pose2d(2.318, 3.964, new Rotation2d());
 
@@ -77,7 +77,7 @@ public final class Constants
 
     public static final class CameraConfig {
         public static double cameraOffsetY = 0;
-        public static double cameraOffsetX = Units.inchesToMeters(-2.75);
+        public static double cameraOffsetX = 0;
         public static double cameraOffsetZ = 0;
 
     }
@@ -160,7 +160,7 @@ public final class Constants
         /**
          * Radians per Second
          */
-        public static final double maxAngularVelocity = 6; //TODO: This must be tuned to specific robot
+        public static final double maxAngularVelocity = 4.5; //TODO: This must be tuned to specific robot
 
         /* Neutral Modes */
         public static final NeutralModeValue angleNeutralMode = NeutralModeValue.Brake;

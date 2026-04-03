@@ -282,8 +282,6 @@ public class Shooter extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Custom Shoot Speed", customShootSpeed);
-        SmartDashboard.putNumber("Custom Top Shaft Speed", customTopshaftSpeed);
 
         if (DriverStation.getAlliance().isPresent()) {
             if (DriverStation.getAlliance().get().equals(DriverStation.Alliance.Blue)) {
@@ -293,7 +291,7 @@ public class Shooter extends SubsystemBase {
             }
         }
 
-        distanceToHub = (Math.sqrt(toTarget.getX() * toTarget.getX() + toTarget.getY() * toTarget.getY()) * 39.37) - 32;
+        distanceToHub = (Math.sqrt(toTarget.getX() * toTarget.getX() + toTarget.getY() * toTarget.getY())) - .75;
         regressionMainSpeeds = 65.185 / (1 + Math.exp(-0.358845 * distanceToHub + -0.291163));
         regressionTopSpeeds = 10.36912 / (1 + Math.exp(-(1.83055 * distanceToHub - 2.48482)));
     }

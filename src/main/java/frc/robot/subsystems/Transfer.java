@@ -6,6 +6,8 @@ import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import edu.wpi.first.math.controller.ArmFeedforward;
+import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.util.sendable.Sendable;
@@ -24,6 +26,7 @@ public class Transfer extends SubsystemBase {
     private final SimpleMotorFeedforward transferFeedforward;
 
     private boolean goToTransferTarget = false;
+
     public static Transfer getInstance(){
         if(INSTANCE == null) {INSTANCE = new Transfer();}
         return INSTANCE;

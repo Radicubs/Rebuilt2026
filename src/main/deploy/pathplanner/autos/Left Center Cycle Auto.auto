@@ -5,15 +5,15 @@
     "data": {
       "commands": [
         {
-          "type": "path",
-          "data": {
-            "pathName": "Left Shoot"
-          }
-        },
-        {
           "type": "named",
           "data": {
             "name": "ExtendIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Shoot"
           }
         },
         {
@@ -44,18 +44,6 @@
           "type": "wait",
           "data": {
             "waitTime": 1.5
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "RetractIntake"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Reset Heading"
           }
         }
       ]

@@ -7,19 +7,18 @@ package frc.robot;
 
 import com.ctre.phoenix6.CANBus;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Pivot;
-import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.Transfer;
+import frc.robot.subsystems.*;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
+import org.opencv.photo.Photo;
 
 
 public class Robot extends LoggedRobot
@@ -77,9 +76,9 @@ public class Robot extends LoggedRobot
     
     
     @Override
-    public void autonomousInit()
-    {
+    public void autonomousInit(){
         autonomousCommand = robotContainer.getAutonomousCommand();
+        PhotonVision.getInstance();
         
         if (autonomousCommand != null)
         {
@@ -89,7 +88,10 @@ public class Robot extends LoggedRobot
     
     
     @Override
-    public void autonomousPeriodic() {}
+    public void autonomousPeriodic() {
+        if(PhotonVision.getInstance().hasMultiTag())
+            Swerve.getInstance().setPose(PhotonVision.getInstance().getRobotFieldPose());
+    }
     
     
     @Override
@@ -112,7 +114,11 @@ public class Robot extends LoggedRobot
     
     
     @Override
-    public void teleopPeriodic() {}
+    public void teleopPeriodic() {
+        if(PhotonVision.getInstance().hasMultiTag()){
+            Swerve.getInstance().setPose(PhotonVision.getInstance().getRobotFieldPose());
+        }
+    }
     
     
     @Override

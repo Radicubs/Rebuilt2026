@@ -45,12 +45,6 @@
           "data": {
             "waitTime": 1.5
           }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Reset Heading"
-          }
         }
       ]
     }

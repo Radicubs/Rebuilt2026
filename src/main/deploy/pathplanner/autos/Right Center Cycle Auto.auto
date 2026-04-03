@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "Reset Heading"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Right Shoot"
@@ -32,12 +38,6 @@
           "type": "named",
           "data": {
             "name": "RetractIntake"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Reset Heading"
           }
         }
       ]
