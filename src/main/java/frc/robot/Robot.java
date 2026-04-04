@@ -58,6 +58,9 @@ public class Robot extends LoggedRobot
         SmartDashboard.putNumber("CAN BUS TxCount", CANBus.roboRIO().getStatus().TxFullCount);
 
         SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
+
+        if(PhotonVision.getInstance().hasMultiTag())
+            Swerve.getInstance().setPose(PhotonVision.getInstance().getRobotFieldPose());
     }
     
     
@@ -89,8 +92,6 @@ public class Robot extends LoggedRobot
     
     @Override
     public void autonomousPeriodic() {
-        if(PhotonVision.getInstance().hasMultiTag())
-            Swerve.getInstance().setPose(PhotonVision.getInstance().getRobotFieldPose());
     }
     
     
@@ -115,9 +116,6 @@ public class Robot extends LoggedRobot
     
     @Override
     public void teleopPeriodic() {
-        if(PhotonVision.getInstance().hasMultiTag()){
-            Swerve.getInstance().setPose(PhotonVision.getInstance().getRobotFieldPose());
-        }
     }
     
     

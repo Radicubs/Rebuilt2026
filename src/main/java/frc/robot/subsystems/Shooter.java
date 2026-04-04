@@ -289,10 +289,10 @@ public class Shooter extends SubsystemBase {
             } else {
                 toTarget = PhotonVision.getInstance().getRobotFieldPose().minus(Constants.Field.hubCenterRed);
             }
-        }
 
-        distanceToHub = (Math.sqrt(toTarget.getX() * toTarget.getX() + toTarget.getY() * toTarget.getY())) - .75;
-        regressionMainSpeeds = 65.185 / (1 + Math.exp(-0.358845 * distanceToHub + -0.291163));
-        regressionTopSpeeds = 10.36912 / (1 + Math.exp(-(1.83055 * distanceToHub - 2.48482)));
+            distanceToHub = (Math.sqrt(toTarget.getX() * toTarget.getX() + toTarget.getY() * toTarget.getY())) - .75;
+            regressionMainSpeeds = 65.185 / (1 + Math.exp(-0.358845 * distanceToHub + -0.291163));
+            regressionTopSpeeds = 10.36912 / (1 + Math.exp(-(1.83055 * distanceToHub - 2.48482)));
+        }
     }
 }

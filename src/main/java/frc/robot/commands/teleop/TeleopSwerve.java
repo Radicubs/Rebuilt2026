@@ -26,8 +26,6 @@ public class TeleopSwerve extends Command {
     private Swerve swerve;
     private PhotonVision photonVision;
 
-    private final double LOCKON_DEADBAND = 0.01;
-
     private double targetRobotAngle, rotSpeed;
     private boolean lockOn;
     private boolean prevState;
@@ -94,12 +92,21 @@ public class TeleopSwerve extends Command {
         Logger.recordOutput("Actual Speed Gyro", Swerve.getInstance().getGyroYaw());
         Logger.recordOutput("Actual Speed Heading", Swerve.getInstance().getHeading());
 
+        boolean isRed = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
+        if(!isRed){
 
+        }
         swerve.drive(
-                new Translation2d(
-                        translationX.getAsDouble() * Constants.Swerve.maxSpeed,
-                        translationY.getAsDouble()* Constants.Swerve.maxSpeed
-                ),
+                (!isRed) ?
+                    new Translation2d(
+                            translationX.getAsDouble() * Constants.Swerve.maxSpeed,
+                            translationY.getAsDouble()* Constants.Swerve.maxSpeed
+                    ) :
+                    new Translation2d(
+                            -translationX.getAsDouble() * Constants.Swerve.maxSpeed,
+                            -translationY.getAsDouble()* Constants.Swerve.maxSpeed
+                )
+                ,
                 rotSpeed * Constants.Swerve.maxAngularVelocity,
                 true,
                 false);
@@ -107,5 +114,13 @@ public class TeleopSwerve extends Command {
         SmartDashboard.putBoolean("Lock on Active", lockOn);
         prevState = toggleAlign.getAsBoolean();
     }
-    public void initialize() {swerve.resetModulesToAbsolute();}
+    public void initialize() {
+        swerve.resetModulesToAbsolute();
+
+        if(DriverStation.getAlliance().isPresent()){
+            if(DriverStation.getAlliance().get().equals(DriverStation.Alliance.Blue)){
+
+            }
+        }
+    }
 }
