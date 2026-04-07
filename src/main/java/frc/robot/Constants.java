@@ -319,8 +319,9 @@ public final class Constants
         public static final int pivotMotorStallCurrentLimit = 20;
         public static final int pivotMotorFreeCurrentLimit = 10;
 
-        public static final double downPos = 0.001587;
+        public static final double downPos = 0.080555;
         public static final double upPos = -0.3662683069705963;
+        public static final double middlePos = -.1;
         public static final double pivotFinalVelocity = 0.0;
 
         public static final class PIDFeedforwardConstants {

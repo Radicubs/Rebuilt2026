@@ -202,7 +202,7 @@ public class RobotContainer {
             secondaryX.onTrue(new InstantCommand(() -> {
                 if(Math.abs(Pivot.getInstance().getSpeed()) < 0.05){
                     Intake.getInstance().setIntakeSpeed(Constants.Intake.intakeSpeedRPS);
-                    Transfer.getInstance().setTransferSpeed(Constants.Transfer.intakeTransferSpeed);
+//                    Transfer.getInstance().setTransferSpeed(Constants.Transfer.intakeTransferSpeed);
                     Pivot.getInstance().setSpeed(0.07);
                 }
 
@@ -233,7 +233,7 @@ public class RobotContainer {
             // PID Retract Intake
             secondaryB.onTrue(new InstantCommand(() -> {
                 Pivot.getInstance().cancelPID();
-                Pivot.getInstance().setGoal(Constants.Pivot.upPos);
+                Pivot.getInstance().setGoal(Constants.Pivot.middlePos);
             })).onFalse(new InstantCommand(() -> Pivot.getInstance().setSpeed(0)));
 
             // PID Extend Intake
@@ -255,13 +255,16 @@ public class RobotContainer {
             secondaryStickUp.onTrue(new InstantCommand(() -> {
                 Pivot.getInstance().cancelPID();
                 Pivot.getInstance().setSpeed(-.2);
+                Intake.getInstance().setIntakeSpeed(30);
             })).onFalse(new InstantCommand(() -> {
                 Pivot.getInstance().setSpeed(0);
                 Intake.getInstance().setIntakeSpeed(0);
             }));
 
             // Manual Shoot Shift Up
-            secondaryUp.onTrue(new InstantCommand(() -> Shooter.getInstance().changeShooterSpeeds(.5)))
+            secondaryUp.onTrue(new InstantCommand(() -> {
+                Shooter.getInstance().changeShooterSpeeds(.5);
+            }))
                     .onFalse(new InstantCommand(() -> Shooter.getInstance().changeShooterSpeeds(0)));
 
             // Manual Shoot Shift Down
