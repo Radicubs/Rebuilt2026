@@ -111,6 +111,8 @@ public class RobotContainer {
                 auto_chooser.addOption("Right to Center Cycle", AutoBuilder.buildAuto("Right Center Cycle Auto"));
                 auto_chooser.addOption("Left to Center Stay", AutoBuilder.buildAuto("Left Center Stay Auto"));
                 auto_chooser.addOption("Right to Center Stay", AutoBuilder.buildAuto("Right Center Stay Auto"));
+                auto_chooser.addOption("Left Center Cycle Straight", AutoBuilder.buildAuto("Left Center Cycle Straight"));
+                auto_chooser.addOption("Right Center Cycle Straight", AutoBuilder.buildAuto("Right Center Cycle Straight"));
             }
             catch(Exception e) {
                 System.out.println("Error" + e.getMessage());

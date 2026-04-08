@@ -3,34 +3,54 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.651,
-        "y": 0.613
+        "x": 7.947,
+        "y": 0.716
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.318504860915278,
-        "y": 0.9355411135028675
+        "x": 7.070873776669252,
+        "y": 0.6989091286149351
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.004,
-        "y": 0.71623395149786
+        "x": 2.8616405135520675,
+        "y": 0.716
       },
       "prevControl": {
-        "x": 3.0833098111735815,
-        "y": 0.47914756671035075
+        "x": 3.4047660485021383,
+        "y": 0.6386019971469341
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.47974413646055386,
+      "rotationDegrees": 180.0
+    },
+    {
+      "waypointRelativePos": 0.7995735607675879,
+      "rotationDegrees": 180.0
+    }
+  ],
   "constraintZones": [],
-  "pointTowardsZones": [],
+  "pointTowardsZones": [
+    {
+      "fieldPosition": {
+        "x": 4.6,
+        "y": 4.0
+      },
+      "rotationOffset": 180.0,
+      "minWaypointRelativePos": 0.9182984469952733,
+      "maxWaypointRelativePos": 1.0,
+      "name": "Point Towards Zone"
+    }
+  ],
   "eventMarkers": [
     {
       "name": "RampTrenchShooter",
@@ -40,23 +60,6 @@
         "type": "named",
         "data": {
           "name": "RampTrenchShooter"
-        }
-      }
-    },
-    {
-      "name": "ExtendIntake",
-      "waypointRelativePos": 0,
-      "endWaypointRelativePos": null,
-      "command": null
-    },
-    {
-      "name": "StartIntake",
-      "waypointRelativePos": 0.08,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "StartIntake"
         }
       }
     },
@@ -85,10 +88,10 @@
     "rotation": -125.00000000000001
   },
   "reversed": false,
-  "folder": "Start Shoot",
+  "folder": "Straight Center Paths",
   "idealStartingState": {
-    "velocity": 0,
-    "rotation": 180.0
+    "velocity": 0.0,
+    "rotation": 90.0
   },
   "useDefaultConstraints": true
 }

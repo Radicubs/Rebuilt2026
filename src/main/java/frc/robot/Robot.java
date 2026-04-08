@@ -6,6 +6,9 @@
 package frc.robot;
 
 import com.ctre.phoenix6.CANBus;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.networktables.NetworkTablesJNI;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -24,7 +27,7 @@ import org.opencv.photo.Photo;
 public class Robot extends LoggedRobot
 {
     private Command autonomousCommand;
-    
+
     private final RobotContainer robotContainer;
     
     
@@ -49,6 +52,8 @@ public class Robot extends LoggedRobot
     @Override
     public void robotPeriodic()
     {
+        long currentTime = NetworkTablesJNI.now();
+
         CommandScheduler.getInstance().run();
 
         SmartDashboard.putNumber("CAN BUS Utilization", CANBus.roboRIO().getStatus().BusUtilization);
@@ -59,8 +64,18 @@ public class Robot extends LoggedRobot
 
         SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
 
-        if(PhotonVision.getInstance().hasMultiTag())
-            Swerve.getInstance().setPose(PhotonVision.getInstance().getRobotFieldPose());
+        double velX = Swerve.getInstance().getRobotRelativeSpeeds().vxMetersPerSecond;
+        double velY = Swerve.getInstance().getRobotRelativeSpeeds().vyMetersPerSecond;
+        double photonTime = 0;
+        Pose2d photonPose = PhotonVision.getInstance().getRobotFieldPose();
+        Pose2d futurePose = null;
+
+        if(PhotonVision.getInstance().hasMultiTag()) {
+            photonTime = PhotonVision.getInstance().getTimeStamp();
+            futurePose = new Pose2d(photonPose.getX() + velX*(Math.abs(photonTime - currentTime)), photonPose.getY() + velY*(Math.abs(photonTime - (currentTime))), photonPose.getRotation());
+//          Swerve.getInstance().setPose(PhotonVision.getInstance().getRobotFieldPose());
+            Swerve.getInstance().setPose(futurePose);
+        }
     }
     
     

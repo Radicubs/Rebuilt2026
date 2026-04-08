@@ -75,6 +75,10 @@ public class PhotonVision extends SubsystemBase {
         return null;
     }
 
+    public double getTimeStamp(){
+        return result.getTimestampSeconds();
+    }
+
     public Pose2d getRobotFieldPose() {
         return visionOdometry.getPoseMeters();
     }
@@ -112,7 +116,6 @@ public class PhotonVision extends SubsystemBase {
 
         if(!results.isEmpty()){
             for(PhotonPipelineResult res : results){
-
                 if(res.hasTargets()){
                     this.result = res;
 

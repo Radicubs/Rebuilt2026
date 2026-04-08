@@ -19,7 +19,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 1.5
+            "waitTime": 2.0
           }
         },
         {
@@ -38,12 +38,6 @@
           "type": "path",
           "data": {
             "pathName": "Left Cycle Center"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.5
           }
         }
       ]

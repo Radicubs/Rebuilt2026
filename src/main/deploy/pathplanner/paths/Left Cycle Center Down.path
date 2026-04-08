@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.651,
-        "y": 7.444
+        "x": 7.947,
+        "y": 7.393
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.9433365101666062,
-        "y": 7.562064726344116
+        "x": 7.968112043111225,
+        "y": 7.0979840625826105
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.849,
-        "y": 7.276
+        "x": 7.947,
+        "y": 4.028530670470756
       },
       "prevControl": {
-        "x": 2.7325723589038686,
-        "y": 7.054765725103929
+        "x": 7.872042415715291,
+        "y": 5.022601579041712
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,19 +30,19 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "pointTowardsZones": [],
-  "eventMarkers": [
+  "pointTowardsZones": [
     {
-      "name": "RampTrenchShooter",
-      "waypointRelativePos": 0,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "RampTrenchShooter"
-        }
-      }
-    },
+      "fieldPosition": {
+        "x": 4.6,
+        "y": 4.0
+      },
+      "rotationOffset": 180.0,
+      "minWaypointRelativePos": 1,
+      "maxWaypointRelativePos": 1.5,
+      "name": "Point Towards Zone"
+    }
+  ],
+  "eventMarkers": [
     {
       "name": "StartIntake",
       "waypointRelativePos": 0.0,
@@ -51,23 +51,6 @@
         "type": "named",
         "data": {
           "name": "StartIntake"
-        }
-      }
-    },
-    {
-      "name": "ExtendIntake",
-      "waypointRelativePos": 0,
-      "endWaypointRelativePos": null,
-      "command": null
-    },
-    {
-      "name": "StartTrenchShooter",
-      "waypointRelativePos": 1.0,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "StartTrenchShooter"
         }
       }
     }
@@ -82,13 +65,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 125.00000000000001
+    "rotation": -90.0
   },
   "reversed": false,
-  "folder": "Start Shoot",
+  "folder": "Straight Center Paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": -90.0
   },
   "useDefaultConstraints": true
 }
