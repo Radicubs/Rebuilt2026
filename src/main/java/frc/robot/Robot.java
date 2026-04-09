@@ -64,17 +64,9 @@ public class Robot extends LoggedRobot
 
         SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
 
-        double velX = Swerve.getInstance().getRobotRelativeSpeeds().vxMetersPerSecond;
-        double velY = Swerve.getInstance().getRobotRelativeSpeeds().vyMetersPerSecond;
-        double photonTime = 0;
-        Pose2d photonPose = PhotonVision.getInstance().getRobotFieldPose();
-        Pose2d futurePose = null;
 
         if(PhotonVision.getInstance().hasMultiTag()) {
-            photonTime = PhotonVision.getInstance().getTimeStamp();
-            futurePose = new Pose2d(photonPose.getX() + velX*(Math.abs(photonTime - currentTime)), photonPose.getY() + velY*(Math.abs(photonTime - (currentTime))), photonPose.getRotation());
-//          Swerve.getInstance().setPose(PhotonVision.getInstance().getRobotFieldPose());
-            Swerve.getInstance().setPose(futurePose);
+          Swerve.getInstance().setPose(PhotonVision.getInstance().getRobotFieldPose());
         }
     }
     

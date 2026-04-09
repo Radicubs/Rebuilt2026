@@ -72,12 +72,12 @@ public class SwerveModule implements Sendable {
     @Override
     public void initSendable(SendableBuilder builder) {
         builder.setSmartDashboardType("Swerve Module");
-        builder.addDoubleProperty("CANCoder", () -> getCANcoder().getDegrees(), null);
-        builder.addDoubleProperty("Velocity", () -> getState().speedMetersPerSecond, null);
-        builder.addDoubleProperty("Angle", () -> getState().angle.getDegrees(), null);
-        builder.addDoubleProperty("Desired Velocity", () -> (desiredSwerveState!=null) ? desiredSwerveState.speedMetersPerSecond : 0, null);
-        builder.addDoubleProperty("Module " + moduleNumber + " current - Drive Motor", ()  -> mDriveMotor.getSupplyCurrent().getValue().in(Units.Amp), null);
-        builder.addDoubleProperty("Module " + moduleNumber + " current - Angle Motor", ()  -> mAngleMotor.getSupplyCurrent().getValue().in(Units.Amp), null);
+//        builder.addDoubleProperty("CANCoder", () -> getCANcoder().getDegrees(), null);
+//        builder.addDoubleProperty("Velocity", () -> getState().speedMetersPerSecond, null);
+//        builder.addDoubleProperty("Angle", () -> getState().angle.getDegrees(), null);
+//        builder.addDoubleProperty("Desired Velocity", () -> (desiredSwerveState!=null) ? desiredSwerveState.speedMetersPerSecond : 0, null);
+//        builder.addDoubleProperty("Module " + moduleNumber + " current - Drive Motor", ()  -> mDriveMotor.getSupplyCurrent().getValue().in(Units.Amp), null);
+//        builder.addDoubleProperty("Module " + moduleNumber + " current - Angle Motor", ()  -> mAngleMotor.getSupplyCurrent().getValue().in(Units.Amp), null);
 
     }
 
@@ -97,9 +97,12 @@ public class SwerveModule implements Sendable {
             driveDutyCycle.Output = desiredState.speedMetersPerSecond / Constants.Swerve.maxSpeed;
             mDriveMotor.setControl(driveDutyCycle);
         } else {
-            driveVelocity.Velocity = Conversions.MPSToRPS(desiredState.speedMetersPerSecond, Constants.Swerve.wheelCircumference);
-            driveVelocity.FeedForward = driveFeedForward.calculate(desiredState.speedMetersPerSecond);
-            mDriveMotor.setControl(driveVelocity);
+            double driveVel = Conversions.MPSToRPS(desiredState.speedMetersPerSecond, Constants.Swerve.wheelCircumference);
+            if(driveVelocity.Velocity != driveVel){
+                driveVelocity.Velocity = driveVel;
+                driveVelocity.FeedForward = driveFeedForward.calculate(desiredState.speedMetersPerSecond);
+                mDriveMotor.setControl(driveVelocity);
+            }
         }
     }
 

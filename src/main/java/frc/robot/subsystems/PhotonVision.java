@@ -5,6 +5,7 @@ import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.math.estimator.PoseEstimator;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -32,7 +33,7 @@ public class PhotonVision extends SubsystemBase {
     public static final AprilTagFieldLayout APRIL_TAG_LAYOUT = AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltAndymark);
     private static PhotonVision instance;
 
-    public SwerveDriveOdometry visionOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, Swerve.getInstance().getGyroYaw(), Swerve.getInstance().getModulePositions());;
+    public SwerveDrivePoseEstimator visionOdometry = new SwerveDrivePoseEstimator(Constants.Swerve.swerveKinematics, Swerve.getInstance().getGyroYaw(), Swerve.getInstance().getModulePositions(), Swerve.getInstance().getPose());;
 
     private static final Transform3d cameraOffset = new Transform3d(Constants.CameraConfig.cameraOffsetX, Constants.CameraConfig.cameraOffsetY, Constants.CameraConfig.cameraOffsetZ, new Rotation3d(Rotation2d.k180deg));
     private Field2d field2d;
@@ -80,7 +81,7 @@ public class PhotonVision extends SubsystemBase {
     }
 
     public Pose2d getRobotFieldPose() {
-        return visionOdometry.getPoseMeters();
+        return visionOdometry.getEstimatedPosition();
     }
 
     public int getBestTag() {
@@ -125,11 +126,7 @@ public class PhotonVision extends SubsystemBase {
 //                    }
 
                     if(visionEst.isPresent()) {
-                        visionOdometry.resetPosition(
-                                Swerve.getInstance().getGyroYaw(),
-                                Swerve.getInstance().getModulePositions(),
-                                visionEst.get().estimatedPose.toPose2d()
-                        );
+                        visionOdometry.addVisionMeasurement(visionEst.get().estimatedPose.toPose2d(), visionEst.get().timestampSeconds);
                     }
 
 //                    Optional<Pose3d> option = APRIL_TAG_LAYOUT.getTagPose(result.getBestTarget().getFiducialId());
@@ -150,8 +147,8 @@ public class PhotonVision extends SubsystemBase {
             }
         }
 
-        visionOdometry.update(Swerve.getInstance().getGyroYaw(), Swerve.getInstance().getModulePositions());
-        field2d.setRobotPose(visionOdometry.getPoseMeters());
+        visionOdometry.updateWithTime(Timer.getFPGATimestamp(),Swerve.getInstance().getGyroYaw(), Swerve.getInstance().getModulePositions());
+        field2d.setRobotPose(visionOdometry.getEstimatedPosition());
 
     }
 }

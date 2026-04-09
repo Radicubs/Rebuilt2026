@@ -87,6 +87,7 @@ public class Pivot extends SubsystemBase {
     }
 
     public void setSpeed(double speed){
+        moveToTargetAngle = false;
         pivotMotor.set(speed);
     }
     public boolean atGoal(){

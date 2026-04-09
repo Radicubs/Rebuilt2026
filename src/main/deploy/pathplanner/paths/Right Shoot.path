@@ -4,24 +4,24 @@
     {
       "anchor": {
         "x": 3.651,
-        "y": 0.613
+        "y": 0.6250000000000009
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.318504860915278,
-        "y": 0.9355411135028675
+        "x": 3.9433367142202504,
+        "y": 0.5069357789082195
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.004,
-        "y": 0.71623395149786
+        "x": 2.849,
+        "y": 0.793
       },
       "prevControl": {
-        "x": 3.0833098111735815,
-        "y": 0.47914756671035075
+        "x": 2.725894109974133,
+        "y": 1.0105889239849755
       },
       "nextControl": null,
       "isLocked": false,
@@ -44,14 +44,8 @@
       }
     },
     {
-      "name": "ExtendIntake",
-      "waypointRelativePos": 0,
-      "endWaypointRelativePos": null,
-      "command": null
-    },
-    {
       "name": "StartIntake",
-      "waypointRelativePos": 0.08,
+      "waypointRelativePos": 0.0,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -59,6 +53,12 @@
           "name": "StartIntake"
         }
       }
+    },
+    {
+      "name": "ExtendIntake",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": null
     },
     {
       "name": "StartTrenchShooter",
@@ -82,7 +82,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -125.00000000000001
+    "rotation": -119.99999999999999
   },
   "reversed": false,
   "folder": "Start Shoot",

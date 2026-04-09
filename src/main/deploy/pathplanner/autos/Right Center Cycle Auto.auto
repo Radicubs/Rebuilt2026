@@ -7,7 +7,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Reset Heading"
+            "name": "ExtendIntake"
           }
         },
         {
@@ -19,25 +19,25 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 1.5
+            "waitTime": 2.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "StopShoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "StopIntake"
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "Right Cycle Center"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.5
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "RetractIntake"
           }
         }
       ]
