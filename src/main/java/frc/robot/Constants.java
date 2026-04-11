@@ -13,7 +13,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.units.Unit;
 import frc.lib.util.COTSTalonFXSwerveConstants;
 import frc.lib.util.SwerveModuleConstants;
 
@@ -75,10 +74,14 @@ public final class Constants
         public static final Pose2d leftLadder = new Pose2d(0.766, 4.546, new Rotation2d());
     }
 
-    public static final class CameraConfig {
-        public static double cameraOffsetY = 0;
-        public static double cameraOffsetX = 0;
-        public static double cameraOffsetZ = 0;
+    public static final class CameraConfig { // TODO: ACTUALLY ADD OFFSETS **VERY IMPORTANT**
+        public static double camera_0_OffsetX = 0;
+        public static double camera_0_OffsetY = 0;
+        public static double camera_0_OffsetZ = 0;
+
+        public static double camera_1_OffsetX = 0;
+        public static double camera_1_OffsetY = 0;
+        public static double camera_1_OffsetZ = 0;
 
     }
 
