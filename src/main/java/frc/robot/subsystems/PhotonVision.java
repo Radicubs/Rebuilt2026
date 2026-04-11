@@ -38,14 +38,14 @@ public class PhotonVision extends SubsystemBase {
     private final PhotonCamera camera_1;
     private  PhotonPipelineResult cam_1_result;
     private PhotonPoseEstimator cam_1_photonEstimator;
-    private static final Transform3d camera_1_Offset = new Transform3d(Constants.CameraConfig.camera_1_OffsetX, Constants.CameraConfig.camera_1_OffsetY, Constants.CameraConfig.camera_1_OffsetZ, new Rotation3d(Rotation2d.k180deg)); //TODO: CHANGE THIS TO BE RIGHT
+    private static final Transform3d camera_1_Offset = new Transform3d(Constants.CameraConfig.camera_1_OffsetX, Constants.CameraConfig.camera_1_OffsetY, Constants.CameraConfig.camera_1_OffsetZ, new Rotation3d(Rotation2d.kCCW_90deg));
 
 
     private PhotonVision() {
         camera_0 = new PhotonCamera("orange");
         cam_0_photonEstimator = new PhotonPoseEstimator(APRIL_TAG_LAYOUT, camera_0_Offset);
 
-        camera_1 = new PhotonCamera("camera_1");
+        camera_1 = new PhotonCamera("juice");
         cam_1_photonEstimator = new PhotonPoseEstimator(APRIL_TAG_LAYOUT, camera_1_Offset);
 
 

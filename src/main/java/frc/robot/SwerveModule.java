@@ -72,17 +72,17 @@ public class SwerveModule implements Sendable {
     @Override
     public void initSendable(SendableBuilder builder) {
         builder.setSmartDashboardType("Swerve Module");
-//        builder.addDoubleProperty("CANCoder", () -> getCANcoder().getDegrees(), null);
-//        builder.addDoubleProperty("Velocity", () -> getState().speedMetersPerSecond, null);
-//        builder.addDoubleProperty("Angle", () -> getState().angle.getDegrees(), null);
-//        builder.addDoubleProperty("Desired Velocity", () -> (desiredSwerveState!=null) ? desiredSwerveState.speedMetersPerSecond : 0, null);
-//        builder.addDoubleProperty("Module " + moduleNumber + " current - Drive Motor", ()  -> mDriveMotor.getSupplyCurrent().getValue().in(Units.Amp), null);
-//        builder.addDoubleProperty("Module " + moduleNumber + " current - Angle Motor", ()  -> mAngleMotor.getSupplyCurrent().getValue().in(Units.Amp), null);
+        builder.addDoubleProperty("CANCoder", () -> getCANcoder().getDegrees(), null);
+        builder.addDoubleProperty("Velocity", () -> getState().speedMetersPerSecond, null);
+        builder.addDoubleProperty("Angle", () -> getState().angle.getDegrees(), null);
+        builder.addDoubleProperty("Desired Velocity", () -> (desiredSwerveState!=null) ? desiredSwerveState.speedMetersPerSecond : 0, null);
+        builder.addDoubleProperty("Module " + moduleNumber + " current - Drive Motor", ()  -> mDriveMotor.getSupplyCurrent().getValue().in(Units.Amp), null);
+        builder.addDoubleProperty("Module " + moduleNumber + " current - Angle Motor", ()  -> mAngleMotor.getSupplyCurrent().getValue().in(Units.Amp), null);
 
     }
 
     public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop) {
-        desiredState.optimize(getState().angle);
+        //desiredState.optimize(getState().angle);
         desiredSwerveState = desiredState;
         if (Constants.Swerve.useMagicMotion) {
             mAngleMotor.setControl(anglePositionM.withPosition(desiredState.angle.getRotations()));

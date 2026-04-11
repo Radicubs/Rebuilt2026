@@ -52,7 +52,7 @@ public class Swerve extends SubsystemBase implements HolonomicPathFollower {
         };
 
 
-        swerveOdometry = new SwerveDrivePoseEstimator(Constants.Swerve.swerveKinematics, getGyroYaw(), getModulePositions(), getPose());
+        swerveOdometry = new SwerveDrivePoseEstimator(Constants.Swerve.swerveKinematics, getGyroYaw(), getModulePositions(), new Pose2d());
 
         SmartDashboard.putData("Heading", builder -> {
             builder.setSmartDashboardType("Gyro");
