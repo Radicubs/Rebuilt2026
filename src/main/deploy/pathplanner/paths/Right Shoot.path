@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.651,
-        "y": 0.6250000000000009
+        "x": 3.547,
+        "y": 0.605
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.9433367142202504,
-        "y": 0.5069357789082195
+        "x": 3.8622714344815248,
+        "y": 0.6069589239554309
       },
       "isLocked": false,
       "linkedName": null
@@ -42,23 +42,6 @@
           "name": "RampTrenchShooter"
         }
       }
-    },
-    {
-      "name": "StartIntake",
-      "waypointRelativePos": 0.0,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "StartIntake"
-        }
-      }
-    },
-    {
-      "name": "ExtendIntake",
-      "waypointRelativePos": 0,
-      "endWaypointRelativePos": null,
-      "command": null
     },
     {
       "name": "StartTrenchShooter",

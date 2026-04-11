@@ -19,9 +19,7 @@ import frc.robot.Constants;
 public class Transfer extends SubsystemBase {
 
     private static Transfer INSTANCE;
-
     private SparkMax beltMotor;
-
     private final PIDController transferController;
     private final SimpleMotorFeedforward transferFeedforward;
 
@@ -42,14 +40,17 @@ public class Transfer extends SubsystemBase {
 
         transferController = new PIDController(Constants.Transfer.TransferPIDFeedforwardConstants.kP, Constants.Transfer.TransferPIDFeedforwardConstants.kI, Constants.Transfer.TransferPIDFeedforwardConstants.kD);
         transferFeedforward = new SimpleMotorFeedforward(Constants.Transfer.TransferPIDFeedforwardConstants.kS, Constants.Transfer.TransferPIDFeedforwardConstants.kV, Constants.Transfer.TransferPIDFeedforwardConstants.kA);
+
+
         SmartDashboard.putData("Transfer", new Sendable() {
             @Override
             public void initSendable(SendableBuilder builder) {
                 builder.addDoubleProperty("Transfer Speed",() -> getTransferSpeed(), null);
-                builder.addDoubleProperty("Desired Transfer Speed", transferController::getSetpoint, null);
-                builder.addDoubleProperty("Transfer Current Draw", () -> beltMotor.getOutputCurrent(), null);
+                //builder.addDoubleProperty("Desired Transfer Speed", transferController::getSetpoint, null);
+                //builder.addDoubleProperty("Transfer Current Draw", () -> beltMotor.getOutputCurrent(), null);
             }
         });
+
     }
 
     public void reset(){

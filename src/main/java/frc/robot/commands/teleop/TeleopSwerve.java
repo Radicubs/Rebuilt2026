@@ -57,7 +57,7 @@ public class TeleopSwerve extends Command {
         if(rotation.getAsDouble() != 0)
             lockOn = false;
 
-        Pose2d curPose = photonVision.getRobotFieldPose();
+        Pose2d curPose = Swerve.getInstance().getPose();
         if(lockOn && DriverStation.getAlliance().isPresent()){
             double xTranslation;
             double yTranslation;
@@ -76,7 +76,7 @@ public class TeleopSwerve extends Command {
                     yTranslation
             ).getAngle().plus(Rotation2d.k180deg).getRadians();
 
-            rotSpeed = lockOnPID.calculate(photonVision.visionOdometry.getEstimatedPosition().getRotation().getRadians(), targetRobotAngle);
+            rotSpeed = lockOnPID.calculate(Swerve.getInstance().getPose().getRotation().getRadians(), targetRobotAngle);
             if(rotSpeed < -Constants.Swerve.lockOnMaxSpeed) rotSpeed = -Constants.Swerve.lockOnMaxSpeed;
             if(rotSpeed > Constants.Swerve.lockOnMaxSpeed) rotSpeed = Constants.Swerve.lockOnMaxSpeed;
             if(Math.abs(rotSpeed) - Constants.Swerve.lockDeadband < 0) rotSpeed = 0;
@@ -89,8 +89,6 @@ public class TeleopSwerve extends Command {
         }
 
         SmartDashboard.putNumber("Last Tag", photonVision.getBestTag());
-        Logger.recordOutput("Actual Speed Gyro", Swerve.getInstance().getGyroYaw());
-        Logger.recordOutput("Actual Speed Heading", Swerve.getInstance().getHeading());
 
         boolean isRed = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
         if(!isRed){

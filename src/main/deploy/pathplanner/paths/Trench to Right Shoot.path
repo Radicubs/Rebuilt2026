@@ -3,45 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.533143717447916,
-        "y": 7.3649409412202385
+        "x": 4.423,
+        "y": 0.605
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.9843559919084814,
-        "y": 7.487443208240327
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 0.6644087727864583,
-        "y": 6.886911911737352
-      },
-      "prevControl": {
-        "x": 0.9141120697913188,
-        "y": 7.484059154981737
-      },
-      "nextControl": {
-        "x": 0.3575668480282739,
-        "y": 6.153121802920389
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 1.1535002208891367,
-        "y": 5.05284447079613
-      },
-      "prevControl": {
-        "x": 0.43312118348965456,
-        "y": 5.052771086286642
-      },
-      "nextControl": {
-        "x": 2.154368722098215,
-        "y": 5.052946428571428
+        "x": 4.107722479737134,
+        "y": 0.605
       },
       "isLocked": false,
       "linkedName": null
@@ -49,11 +17,59 @@
     {
       "anchor": {
         "x": 2.849,
-        "y": 7.276
+        "y": 0.793
       },
       "prevControl": {
-        "x": 3.347223714192708,
-        "y": 6.1426711309523805
+        "x": 3.099,
+        "y": 0.793
+      },
+      "nextControl": {
+        "x": 2.599,
+        "y": 0.793
+      },
+      "isLocked": true,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.798164667761071,
+        "y": 1.1183328104947707
+      },
+      "prevControl": {
+        "x": 2.6676351103524083,
+        "y": 0.9051145311594881
+      },
+      "nextControl": {
+        "x": 2.928694225169734,
+        "y": 1.3315510898300533
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.1081837100074403,
+        "y": 1.372219761439733
+      },
+      "prevControl": {
+        "x": 2.8770445440270422,
+        "y": 1.4674809075061441
+      },
+      "nextControl": {
+        "x": 3.880157005673364,
+        "y": 1.0540605236235128
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 4.423,
+        "y": 0.605
+      },
+      "prevControl": {
+        "x": 2.6028440361456067,
+        "y": 0.6050000000000002
       },
       "nextControl": null,
       "isLocked": false,
@@ -62,20 +78,31 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 1.0,
-      "rotationDegrees": -90.0
+      "waypointRelativePos": 0.65,
+      "rotationDegrees": 180.0
     },
     {
-      "waypointRelativePos": 1.6754484660243418,
-      "rotationDegrees": -90.0
+      "waypointRelativePos": 2.0,
+      "rotationDegrees": -115.91506879537523
     }
   ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "LeftTrenchShooting",
-      "waypointRelativePos": 0,
+      "name": "RampTrenchShooter",
+      "waypointRelativePos": 0.1,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "RampTrenchShooter"
+        }
+      }
+    },
+    {
+      "name": "TrenchShot",
+      "waypointRelativePos": 2.0,
       "endWaypointRelativePos": null,
       "command": {
         "type": "sequential",
@@ -90,7 +117,7 @@
             {
               "type": "wait",
               "data": {
-                "waitTime": 5.0
+                "waitTime": 7.5
               }
             },
             {
@@ -98,30 +125,14 @@
               "data": {
                 "name": "StopShoot"
               }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "StopIntake"
+              }
             }
           ]
-        }
-      }
-    },
-    {
-      "name": "StartIntake",
-      "waypointRelativePos": 0.6,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "StartIntake"
-        }
-      }
-    },
-    {
-      "name": "RampTrenchShooter",
-      "waypointRelativePos": 2.327460510328062,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "RampTrenchShooter"
         }
       }
     }
@@ -135,14 +146,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0.0,
-    "rotation": -60.86899999999999
+    "velocity": 0,
+    "rotation": 0.0
   },
   "reversed": false,
-  "folder": "Depot Paths",
+  "folder": "Start Shoot",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -178.9083269322723
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

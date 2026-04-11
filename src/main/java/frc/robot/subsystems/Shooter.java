@@ -107,43 +107,50 @@ public class Shooter extends SubsystemBase {
         indexer = new TalonFX(Constants.Shooter.indexerCID);
         indexer.getConfigurator().apply(indexerConfig);
 
+        /*
         SmartDashboard.putData("Indexer", new Sendable() {
             @Override
             public void initSendable(SendableBuilder builder) {
                 builder.addDoubleProperty("Indexer Speed", () -> getIndexerSpeed(), null);
             }
         });
+         */
 
         // Top Shooter
         topShooter = new TalonFX(Constants.Shooter.topShooterCID);
         topShooter.getConfigurator().apply(topShooterConfig);
 
+        /*
         SmartDashboard.putData("Top Shooter", new Sendable() {
             @Override
             public void initSendable(SendableBuilder builder) {
                 builder.addDoubleProperty("Top Shooter Speed", () -> getTopShooterSpeed(), null);
             }
         });
+         */
 
         // Left Shooter
         leftShooter = new TalonFX(Constants.Shooter.leftShooterCID);
         leftShooter.getConfigurator().apply(leftConfig);
+
+        /*
         SmartDashboard.putData("Left Shooter", new Sendable() {
             @Override
             public void initSendable(SendableBuilder builder) {
                 builder.addDoubleProperty("Left Shooter Speed", () -> getLeftShooterSpeed(), null);
             }
         });
+         */
 
         // Right Shooter
         rightShooter = new TalonFX(Constants.Shooter.rightShooterCID);
         rightShooter.getConfigurator().apply(rightConfig);
 
+        /*
         SmartDashboard.putData("Right Shooter", new Sendable() {
             @Override
             public void initSendable(SendableBuilder builder) {
                 builder.addDoubleProperty("Right Shooter Speed", () -> getRightShooterSpeed(), null);
-                builder.addDoubleProperty("Right Shooter Desired Speed", () -> rightShooterVel.Velocity, null);
             }
         });
 
@@ -151,7 +158,6 @@ public class Shooter extends SubsystemBase {
             @Override
             public void initSendable(SendableBuilder builder) {
                 builder.addDoubleProperty("Left Shooter Speed", () -> getLeftShooterSpeed(), null);
-                builder.addDoubleProperty("Left Shooter Desired Speed", () -> leftShooterVel.Velocity, null);
             }
         });
 
@@ -170,6 +176,7 @@ public class Shooter extends SubsystemBase {
                 builder.addDoubleProperty("Top Shooter Desired Speed", () -> topShooterVel.Velocity, null);
             }
         });
+         */
 
     }
 
@@ -275,8 +282,6 @@ public class Shooter extends SubsystemBase {
     }
 
     public void regressionRamp() {
-        System.out.println("Main: " + regressionMainSpeeds + " Top: " + regressionTopSpeeds);
-        System.out.println(distanceToHub);
         setMainSpeeds(regressionMainSpeeds, regressionTopSpeeds);
     }
 
@@ -285,9 +290,9 @@ public class Shooter extends SubsystemBase {
 
         if (DriverStation.getAlliance().isPresent()) {
             if (DriverStation.getAlliance().get().equals(DriverStation.Alliance.Blue)) {
-                toTarget = PhotonVision.getInstance().getRobotFieldPose().minus(Constants.Field.hubCenterBlue);
+                toTarget = Swerve.getInstance().getPose().minus(Constants.Field.hubCenterBlue);
             } else {
-                toTarget = PhotonVision.getInstance().getRobotFieldPose().minus(Constants.Field.hubCenterRed);
+                toTarget = Swerve.getInstance().getPose().minus(Constants.Field.hubCenterRed);
             }
 
             distanceToHub = (Math.sqrt(toTarget.getX() * toTarget.getX() + toTarget.getY() * toTarget.getY())) - .75;

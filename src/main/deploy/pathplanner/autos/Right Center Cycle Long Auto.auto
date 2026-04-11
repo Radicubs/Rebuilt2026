@@ -7,13 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left Depot"
+            "pathName": "Right Cycle Center Long"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Trench to Right Shoot END"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Depot Autos",
+  "folder": "Center Autos",
   "choreoAuto": false
 }

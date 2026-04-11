@@ -49,7 +49,6 @@ public class Intake extends SubsystemBase {
             @Override
             public void initSendable(SendableBuilder builder) {
                 builder.addDoubleProperty("Intake Speed",() -> getVelocity(), null);
-                builder.addDoubleProperty("Desired Intake Speed", () -> getSetpoint(),null);
             }
         });
 

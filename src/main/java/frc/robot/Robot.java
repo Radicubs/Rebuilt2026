@@ -52,7 +52,6 @@ public class Robot extends LoggedRobot
     @Override
     public void robotPeriodic()
     {
-        long currentTime = NetworkTablesJNI.now();
 
         CommandScheduler.getInstance().run();
 
@@ -64,10 +63,6 @@ public class Robot extends LoggedRobot
 
         SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
 
-
-        if(PhotonVision.getInstance().hasMultiTag()) {
-          Swerve.getInstance().setPose(PhotonVision.getInstance().getRobotFieldPose());
-        }
     }
     
     

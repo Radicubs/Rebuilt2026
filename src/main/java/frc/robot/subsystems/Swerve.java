@@ -4,12 +4,14 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.*;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -18,7 +20,7 @@ import frc.robot.HolonomicPathFollower;
 import frc.robot.SwerveModule;
 
 public class Swerve extends SubsystemBase implements HolonomicPathFollower {
-    public SwerveDriveOdometry swerveOdometry;
+    public SwerveDrivePoseEstimator swerveOdometry;
     public SwerveModule[] mSwerveMods;
 
     public Navx gyro;
@@ -50,7 +52,7 @@ public class Swerve extends SubsystemBase implements HolonomicPathFollower {
         };
 
 
-        swerveOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getGyroYaw(), getModulePositions());
+        swerveOdometry = new SwerveDrivePoseEstimator(Constants.Swerve.swerveKinematics, getGyroYaw(), getModulePositions(), getPose());
 
         SmartDashboard.putData("Heading", builder -> {
             builder.setSmartDashboardType("Gyro");
@@ -141,7 +143,7 @@ public class Swerve extends SubsystemBase implements HolonomicPathFollower {
     }
 
     public Pose2d getPose() {
-        return swerveOdometry.getPoseMeters();
+        return swerveOdometry.getEstimatedPosition();
     }
 
     public void setPose(Pose2d pose) {
@@ -170,6 +172,10 @@ public class Swerve extends SubsystemBase implements HolonomicPathFollower {
         }
     }
 
+    public void addVisionMeasurement(Pose2d estimatedPose, double timestampSeconds){
+        swerveOdometry.addVisionMeasurement(estimatedPose, timestampSeconds);
+    }
+
     @Override
     public void displayTrajectory(Trajectory trajectory) {
         field.getObject("trajectory").setTrajectory(trajectory);
@@ -182,7 +188,7 @@ public class Swerve extends SubsystemBase implements HolonomicPathFollower {
     @Override
     public void periodic() {
         swerveOdometry.update(getGyroYaw(), getModulePositions());
-        field.setRobotPose(swerveOdometry.getPoseMeters());
+        field.setRobotPose(swerveOdometry.getEstimatedPosition());
     }
 
 }

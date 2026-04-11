@@ -33,7 +33,7 @@ public class AlignToTarget extends PathFollowingCommand {
     public void initialize() {
         super.initialize();
         tagID = PhotonVision.getInstance().getBestTag();
-        Pose2d robotPose = PhotonVision.getInstance().getRobotFieldPose();
+        Pose2d robotPose = Swerve.getInstance().getPose();
         Optional<Pose3d> tagPose = PhotonVision.APRIL_TAG_LAYOUT.getTagPose(tagID);
         if (tagID == -1 || robotPose == null || tagPose.isEmpty()) {
             this.cancel();
@@ -52,7 +52,7 @@ public class AlignToTarget extends PathFollowingCommand {
 
     @Override
     public void execute() {
-        Pose2d robotPose = PhotonVision.getInstance().getRobotFieldPose();
+        Pose2d robotPose = Swerve.getInstance().getPose();
 
         if (robotPose != null) {
             Swerve.getInstance().setPose(robotPose);

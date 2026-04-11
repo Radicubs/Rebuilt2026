@@ -33,10 +33,8 @@ public class PhotonVision extends SubsystemBase {
     public static final AprilTagFieldLayout APRIL_TAG_LAYOUT = AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltAndymark);
     private static PhotonVision instance;
 
-    public SwerveDrivePoseEstimator visionOdometry = new SwerveDrivePoseEstimator(Constants.Swerve.swerveKinematics, Swerve.getInstance().getGyroYaw(), Swerve.getInstance().getModulePositions(), Swerve.getInstance().getPose());;
 
     private static final Transform3d cameraOffset = new Transform3d(Constants.CameraConfig.cameraOffsetX, Constants.CameraConfig.cameraOffsetY, Constants.CameraConfig.cameraOffsetZ, new Rotation3d(Rotation2d.k180deg));
-    private Field2d field2d;
     public static PhotonVision getInstance() {
         if (instance == null) instance = new PhotonVision();
         return instance;
@@ -49,11 +47,7 @@ public class PhotonVision extends SubsystemBase {
     private PhotonVision() {
         camera = new PhotonCamera("orange");
         photonEstimator = new PhotonPoseEstimator(APRIL_TAG_LAYOUT, cameraOffset);
-        field2d = new Field2d();
-        SmartDashboard.putData("PhotonPose", field2d);
 
-//        UsbCamera server = CameraServer.startAutomaticCapture(0);
-//        server.setResolution(640,480);
 
         SmartDashboard.putData("Photon Vision", new Sendable() {
             @Override
@@ -76,14 +70,6 @@ public class PhotonVision extends SubsystemBase {
         return null;
     }
 
-    public double getTimeStamp(){
-        return result.getTimestampSeconds();
-    }
-
-    public Pose2d getRobotFieldPose() {
-        return visionOdometry.getEstimatedPosition();
-    }
-
     public int getBestTag() {
         if(result == null) return -1;
         if (result.hasTargets())
@@ -92,7 +78,7 @@ public class PhotonVision extends SubsystemBase {
     }
 
     public double getDistanceFromHub(){
-        Pose2d curPose = getRobotFieldPose();
+        Pose2d curPose = Swerve.getInstance().getPose();
         double dist = curPose.getTranslation().getDistance(Constants.Field.hubCenterBlue.getTranslation());;
         if(DriverStation.getAlliance().isPresent()){
             if(DriverStation.getAlliance().get().equals(DriverStation.Alliance.Red)){
@@ -113,7 +99,7 @@ public class PhotonVision extends SubsystemBase {
     @Override
     public void periodic() {
         List<PhotonPipelineResult> results = camera.getAllUnreadResults();
-        Optional<EstimatedRobotPose> visionEst = Optional.empty();
+        Optional<EstimatedRobotPose> visionEst;
 
         if(!results.isEmpty()){
             for(PhotonPipelineResult res : results){
@@ -121,34 +107,14 @@ public class PhotonVision extends SubsystemBase {
                     this.result = res;
 
                     visionEst = photonEstimator.estimateCoprocMultiTagPose(result);
-//                    if (visionEst.isEmpty()) {
-//                        visionEst = photonEstimator.estimateLowestAmbiguityPose(result);
-//                    }
-
                     if(visionEst.isPresent()) {
-                        visionOdometry.addVisionMeasurement(visionEst.get().estimatedPose.toPose2d(), visionEst.get().timestampSeconds);
+                        Swerve.getInstance().addVisionMeasurement(visionEst.get().estimatedPose.toPose2d(), visionEst.get().timestampSeconds);
                     }
-
-//                    Optional<Pose3d> option = APRIL_TAG_LAYOUT.getTagPose(result.getBestTarget().getFiducialId());
-//                    if(option.isPresent() && result.getBestTarget().poseAmbiguity < .1){
-//                        if(result.getBestTarget().getBestCameraToTarget().getX() < 10){
-//                            visionOdometry.resetPosition(
-//                                    Swerve.getInstance().getGyroYaw(),
-//                                    Swerve.getInstance().getModulePositions(),
-//                                    option.get().plus(
-//                                            result.getBestTarget().getBestCameraToTarget().inverse()
-//                                                    .plus(cameraOffset.inverse())).toPose2d());
-//                        }
-//                    }
                 }
                 else{
                     this.result = null;
                 }
             }
         }
-
-        visionOdometry.updateWithTime(Timer.getFPGATimestamp(),Swerve.getInstance().getGyroYaw(), Swerve.getInstance().getModulePositions());
-        field2d.setRobotPose(visionOdometry.getEstimatedPosition());
-
     }
 }
