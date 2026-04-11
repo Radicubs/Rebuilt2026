@@ -7,7 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left Depot"
+            "pathName": "Middle Depot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Position to Trench"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Cycle Center Inner"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Trench to Left Postion"
           }
         }
       ]

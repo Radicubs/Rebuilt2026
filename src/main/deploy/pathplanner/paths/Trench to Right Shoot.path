@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.107722479737134,
-        "y": 0.605
+        "x": 3.8538121384450985,
+        "y": 0.9235556205767943
       },
       "isLocked": false,
       "linkedName": null
@@ -20,12 +20,12 @@
         "y": 0.793
       },
       "prevControl": {
-        "x": 3.099,
-        "y": 0.793
+        "x": 3.9064237494898215,
+        "y": 0.29193654827618154
       },
       "nextControl": {
-        "x": 2.599,
-        "y": 0.793
+        "x": 2.623080298140631,
+        "y": 0.9000527361246498
       },
       "isLocked": true,
       "linkedName": null
@@ -36,12 +36,12 @@
         "y": 1.1183328104947707
       },
       "prevControl": {
-        "x": 2.6676351103524083,
-        "y": 0.9051145311594881
+        "x": 2.637548551575151,
+        "y": 0.9267539410405665
       },
       "nextControl": {
-        "x": 2.928694225169734,
-        "y": 1.3315510898300533
+        "x": 3.0226590290611637,
+        "y": 1.3861040463957262
       },
       "isLocked": false,
       "linkedName": null
@@ -52,12 +52,12 @@
         "y": 1.372219761439733
       },
       "prevControl": {
-        "x": 2.8770445440270422,
-        "y": 1.4674809075061441
+        "x": 2.8714892449365017,
+        "y": 1.452691683280722
       },
       "nextControl": {
-        "x": 3.880157005673364,
-        "y": 1.0540605236235128
+        "x": 4.201534759291331,
+        "y": 1.0004997883665674
       },
       "isLocked": false,
       "linkedName": null
@@ -68,8 +68,8 @@
         "y": 0.605
       },
       "prevControl": {
-        "x": 2.6028440361456067,
-        "y": 0.6050000000000002
+        "x": 3.408517886577457,
+        "y": 1.1007756769697958
       },
       "nextControl": null,
       "isLocked": false,
@@ -117,7 +117,19 @@
             {
               "type": "wait",
               "data": {
-                "waitTime": 7.5
+                "waitTime": 5.0
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "AgitateIntake"
+              }
+            },
+            {
+              "type": "wait",
+              "data": {
+                "waitTime": 2.5
               }
             },
             {
@@ -129,7 +141,7 @@
             {
               "type": "named",
               "data": {
-                "name": "StopIntake"
+                "name": "ExtendIntake"
               }
             }
           ]
@@ -138,7 +150,7 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 2.0,
+    "maxVelocity": 2.8,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -146,13 +158,13 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
+    "velocity": 2.0,
     "rotation": 0.0
   },
   "reversed": false,
   "folder": "Start Shoot",
   "idealStartingState": {
-    "velocity": 0,
+    "velocity": 2.0,
     "rotation": 180.0
   },
   "useDefaultConstraints": true

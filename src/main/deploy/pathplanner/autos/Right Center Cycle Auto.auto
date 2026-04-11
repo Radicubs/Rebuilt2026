@@ -5,39 +5,21 @@
     "data": {
       "commands": [
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "ExtendIntake"
+            "pathName": "Right Cycle Center Outer"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Right Shoot"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 2.0
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "StopShoot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "StopIntake"
+            "pathName": "Trench to Right Shoot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": null
+            "pathName": "Right Cycle Center Inner"
           }
         }
       ]

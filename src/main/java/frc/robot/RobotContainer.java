@@ -78,6 +78,10 @@ public class RobotContainer {
             NamedCommands.registerCommand("ExtendIntake", new InstantCommand(() -> {
                 Pivot.getInstance().setGoal(Constants.Pivot.downPos);
             }));
+            NamedCommands.registerCommand("AgitateIntake", new InstantCommand(() ->
+            {
+                Pivot.getInstance().setGoal(Constants.Pivot.middlePos);
+            }));
             NamedCommands.registerCommand("RetractIntake", new InstantCommand(() -> {
                 Pivot.getInstance().setSpeed(0);
                 Pivot.getInstance().setGoal(Constants.Pivot.upPos);

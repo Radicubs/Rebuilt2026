@@ -24,7 +24,7 @@
         "y": 7.484059154981737
       },
       "nextControl": {
-        "x": 0.3575668480282739,
+        "x": 0.35756684802827393,
         "y": 6.153121802920389
       },
       "isLocked": false,
@@ -36,7 +36,7 @@
         "y": 5.05284447079613
       },
       "prevControl": {
-        "x": 0.43312118348965456,
+        "x": 0.43312118348965467,
         "y": 5.052771086286642
       },
       "nextControl": {
@@ -127,7 +127,7 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 2.0,
+    "maxVelocity": 2.8,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -142,7 +142,7 @@
   "folder": "Depot Paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -178.9083269322723
+    "rotation": -178.90832693227233
   },
   "useDefaultConstraints": true
 }
