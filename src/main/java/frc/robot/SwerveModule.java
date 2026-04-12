@@ -82,7 +82,7 @@ public class SwerveModule implements Sendable {
     }
 
     public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop) {
-        //desiredState.optimize(getState().angle);
+        desiredState.optimize(getState().angle);
         desiredSwerveState = desiredState;
         if (Constants.Swerve.useMagicMotion) {
             mAngleMotor.setControl(anglePositionM.withPosition(desiredState.angle.getRotations()));

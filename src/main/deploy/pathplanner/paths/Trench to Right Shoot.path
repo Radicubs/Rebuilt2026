@@ -117,19 +117,7 @@
             {
               "type": "wait",
               "data": {
-                "waitTime": 5.0
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "AgitateIntake"
-              }
-            },
-            {
-              "type": "wait",
-              "data": {
-                "waitTime": 2.5
+                "waitTime": 7.5
               }
             },
             {

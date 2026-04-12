@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.798,
-        "y": 6.951
+        "x": 2.849,
+        "y": 7.276
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.3201115950991458,
-        "y": 6.098122821114889
+        "x": 3.4290240963855423,
+        "y": 7.477228915662651
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Trench Shot"
     },
     {
       "anchor": {
@@ -20,7 +20,7 @@
         "y": 7.464
       },
       "prevControl": {
-        "x": 2.570620418210302,
+        "x": 3.4272727535562284,
         "y": 7.464
       },
       "nextControl": null,
@@ -28,7 +28,12 @@
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.27136929460580916,
+      "rotationDegrees": 0.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -48,7 +53,7 @@
   "folder": "Connecting Paths",
   "idealStartingState": {
     "velocity": 2.0,
-    "rotation": 122.50000000000001
+    "rotation": 119.99999999999999
   },
   "useDefaultConstraints": true
 }

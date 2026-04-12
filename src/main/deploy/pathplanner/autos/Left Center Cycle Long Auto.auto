@@ -7,13 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right Cycle Center Outer"
+            "pathName": "Left Cycle Center Outer"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "StartIntake"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Trench to Right Position"
+            "pathName": "Trench to Left Postion"
           }
         },
         {
@@ -29,13 +35,25 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 6.0
+                  "waitTime": 2.0
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shake Pivot"
                 }
               },
               {
                 "type": "named",
                 "data": {
                   "name": "StopShoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "StopIntake"
                 }
               }
             ]
@@ -44,13 +62,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right Position to Trench"
+            "pathName": "Left Position to Trench"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Right Cycle Center Inner"
+            "pathName": "Left Cycle Center Inner Long"
           }
         }
       ]

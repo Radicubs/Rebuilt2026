@@ -11,6 +11,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "StartIntake"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Trench to Left Postion"
@@ -23,13 +29,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "StartShoot"
+                  "name": "StartTrenchShooter"
                 }
               },
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 5.0
+                  "waitTime": 4.0
                 }
               },
               {
@@ -39,15 +45,15 @@
                 }
               },
               {
-                "type": "wait",
+                "type": "named",
                 "data": {
-                  "waitTime": 2.5
+                  "name": "StopShoot"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "StopShoot"
+                  "name": "StopIntake"
                 }
               }
             ]

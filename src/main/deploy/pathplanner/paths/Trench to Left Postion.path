@@ -16,21 +16,21 @@
     },
     {
       "anchor": {
-        "x": 2.798,
-        "y": 6.951
+        "x": 2.849,
+        "y": 7.276
       },
       "prevControl": {
-        "x": 2.054093250093006,
-        "y": 7.5255244373139885
+        "x": 3.418097352256396,
+        "y": 7.477226181672978
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Trench Shot"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.5389119548681541,
+      "waypointRelativePos": 0.2647302904564364,
       "rotationDegrees": 180.0
     }
   ],
@@ -54,7 +54,7 @@
   },
   "goalEndState": {
     "velocity": 0.0,
-    "rotation": 122.50000000000001
+    "rotation": 119.99999999999999
   },
   "reversed": false,
   "folder": "Connecting Paths",

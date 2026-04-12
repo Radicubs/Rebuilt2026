@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.teleop.TeleopSwerve;
@@ -76,6 +77,7 @@ public class RobotContainer {
 
             // Intake
             NamedCommands.registerCommand("ExtendIntake", new InstantCommand(() -> {
+                //Pivot.getInstance().setSpeed(.25);
                 Pivot.getInstance().setGoal(Constants.Pivot.downPos);
             }));
             NamedCommands.registerCommand("AgitateIntake", new InstantCommand(() ->
@@ -96,6 +98,13 @@ public class RobotContainer {
                 Intake.getInstance().setIntakeSpeed(0);
             }));
 
+            NamedCommands.registerCommand("Shake Pivot", new InstantCommand(() -> Pivot.getInstance().setSpeed(-.2))
+                    .andThen(new WaitCommand(0.5))
+                    .andThen(new InstantCommand(() -> Pivot.getInstance().setSpeed(.2)))
+                    .andThen(new WaitCommand(.5))
+                    .repeatedly()
+                    .raceWith(new WaitCommand(5)));
+
             NamedCommands.registerCommand("Reset Heading", new InstantCommand(() -> Swerve.getInstance().setHeading(Swerve.getInstance().getHeading().plus(Rotation2d.k180deg))));
         }
 
@@ -107,16 +116,12 @@ public class RobotContainer {
                 auto_chooser.addOption("Middle Shoot", AutoBuilder.buildAuto("Middle Shoot Auto"));
                 auto_chooser.addOption("Left to Depot", AutoBuilder.buildAuto("Left Depot Auto"));
                 auto_chooser.addOption("Middle to Depot", AutoBuilder.buildAuto("Middle Depot Auto"));
-                auto_chooser.addOption("Right to Outpost", AutoBuilder.buildAuto("Right Outpost Auto"));
-                auto_chooser.addOption("Middle to Outpost", AutoBuilder.buildAuto("Middle Outpost Auto"));
                 auto_chooser.addOption("Left to Center Rush", AutoBuilder.buildAuto("Left Center Rush Auto"));
                 auto_chooser.addOption("Right to Center Rush", AutoBuilder.buildAuto("Right Center Rush Auto"));
                 auto_chooser.addOption("Left to Center Cycle", AutoBuilder.buildAuto("Left Center Cycle Auto"));
                 auto_chooser.addOption("Right to Center Cycle", AutoBuilder.buildAuto("Right Center Cycle Auto"));
-                auto_chooser.addOption("Left to Center Stay", AutoBuilder.buildAuto("Left Center Stay Auto"));
-                auto_chooser.addOption("Right to Center Stay", AutoBuilder.buildAuto("Right Center Stay Auto"));
-                auto_chooser.addOption("Left Center Cycle Straight", AutoBuilder.buildAuto("Left Center Cycle Straight"));
-                auto_chooser.addOption("Right Center Cycle Straight", AutoBuilder.buildAuto("Right Center Cycle Straight"));
+                auto_chooser.addOption("Left Center Cycle Auto", AutoBuilder.buildAuto("Left Center Cycle Auto"));
+                auto_chooser.addOption("Left Center Cycle Long Auto", AutoBuilder.buildAuto("Left Center Cycle Long Auto"));
             }
             catch(Exception e) {
                 System.out.println("Error" + e.getMessage());
@@ -240,13 +245,13 @@ public class RobotContainer {
             secondaryB.onTrue(new InstantCommand(() -> {
                 Pivot.getInstance().cancelPID();
                 Pivot.getInstance().setGoal(Constants.Pivot.middlePos);
-            })).onFalse(new InstantCommand(() -> Pivot.getInstance().setSpeed(0)));
+            }));
 
             // PID Extend Intake
             secondaryA.onTrue(new InstantCommand(() -> {
                 Pivot.getInstance().cancelPID();
                 Pivot.getInstance().setGoal(Constants.Pivot.downPos);
-            })).onFalse(new InstantCommand(() -> Pivot.getInstance().setSpeed(0)));
+            }));
 
             // Zero Pivot PID
             secondaryBack.onTrue(new InstantCommand(() -> Pivot.getInstance().resetAngle()));

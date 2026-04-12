@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.423,
-        "y": 0.6050000000000004
+        "x": 3.423,
+        "y": 0.6050000000000005
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.798,
-        "y": 1.1180000000000012
+        "x": 2.849,
+        "y": 0.793
       },
       "prevControl": {
-        "x": 1.898607674141718,
-        "y": 0.13335038289063117
+        "x": 3.7240722891566262,
+        "y": 0.691120481927711
       },
       "nextControl": null,
-      "isLocked": false,
-      "linkedName": null
+      "isLocked": true,
+      "linkedName": "Right Trench Shot"
     }
   ],
   "rotationTargets": [
@@ -47,7 +47,7 @@
   },
   "goalEndState": {
     "velocity": 0.0,
-    "rotation": -122.50000000000001
+    "rotation": -119.99999999999999
   },
   "reversed": false,
   "folder": "Connecting Paths",

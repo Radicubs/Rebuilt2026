@@ -51,12 +51,21 @@ public class Pivot extends SubsystemBase {
         pid.setTolerance(0.01);
 
         feedforward = new ArmFeedforward(Constants.Pivot.PIDFeedforwardConstants.S, Constants.Pivot.PIDFeedforwardConstants.G, Constants.Pivot.PIDFeedforwardConstants.V);
+
+        SmartDashboard.putData("Pivot", new Sendable() {
+            @Override
+            public void initSendable(SendableBuilder builder) {
+                builder.addDoubleProperty("Desired Pivot Angle", () -> pid.getSetpoint().position, null);
+                builder.addDoubleProperty("Current Pivot Angle", () -> getPosition(), null);
+            }
+        });
     }
     public double getPosition() {
         return relativeEncoder.getPosition();
     }
     public void setGoal(double targetRotation){
         reset();
+        cancelPID();
         moveToTargetAngle = true;
         pid.setGoal(new TrapezoidProfile.State(targetRotation, Constants.Pivot.pivotFinalVelocity));
     }
@@ -94,6 +103,7 @@ public class Pivot extends SubsystemBase {
             pivotMotor.set(motorSpeed + feedforwardVal);
 
             if(pid.atGoal()){cancelPID();}
+
         }
     }
 }

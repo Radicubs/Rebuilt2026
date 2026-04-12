@@ -328,7 +328,7 @@ public final class Constants
         public static final double pivotFinalVelocity = 0.0;
 
         public static final class PIDFeedforwardConstants {
-            public static final double P = 2.5;
+            public static final double P = 4;
             public static final double I = 0;
             public static final double D = 0;
             public static final double S = 0;
