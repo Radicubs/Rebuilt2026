@@ -12,7 +12,7 @@
         "y": 0.6050000000000005
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Right Trench Start"
     },
     {
       "anchor": {
@@ -36,7 +36,14 @@
   ],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "RampTrenchShooter",
+      "waypointRelativePos": 0.0,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 2.8,
     "maxAcceleration": 3.0,
@@ -52,7 +59,7 @@
   "reversed": false,
   "folder": "Connecting Paths",
   "idealStartingState": {
-    "velocity": 2.0,
+    "velocity": 3.0,
     "rotation": 180.0
   },
   "useDefaultConstraints": true

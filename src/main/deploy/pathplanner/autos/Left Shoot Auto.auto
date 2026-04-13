@@ -25,19 +25,32 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left Shoot"
+            "pathName": "Trench to Left Postion"
           }
         },
         {
-          "type": "wait",
+          "type": "sequential",
           "data": {
-            "waitTime": 1.5
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "RetractIntake"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "StartTrenchShooter"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shake Pivot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "StopShoot"
+                }
+              }
+            ]
           }
         }
       ]

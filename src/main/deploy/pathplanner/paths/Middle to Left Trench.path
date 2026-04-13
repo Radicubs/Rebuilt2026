@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.849,
-        "y": 7.276
+        "x": 2.8,
+        "y": 3.964
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.4290240963855423,
-        "y": 7.477228915662651
+        "x": 2.771704880903909,
+        "y": 7.533248867569219
       },
       "isLocked": false,
-      "linkedName": "Trench Shot"
+      "linkedName": "Center Shot"
     },
     {
       "anchor": {
@@ -20,20 +20,15 @@
         "y": 7.464
       },
       "prevControl": {
-        "x": 3.4272727535562284,
-        "y": 7.464
+        "x": 2.701884161237785,
+        "y": 7.452695376119707
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Left Trench Start"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.27136929460580916,
-      "rotationDegrees": 0.0
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -46,14 +41,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 3.0,
-    "rotation": 0.0
+    "velocity": 2.0,
+    "rotation": 180.0
   },
   "reversed": false,
   "folder": "Connecting Paths",
   "idealStartingState": {
     "velocity": 0.0,
-    "rotation": 119.99999999999999
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

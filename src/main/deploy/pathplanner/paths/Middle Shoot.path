@@ -12,7 +12,7 @@
         "y": 3.9755408280478735
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Center Start"
     },
     {
       "anchor": {
@@ -25,7 +25,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Center Shot"
     }
   ],
   "rotationTargets": [],
@@ -40,28 +40,6 @@
         "type": "named",
         "data": {
           "name": "RampShooter"
-        }
-      }
-    },
-    {
-      "name": "StartIntake",
-      "waypointRelativePos": 0.2290400972053469,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "StartIntake"
-        }
-      }
-    },
-    {
-      "name": "StartShoot",
-      "waypointRelativePos": 1.0,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "StartShoot"
         }
       }
     }

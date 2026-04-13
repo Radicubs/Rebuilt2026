@@ -25,25 +25,32 @@
         {
           "type": "path",
           "data": {
-            "pathName": null
+            "pathName": "Trench to Right Position"
           }
         },
         {
-          "type": "wait",
+          "type": "sequential",
           "data": {
-            "waitTime": 1.5
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "RetractIntake"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Reset Heading"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "StartTrenchShooter"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shake Pivot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "StopShoot"
+                }
+              }
+            ]
           }
         }
       ]

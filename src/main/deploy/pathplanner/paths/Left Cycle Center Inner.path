@@ -20,12 +20,12 @@
         "y": 7.280530120481927
       },
       "prevControl": {
-        "x": 6.510638554216867,
-        "y": 7.499084337349398
+        "x": 6.548486487174268,
+        "y": 7.49851161695847
       },
       "nextControl": {
-        "x": 8.091216052551253,
-        "y": 7.027270158742116
+        "x": 8.087554852074526,
+        "y": 7.015313828312073
       },
       "isLocked": false,
       "linkedName": null
@@ -64,16 +64,16 @@
     },
     {
       "anchor": {
-        "x": 6.171879518072289,
-        "y": 5.958277108433736
+        "x": 5.948028298045602,
+        "y": 6.388535283489414
       },
       "prevControl": {
-        "x": 5.844069017044203,
-        "y": 4.899917490828772
+        "x": 5.761042985447943,
+        "y": 5.296463263138211
       },
       "nextControl": {
-        "x": 6.554349397590361,
-        "y": 7.19310843373494
+        "x": 6.142199142406351,
+        "y": 7.522573798859934
       },
       "isLocked": false,
       "linkedName": null
@@ -84,12 +84,12 @@
         "y": 7.464
       },
       "prevControl": {
-        "x": 6.761975903614458,
-        "y": 7.477228915662651
+        "x": 7.169775486054561,
+        "y": 7.440577730557818
       },
       "nextControl": {
-        "x": 4.651004260742856,
-        "y": 7.457263999869919
+        "x": 4.651032264451939,
+        "y": 7.473233784577642
       },
       "isLocked": false,
       "linkedName": null
@@ -122,7 +122,11 @@
       "rotationDegrees": 105.00000000000001
     },
     {
-      "waypointRelativePos": 4.8,
+      "waypointRelativePos": 3.834622210953347,
+      "rotationDegrees": 90.0
+    },
+    {
+      "waypointRelativePos": 4.928768382352939,
       "rotationDegrees": 180.0
     }
   ],
@@ -142,7 +146,7 @@
     },
     {
       "name": "StopIntake",
-      "waypointRelativePos": 4.253962862318841,
+      "waypointRelativePos": 4.790307971014489,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -161,13 +165,13 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 2.0,
+    "velocity": 0.0,
     "rotation": 180.0
   },
   "reversed": false,
   "folder": "Center Paths",
   "idealStartingState": {
-    "velocity": 2.0,
+    "velocity": 3.0,
     "rotation": 0.0
   },
   "useDefaultConstraints": true

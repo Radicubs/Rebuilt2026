@@ -12,7 +12,7 @@
         "y": 7.464
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Left Trench Start"
     },
     {
       "anchor": {
@@ -59,7 +59,7 @@
   "reversed": false,
   "folder": "Connecting Paths",
   "idealStartingState": {
-    "velocity": 2.0,
+    "velocity": 3.0,
     "rotation": 180.0
   },
   "useDefaultConstraints": true

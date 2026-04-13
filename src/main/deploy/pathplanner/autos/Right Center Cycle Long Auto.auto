@@ -7,7 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Middle Depot"
+            "pathName": "Right Cycle Center Outer"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "StartIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Trench to Right Position"
           }
         },
         {
@@ -17,13 +29,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "StartShoot"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 2.0
+                  "name": "StartTrenchShooter"
                 }
               },
               {
@@ -52,11 +58,23 @@
               }
             ]
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Position to Trench"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Cycle Center Inner Long"
+          }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Depot Autos",
+  "folder": "Center Autos",
   "choreoAuto": false
 }

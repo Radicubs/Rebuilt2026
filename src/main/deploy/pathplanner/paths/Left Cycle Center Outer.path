@@ -48,16 +48,16 @@
     },
     {
       "anchor": {
-        "x": 6.991457831325301,
-        "y": 4.187987951807229
+        "x": 7.197415258550489,
+        "y": 4.472273895561889
       },
       "prevControl": {
-        "x": 7.9035879676881065,
-        "y": 3.6966890569366226
+        "x": 8.444509251838383,
+        "y": 4.468563796462315
       },
       "nextControl": {
-        "x": 6.219330794395346,
-        "y": 4.6038772474466345
+        "x": 6.320410549292608,
+        "y": 4.4748829806826995
       },
       "isLocked": false,
       "linkedName": null
@@ -118,6 +118,10 @@
       "rotationDegrees": -90.0
     },
     {
+      "waypointRelativePos": 2.2516163793103434,
+      "rotationDegrees": -90.0
+    },
+    {
       "waypointRelativePos": 3.3809128630705554,
       "rotationDegrees": 110.0
     },
@@ -142,7 +146,7 @@
     },
     {
       "name": "StartIntake",
-      "waypointRelativePos": 1.4947890818858434,
+      "waypointRelativePos": 0.9274796195652177,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -153,7 +157,7 @@
     },
     {
       "name": "StopIntake",
-      "waypointRelativePos": 4.485620471014492,
+      "waypointRelativePos": 4.875622735507244,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -172,7 +176,7 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 2.0,
+    "velocity": 3.0,
     "rotation": 180.0
   },
   "reversed": false,

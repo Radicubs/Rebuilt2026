@@ -33,12 +33,6 @@
                 }
               },
               {
-                "type": "wait",
-                "data": {
-                  "waitTime": 2.0
-                }
-              },
-              {
                 "type": "named",
                 "data": {
                   "name": "Shake Pivot"
@@ -54,6 +48,12 @@
                 "type": "named",
                 "data": {
                   "name": "StopIntake"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ExtendIntake"
                 }
               }
             ]

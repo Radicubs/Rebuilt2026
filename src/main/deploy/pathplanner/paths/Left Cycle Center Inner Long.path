@@ -52,28 +52,28 @@
         "y": 2.559759036144578
       },
       "prevControl": {
-        "x": 8.477626506024098,
-        "y": 2.1991445783132533
+        "x": 7.944442808085106,
+        "y": 1.186796917742784
       },
       "nextControl": {
-        "x": 5.8138922536321145,
-        "y": 2.701448751621455
+        "x": 6.157893705822172,
+        "y": 2.96531000046503
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 6.89310843373494,
-        "y": 5.9473493975903615
+        "x": 6.311442115420387,
+        "y": 5.860757882254465
       },
       "prevControl": {
-        "x": 6.663626506024096,
-        "y": 4.789012048192772
+        "x": 6.3167509415716605,
+        "y": 4.648729896172638
       },
       "nextControl": {
-        "x": 7.172793965926859,
-        "y": 7.359095417225755
+        "x": 6.304795241095432,
+        "y": 7.37826805724503
       },
       "isLocked": false,
       "linkedName": null
@@ -122,8 +122,12 @@
       "rotationDegrees": -105.00000000000001
     },
     {
-      "waypointRelativePos": 3.3908713692945898,
-      "rotationDegrees": 105.00000000000001
+      "waypointRelativePos": 3.355032961460446,
+      "rotationDegrees": 90.0
+    },
+    {
+      "waypointRelativePos": 3.973583291075051,
+      "rotationDegrees": 90.0
     },
     {
       "waypointRelativePos": 4.8,
@@ -135,7 +139,7 @@
   "eventMarkers": [
     {
       "name": "StartIntake",
-      "waypointRelativePos": 0.2,
+      "waypointRelativePos": 0.0,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -146,7 +150,7 @@
     },
     {
       "name": "StopIntake",
-      "waypointRelativePos": 4.253962862318841,
+      "waypointRelativePos": 5.074671648550726,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -165,13 +169,13 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 2.0,
+    "velocity": 0.0,
     "rotation": 180.0
   },
   "reversed": false,
   "folder": "Center Paths",
   "idealStartingState": {
-    "velocity": 2.0,
+    "velocity": 3.0,
     "rotation": 0.0
   },
   "useDefaultConstraints": true

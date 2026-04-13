@@ -133,20 +133,11 @@ public class Shooter extends SubsystemBase {
         leftShooter = new TalonFX(Constants.Shooter.leftShooterCID);
         leftShooter.getConfigurator().apply(leftConfig);
 
-        /*
-        SmartDashboard.putData("Left Shooter", new Sendable() {
-            @Override
-            public void initSendable(SendableBuilder builder) {
-                builder.addDoubleProperty("Left Shooter Speed", () -> getLeftShooterSpeed(), null);
-            }
-        });
-         */
-
         // Right Shooter
         rightShooter = new TalonFX(Constants.Shooter.rightShooterCID);
         rightShooter.getConfigurator().apply(rightConfig);
 
-        /*
+
         SmartDashboard.putData("Right Shooter", new Sendable() {
             @Override
             public void initSendable(SendableBuilder builder) {
@@ -176,7 +167,7 @@ public class Shooter extends SubsystemBase {
                 builder.addDoubleProperty("Top Shooter Desired Speed", () -> topShooterVel.Velocity, null);
             }
         });
-         */
+
 
     }
 

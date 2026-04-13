@@ -114,14 +114,11 @@ public class RobotContainer {
                 auto_chooser.setDefaultOption("Left Shoot", AutoBuilder.buildAuto("Left Shoot Auto"));
                 auto_chooser.addOption("Right Shoot", AutoBuilder.buildAuto("Right Shoot Auto"));
                 auto_chooser.addOption("Middle Shoot", AutoBuilder.buildAuto("Middle Shoot Auto"));
-                auto_chooser.addOption("Left to Depot", AutoBuilder.buildAuto("Left Depot Auto"));
-                auto_chooser.addOption("Middle to Depot", AutoBuilder.buildAuto("Middle Depot Auto"));
-                auto_chooser.addOption("Left to Center Rush", AutoBuilder.buildAuto("Left Center Rush Auto"));
-                auto_chooser.addOption("Right to Center Rush", AutoBuilder.buildAuto("Right Center Rush Auto"));
-                auto_chooser.addOption("Left to Center Cycle", AutoBuilder.buildAuto("Left Center Cycle Auto"));
-                auto_chooser.addOption("Right to Center Cycle", AutoBuilder.buildAuto("Right Center Cycle Auto"));
-                auto_chooser.addOption("Left Center Cycle Auto", AutoBuilder.buildAuto("Left Center Cycle Auto"));
-                auto_chooser.addOption("Left Center Cycle Long Auto", AutoBuilder.buildAuto("Left Center Cycle Long Auto"));
+                auto_chooser.addOption("Left Center Cycle", AutoBuilder.buildAuto("Left Center Cycle Auto"));
+                auto_chooser.addOption("Right Center Cycle", AutoBuilder.buildAuto("Right Center Cycle Auto"));
+                auto_chooser.addOption("Left Center Cycle Long", AutoBuilder.buildAuto("Left Center Cycle Long Auto"));
+                auto_chooser.addOption("Right Center Cycle Long", AutoBuilder.buildAuto("Right Center Cycle Long Auto"));
+                auto_chooser.addOption("Middle Depot", AutoBuilder.buildAuto("Middle Depot Auto"));
             }
             catch(Exception e) {
                 System.out.println("Error" + e.getMessage());
