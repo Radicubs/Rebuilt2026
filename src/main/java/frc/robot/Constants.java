@@ -80,7 +80,7 @@ public final class Constants
         public static double camera_0_OffsetZ = Units.inchesToMeters(18.5);
 
         public static double camera_1_OffsetX = Units.inchesToMeters(-2.5);
-        public static double camera_1_OffsetY = Units.inchesToMeters(-13);
+        public static double camera_1_OffsetY = Units.inchesToMeters(13.8);
         public static double camera_1_OffsetZ = Units.inchesToMeters(18.5);
 
     }
@@ -113,12 +113,12 @@ public final class Constants
         public static final SensorDirectionValue cancoderInvert = chosenModule.cancoderInvert;
 
         /* Swerve Current Limiting */
-        public static final int angleCurrentLimit = 25;
+        public static final int angleCurrentLimit = 15;
         public static final int angleCurrentThreshold = 40;
         public static final double angleCurrentThresholdTime = 0.1;
         public static final boolean angleEnableCurrentLimit = true;
 
-        public static final int driveCurrentLimit = 35;
+        public static final int driveCurrentLimit = 30;
         public static final int driveCurrentThreshold = 60;
         public static final double driveCurrentThresholdTime = 0.1;
         public static final boolean driveEnableCurrentLimit = true;

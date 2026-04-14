@@ -34,7 +34,7 @@ public class RobotContainer {
 
     XboxController secondaryController;
     private JoystickButton secondaryA, secondaryB, secondaryX, secondaryY, secondaryRB, secondaryLB;
-    private Trigger secondaryUp, secondaryDown, secondaryLeft, secondaryRight, secondaryLT, secondaryRT, secondaryBack, secondaryStickUp, secondaryStickDown, secondaryStart;
+    private Trigger secondaryUp, secondaryDown, secondaryLeft, secondaryRight, secondaryLT, secondaryRT, secondaryBack, secondaryLeftStick, secondaryStart;
 
     private final SendableChooser<Command> auto_chooser = new SendableChooser<Command>();
 
@@ -166,8 +166,7 @@ public class RobotContainer {
             secondaryRT = new Trigger(() -> secondaryController.getRightTriggerAxis() > 0.1);
             secondaryLT = new Trigger(() -> secondaryController.getLeftTriggerAxis() > 0.1);
             secondaryBack = new Trigger(() -> secondaryController.getBackButton());
-            secondaryStickUp = new Trigger(() -> secondaryController.getLeftY() < -0.5);
-            secondaryStickDown = new Trigger(() -> secondaryController.getLeftY() > 0.5);
+            secondaryLeftStick = new Trigger(() -> secondaryController.getLeftY() != 0);
             secondaryStart = new Trigger(() -> secondaryController.getStartButton());
 
         }
@@ -254,20 +253,16 @@ public class RobotContainer {
             secondaryBack.onTrue(new InstantCommand(() -> Pivot.getInstance().resetAngle()));
 
             // Manual Extend Intake
-            secondaryStickDown.onTrue(new InstantCommand(() -> {
-                Pivot.getInstance().cancelPID();
-                Pivot.getInstance().setSpeed(.2);
-            })).onFalse(new InstantCommand(() -> Pivot.getInstance().setSpeed(0)));
-
-            // Manual Retract Intake
-            secondaryStickUp.onTrue(new InstantCommand(() -> {
-                Pivot.getInstance().cancelPID();
-                Pivot.getInstance().setSpeed(-.2);
-                Intake.getInstance().setIntakeSpeed(30);
-            })).onFalse(new InstantCommand(() -> {
-                Pivot.getInstance().setSpeed(0);
-                Intake.getInstance().setIntakeSpeed(0);
-            }));
+            secondaryLeftStick.whileTrue(Commands.runEnd(
+                    () -> {
+                        Pivot.getInstance().setSpeed(secondaryController.getLeftY() * .4);
+                        Intake.getInstance().setIntakeSpeed(30);
+                    },
+                    () -> {
+                        Pivot.getInstance().cancelPID();
+                        Intake.getInstance().setIntakeSpeed(0);
+                        Pivot.getInstance().setSpeed(0);
+                    }));
 
             // Manual Shoot Shift Up
             secondaryUp.onTrue(new InstantCommand(() -> {
