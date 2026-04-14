@@ -133,6 +133,13 @@ public class RobotContainer {
                 }
             });
 
+            SmartDashboard.putData("Distance From Hub", new Sendable() {
+                @Override
+                public void initSendable(SendableBuilder builder) {
+                    builder.addDoubleProperty("Distance", () -> Constants.Field.hubCenterBlue.getTranslation().getDistance(Swerve.getInstance().getPose().getTranslation()), null);
+                }
+            });
+
         }
 
         // Button Initialization
@@ -255,7 +262,7 @@ public class RobotContainer {
             // Manual Extend Intake
             secondaryLeftStick.whileTrue(Commands.runEnd(
                     () -> {
-                        Pivot.getInstance().setSpeed(secondaryController.getLeftY() * .4);
+                        Pivot.getInstance().setSpeed(secondaryController.getLeftY() * .2);
                         Intake.getInstance().setIntakeSpeed(30);
                     },
                     () -> {
@@ -275,21 +282,21 @@ public class RobotContainer {
                     .onFalse(new InstantCommand(() -> Shooter.getInstance().changeShooterSpeeds(0)));
 
             // Spit Shooter
-            secondaryLeft.onTrue(new InstantCommand(() -> {
-                Shooter.getInstance().setShooterSpeeds(-10, -2, -7);
-                Transfer.getInstance().setTransferSetpoint(-10);
-            }))
-                .onFalse(new InstantCommand(() -> {
-                    Shooter.getInstance().stop();
-                    Transfer.getInstance().setTransferSetpoint(0);
-                }));
+//            secondaryLeft.onTrue(new InstantCommand(() -> {
+//                Shooter.getInstance().setShooterSpeeds(-10, -2, -7);
+//                Transfer.getInstance().setTransferSetpoint(-10);
+//            }))
+//                .onFalse(new InstantCommand(() -> {
+//                    Shooter.getInstance().stop();
+//                    Transfer.getInstance().setTransferSetpoint(0);
+//                }));
+//
+//            // Spit Intake
+//            secondaryRight.onTrue(new InstantCommand(() -> Intake.getInstance().setIntakeSpeed(-15)))
+//                    .onFalse(new InstantCommand(() -> Intake.getInstance().setIntakeSpeed(0)));
 
-//            secondaryLeft.onTrue(new InstantCommand(() -> Shooter.getInstance().changeIndexerSpeeds(.5)));
-//            secondaryRight.onTrue(new InstantCommand(() -> Shooter.getInstance().changeIndexerSpeeds(-.5)));
-
-            // Spit Intake
-            secondaryRight.onTrue(new InstantCommand(() -> Intake.getInstance().setIntakeSpeed(-15)))
-                    .onFalse(new InstantCommand(() -> Intake.getInstance().setIntakeSpeed(0)));
+            secondaryLeft.onTrue(new InstantCommand(() -> Shooter.getInstance().changeIndexerSpeeds(.5)));
+            secondaryRight.onTrue(new InstantCommand(() -> Shooter.getInstance().changeIndexerSpeeds(-.5)));
 
             secondaryStart.onTrue(new InstantCommand(() -> {
                 //Shooter.getInstance().setIndexerSpeed(Constants.Shooter.CloseShootSpeeds.indexerRPS);

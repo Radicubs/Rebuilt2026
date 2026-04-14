@@ -168,6 +168,14 @@ public class Shooter extends SubsystemBase {
             }
         });
 
+        SmartDashboard.putData("Custom Shots", new Sendable() {
+            @Override
+            public void initSendable(SendableBuilder builder) {
+                builder.addDoubleProperty("Top Shooter Custom", () -> customTopshaftSpeed, null);
+                builder.addDoubleProperty("Main Shooter Custom", () -> customShootSpeed, null);
+            }
+        });
+
 
     }
 
@@ -286,9 +294,13 @@ public class Shooter extends SubsystemBase {
                 toTarget = Swerve.getInstance().getPose().minus(Constants.Field.hubCenterRed);
             }
 
-            distanceToHub = (Math.sqrt(toTarget.getX() * toTarget.getX() + toTarget.getY() * toTarget.getY())) - .75;
-            regressionMainSpeeds = 65.185 / (1 + Math.exp(-0.358845 * distanceToHub + -0.291163));
-            regressionTopSpeeds = 10.36912 / (1 + Math.exp(-(1.83055 * distanceToHub - 2.48482)));
+            distanceToHub = Constants.Field.hubCenterBlue.getTranslation().getDistance(Swerve.getInstance().getPose().getTranslation());
+            regressionMainSpeeds = 5.48105 * distanceToHub + 27.26404;
+            regressionTopSpeeds = -2.16514*Math.pow(distanceToHub, 3) + 22.77548*Math.pow(distanceToHub, 2) - 75.31997*distanceToHub + 91.22797;
+
+            if(regressionMainSpeeds > 60){regressionMainSpeeds = 60;}
+            if(regressionTopSpeeds > 25){regressionTopSpeeds = 25;}
+            if(distanceToHub > 5.2) {regressionTopSpeeds = 17.5;}
         }
     }
 }
