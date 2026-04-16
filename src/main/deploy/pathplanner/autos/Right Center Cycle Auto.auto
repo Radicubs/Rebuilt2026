@@ -33,6 +33,12 @@
                 }
               },
               {
+                "type": "wait",
+                "data": {
+                  "waitTime": 2.5
+                }
+              },
+              {
                 "type": "named",
                 "data": {
                   "name": "Shake Pivot"

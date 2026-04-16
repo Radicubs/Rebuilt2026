@@ -156,6 +156,12 @@
       }
     },
     {
+      "name": "RampTrenchShooter",
+      "waypointRelativePos": 5.019171099290781,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
       "name": "StopIntake",
       "waypointRelativePos": 5.40442154255319,
       "endWaypointRelativePos": null,
@@ -176,7 +182,7 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 2.0,
+    "velocity": 3.0,
     "rotation": 180.0
   },
   "reversed": false,

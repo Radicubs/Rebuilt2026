@@ -36,14 +36,7 @@
   ],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "RampTrenchShooter",
-      "waypointRelativePos": 0.0,
-      "endWaypointRelativePos": null,
-      "command": null
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 2.8,
     "maxAcceleration": 3.0,
@@ -59,7 +52,7 @@
   "reversed": false,
   "folder": "Connecting Paths",
   "idealStartingState": {
-    "velocity": 2.0,
+    "velocity": 3.0,
     "rotation": 180.0
   },
   "useDefaultConstraints": true
