@@ -32,15 +32,15 @@
     },
     {
       "anchor": {
-        "x": 8.20443373493976,
+        "x": 8.232435298758142,
         "y": 6.07
       },
       "prevControl": {
-        "x": 8.170701703844019,
+        "x": 8.1987032676624,
         "y": 6.533117807555998
       },
       "nextControl": {
-        "x": 8.271241347115987,
+        "x": 8.29924291093437,
         "y": 5.15277699640176
       },
       "isLocked": false,
@@ -165,6 +165,12 @@
           "name": "StopIntake"
         }
       }
+    },
+    {
+      "name": "RampTrenchShooter",
+      "waypointRelativePos": 4.933343230403802,
+      "endWaypointRelativePos": null,
+      "command": null
     }
   ],
   "globalConstraints": {
@@ -176,7 +182,7 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 2.0,
+    "velocity": 3.0,
     "rotation": 180.0
   },
   "reversed": false,
