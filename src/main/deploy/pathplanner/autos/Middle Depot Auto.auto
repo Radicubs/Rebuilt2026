@@ -11,43 +11,19 @@
           }
         },
         {
-          "type": "sequential",
+          "type": "parallel",
           "data": {
             "commands": [
               {
                 "type": "named",
                 "data": {
-                  "name": "StartShoot"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 2.0
+                  "name": "Start Close Shot"
                 }
               },
               {
                 "type": "named",
                 "data": {
                   "name": "Shake Pivot"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "StopShoot"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "StopIntake"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "ExtendIntake"
                 }
               }
             ]

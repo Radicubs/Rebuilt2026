@@ -6,9 +6,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import frc.robot.Constants.TrajectoryConstants;
-import frc.robot.subsystems.PhotonVision;
-import frc.robot.subsystems.Swerve;
+import frc.robot.subsystems.vision.PhotonVision;
+import frc.robot.subsystems.swerve.Swerve;
 
 public class AlignToSpecific extends PathFollowingCommand {
     private int tagID;

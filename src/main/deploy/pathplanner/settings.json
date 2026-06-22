@@ -4,16 +4,13 @@
   "holonomicMode": true,
   "pathFolders": [
     "Center Paths",
-    "Depot Paths",
     "Connecting Paths",
-    "Outpost Paths",
-    "Start Shoot",
-    "Straight Center Paths"
+    "Depot Paths",
+    "Start Shoot"
   ],
   "autoFolders": [
     "Center Autos",
     "Depot Autos",
-    "Outpost Autos",
     "Shoot Autos"
   ],
   "defaultMaxVel": 2.8,

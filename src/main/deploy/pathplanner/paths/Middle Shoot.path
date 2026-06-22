@@ -33,15 +33,21 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "RampShooter",
+      "name": "Ramp Close Shot",
       "waypointRelativePos": 0,
-      "endWaypointRelativePos": null,
+      "endWaypointRelativePos": 1.0,
       "command": {
         "type": "named",
         "data": {
-          "name": "RampShooter"
+          "name": "Ramp Close Shot"
         }
       }
+    },
+    {
+      "name": "Start Close Shot",
+      "waypointRelativePos": 1.0,
+      "endWaypointRelativePos": null,
+      "command": null
     }
   ],
   "globalConstraints": {

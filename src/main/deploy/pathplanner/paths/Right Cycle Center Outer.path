@@ -134,43 +134,32 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "ExtendIntake",
+      "name": "Extend Pivot",
       "waypointRelativePos": 0.0,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "ExtendIntake"
+          "name": "Extend Pivot"
         }
       }
     },
     {
-      "name": "StartIntake",
-      "waypointRelativePos": 0.2252881205673758,
-      "endWaypointRelativePos": null,
+      "name": "Start Intake",
+      "waypointRelativePos": 0.577991452991453,
+      "endWaypointRelativePos": 4.243255876068375,
       "command": {
         "type": "named",
         "data": {
-          "name": "StartIntake"
+          "name": "Start Intake"
         }
       }
     },
     {
-      "name": "RampTrenchShooter",
-      "waypointRelativePos": 5.019171099290781,
-      "endWaypointRelativePos": null,
+      "name": "Ramp Trench Shot",
+      "waypointRelativePos": 5.086939102564102,
+      "endWaypointRelativePos": 6.0,
       "command": null
-    },
-    {
-      "name": "StopIntake",
-      "waypointRelativePos": 5.40442154255319,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "StopIntake"
-        }
-      }
     }
   ],
   "globalConstraints": {

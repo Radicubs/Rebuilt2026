@@ -12,18 +12,17 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.HolonomicPathFollower;
-import frc.robot.subsystems.Swerve;
+import frc.robot.subsystems.swerve.Swerve;
 
 public abstract class PathFollowingCommand extends Command {
     protected final HolonomicPathFollower chassis;
     protected HolonomicDriveController controller;
     protected final Timer timer;
     protected Pose2d endPose, tolerance;
-    protected final Constants.TrajectoryConstants constants;
+    protected final TrajectoryConstants constants;
 
-    public static HolonomicDriveController getController(Constants.TrajectoryConstants constants) {
+    public static HolonomicDriveController getController(TrajectoryConstants constants) {
         return new HolonomicDriveController(
                 new PIDController(constants.xControllerkP(), constants.xControllerkI(), constants.xControllerkD()),
                 new PIDController(constants.yControllerkP(), constants.yControllerkI(), constants.yControllerkD()),
@@ -32,13 +31,13 @@ public abstract class PathFollowingCommand extends Command {
                         constants.maxPathAngularSpeed(), constants.maxPathAngularAcceleration())));
     }
 
-    public static Pose2d getTolerance(Constants.TrajectoryConstants constants) {
+    public static Pose2d getTolerance(TrajectoryConstants constants) {
         return new Pose2d(constants.xTolerance(), constants.yTolerance(),
                 Rotation2d.fromRadians(constants.rotTolerance()));
     }
 
     public <T extends SubsystemBase & HolonomicPathFollower>
-    PathFollowingCommand(T chassis, Pose2d endPose, final Constants.TrajectoryConstants constants) {
+    PathFollowingCommand(T chassis, Pose2d endPose, final TrajectoryConstants constants) {
         this.constants = constants;
         this.chassis = chassis;
         this.endPose = endPose;

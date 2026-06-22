@@ -3,8 +3,7 @@ package frc.robot.commands.pathcommands;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystems.Swerve;
-import frc.robot.Constants.TrajectoryConstants;
+import frc.robot.subsystems.swerve.Swerve;
 
 public class FollowTrajectory extends PathFollowingCommand {
     private final boolean followTrajectoryHeading;

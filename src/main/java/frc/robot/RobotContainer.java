@@ -11,308 +11,214 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.teleop.TeleopSwerve;
-import frc.robot.subsystems.*;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.intake.*;
+import frc.robot.commands.pivot.*;
+import frc.robot.commands.shooter.*;
+import frc.robot.commands.swerve.*;
+import frc.robot.commands.transfer.*;
+import frc.robot.subsystems.field.FieldConstants;
+import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.intake.IntakeConstants;
+import frc.robot.subsystems.pivot.Pivot;
+import frc.robot.subsystems.pivot.PivotConstants;
+import frc.robot.subsystems.swerve.Swerve;
+import frc.robot.subsystems.vision.PhotonVision;
+import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.ShooterConstants;
+import frc.robot.subsystems.transfer.Transfer;
+import frc.robot.subsystems.transfer.TransferConstants;
 
 import java.util.Optional;
 
 
 public class RobotContainer {
 
-    XboxController mainController;
-    private JoystickButton mainA, mainB, mainX, mainY, mainRB, mainLB;
-    private Trigger mainUp, mainDown, mainLeft, mainRight, mainLT, mainRT, mainBack;
-
-    XboxController secondaryController;
-    private JoystickButton secondaryA, secondaryB, secondaryX, secondaryY, secondaryRB, secondaryLB;
-    private Trigger secondaryUp, secondaryDown, secondaryLeft, secondaryRight, secondaryLT, secondaryRT, secondaryBack, secondaryLeftStick, secondaryStart;
-
+    CommandXboxController mainController;
+    CommandXboxController secondaryController;
+    // Subsystems
+    PhotonVision photonvision = PhotonVision.getInstance();
+    Pivot pivot = Pivot.getInstance();
+    Swerve swerve = Swerve.getInstance();
+    Shooter shooter = Shooter.getInstance();
+    Transfer transfer = Transfer.getInstance();
+    Intake intake = Intake.getInstance();
     private final SendableChooser<Command> auto_chooser = new SendableChooser<Command>();
 
     public RobotContainer() {
-        PhotonVision.getInstance();
-        Pivot.getInstance();
-        Swerve.getInstance();
-        Shooter.getInstance();
-        Transfer.getInstance();
+        registerNamedCommands();   // must precede the auto chooser — AutoBuilder resolves these names
+        configureAutoChooser();
+        configureDashboard();
+        configureControllers();
+        configureBindings();
+    }
 
-        // Named Commands
-        {
-            // Shooter
-            NamedCommands.registerCommand("RampShooter", new InstantCommand(() -> {
-                Shooter.getInstance().setShooterSpeeds(Constants.Shooter.CloseShootSpeeds.mainShooterRPS, Constants.Shooter.CloseShootSpeeds.topShaftRPS, -3);
-            }));
+    /** Registers the PathPlanner NamedCommands referenced by the autos / path event markers. */
+    private void registerNamedCommands() {
+        // ---- Shooter / transfer ----
+        // Ramp the flywheels (indexer held back at -3, no belt).
+        NamedCommands.registerCommand("Ramp Close Shot",
+                new SetShooterSpeeds(shooter, ShooterConstants.CloseShootSpeeds.mainShooterRPS, ShooterConstants.CloseShootSpeeds.topShaftRPS, -3));
 
-            NamedCommands.registerCommand("StartShoot", new InstantCommand(() -> {
-                Shooter.getInstance().setShooterSpeeds(Constants.Shooter.CloseShootSpeeds.mainShooterRPS, Constants.Shooter.CloseShootSpeeds.topShaftRPS, Constants.Shooter.CloseShootSpeeds.indexerRPS);
-                Transfer.getInstance().setTransferSpeed(Constants.Transfer.shootTransferSpeed);
-            }));
+        NamedCommands.registerCommand("Ramp Trench Shot",
+                new SetShooterSpeeds(shooter, ShooterConstants.TrenchShootSpeeds.mainShooterRPS, ShooterConstants.TrenchShootSpeeds.topShaftRPS, -3));
 
-            NamedCommands.registerCommand("RampTrenchShooter", new InstantCommand(() -> {
-                Shooter.getInstance().setShooterSpeeds(Constants.Shooter.TrenchShootSpeeds.mainShooterRPS, Constants.Shooter.TrenchShootSpeeds.topShaftRPS, -3);
-            }));
+        // Full shot: flywheels + indexer + belt.
+        NamedCommands.registerCommand("Start Close Shot",
+                new SetShooterSpeeds(shooter, ShooterConstants.CloseShootSpeeds.mainShooterRPS, ShooterConstants.CloseShootSpeeds.topShaftRPS, ShooterConstants.CloseShootSpeeds.indexerRPS)
+                        .alongWith(new SetTransferSpeed(transfer, TransferConstants.shootTransferSpeed))
+                        .withTimeout(6.0));
 
-            NamedCommands.registerCommand("StartTrenchShooter", new InstantCommand(() -> {
-                Shooter.getInstance().setShooterSpeeds(Constants.Shooter.TrenchShootSpeeds.mainShooterRPS, Constants.Shooter.TrenchShootSpeeds.topShaftRPS, Constants.Shooter.TrenchShootSpeeds.indexerRPS);
-                Transfer.getInstance().setTransferSpeed(Constants.Transfer.shootTransferSpeed);
-            }));
+        NamedCommands.registerCommand("Start Trench Shot",
+                new SetShooterSpeeds(shooter, ShooterConstants.TrenchShootSpeeds.mainShooterRPS, ShooterConstants.TrenchShootSpeeds.topShaftRPS, ShooterConstants.TrenchShootSpeeds.indexerRPS)
+                        .alongWith(new SetTransferSpeed(transfer, TransferConstants.shootTransferSpeed))
+                        .withTimeout(6.0));
 
-            NamedCommands.registerCommand("StopShoot", new InstantCommand(() -> {
-                Shooter.getInstance().stop();
-                Transfer.getInstance().setTransferSpeed(0);
-            }));
+        // Reverse/eject (shooter only, no belt).
+        NamedCommands.registerCommand("Eject",
+                new SetShooterSpeeds(shooter, ShooterConstants.EjectSpeeds.mainShooterRPS, ShooterConstants.EjectSpeeds.topShaftRPS, ShooterConstants.EjectSpeeds.indexerRPS)
+                        .withTimeout(1));
 
-            NamedCommands.registerCommand("ReverseShoot", new InstantCommand(() -> {
-                Shooter.getInstance().setShooterSpeeds(-10, -10, -10);
-        }));
+        // ---- Intake / pivot ----
+        NamedCommands.registerCommand("Start Intake",
+                new SetIntakeSpeed(intake, IntakeConstants.intakeSpeedRPS)
+                        .alongWith(new SetPivotSpeed(pivot, 0.07)));
 
-            // Intake
-            NamedCommands.registerCommand("ExtendIntake", new InstantCommand(() -> {
-                //Pivot.getInstance().setSpeed(.25);
-                Pivot.getInstance().setGoal(Constants.Pivot.downPos);
-            }));
-            NamedCommands.registerCommand("AgitateIntake", new InstantCommand(() ->
-            {
-                Pivot.getInstance().setGoal(Constants.Pivot.middlePos);
-            }));
-            NamedCommands.registerCommand("RetractIntake", new InstantCommand(() -> {
-                Pivot.getInstance().setSpeed(0);
-                Pivot.getInstance().setGoal(Constants.Pivot.upPos);
-            }));
+        NamedCommands.registerCommand("Stop Intake", new SetIntakeSpeed(intake, 0));
 
-            NamedCommands.registerCommand("StartIntake", new InstantCommand(() -> {
-                Intake.getInstance().setIntakeSpeed(Constants.Intake.intakeSpeedRPS);
-                Pivot.getInstance().setSpeed(0.07);
-            }));
+        NamedCommands.registerCommand("Extend Pivot", new SetPivotPosition(pivot, PivotConstants.downPos));
 
-            NamedCommands.registerCommand("StopIntake", new InstantCommand(() -> {
-                Intake.getInstance().setIntakeSpeed(0);
-            }));
+        NamedCommands.registerCommand("Retract Pivot", new SetPivotPosition(pivot, PivotConstants.upPos));
 
-            NamedCommands.registerCommand("Shake Pivot", new InstantCommand(() -> Pivot.getInstance().setSpeed(-.2))
-                    .andThen(new WaitCommand(0.5))
-                    .andThen(new InstantCommand(() -> Pivot.getInstance().setSpeed(.2)))
-                    .andThen(new WaitCommand(.5))
-                    .repeatedly()
-                    .raceWith(new WaitCommand(5)));
+        NamedCommands.registerCommand("Shake Pivot", new ShakePivot(pivot));
 
-            NamedCommands.registerCommand("Reset Heading", new InstantCommand(() -> Swerve.getInstance().setHeading(Swerve.getInstance().getHeading().plus(Rotation2d.k180deg))));
+        NamedCommands.registerCommand("Reset Heading", new SetHeading(swerve, () -> swerve.getHeading().plus(Rotation2d.k180deg)));
+    }
+
+    /** Builds the autonomous chooser from the PathPlanner autos. */
+    private void configureAutoChooser() {
+        try {
+            auto_chooser.setDefaultOption("Left Shoot", AutoBuilder.buildAuto("Left Shoot Auto"));
+            auto_chooser.addOption("Right Shoot", AutoBuilder.buildAuto("Right Shoot Auto"));
+            auto_chooser.addOption("Middle Shoot", AutoBuilder.buildAuto("Middle Shoot Auto"));
+            auto_chooser.addOption("Left Center Cycle", AutoBuilder.buildAuto("Left Center Cycle Auto"));
+            auto_chooser.addOption("Right Center Cycle", AutoBuilder.buildAuto("Right Center Cycle Auto"));
+            auto_chooser.addOption("Left Center Cycle Long", AutoBuilder.buildAuto("Left Center Cycle Long Auto"));
+            auto_chooser.addOption("Right Center Cycle Long", AutoBuilder.buildAuto("Right Center Cycle Long Auto"));
+            auto_chooser.addOption("Middle Depot", AutoBuilder.buildAuto("Middle Depot Auto"));
+        } catch (Exception e) {
+            System.out.println("Error" + e.getMessage());
+            auto_chooser.setDefaultOption("Auto Error", new InstantCommand());
         }
+        SmartDashboard.putData("Auto Chooser", auto_chooser);
+    }
 
-        // Auto Chooser
-        {
-            try{
-                auto_chooser.setDefaultOption("Left Shoot", AutoBuilder.buildAuto("Left Shoot Auto"));
-                auto_chooser.addOption("Right Shoot", AutoBuilder.buildAuto("Right Shoot Auto"));
-                auto_chooser.addOption("Middle Shoot", AutoBuilder.buildAuto("Middle Shoot Auto"));
-                auto_chooser.addOption("Left Center Cycle", AutoBuilder.buildAuto("Left Center Cycle Auto"));
-                auto_chooser.addOption("Right Center Cycle", AutoBuilder.buildAuto("Right Center Cycle Auto"));
-                auto_chooser.addOption("Left Center Cycle Long", AutoBuilder.buildAuto("Left Center Cycle Long Auto"));
-                auto_chooser.addOption("Right Center Cycle Long", AutoBuilder.buildAuto("Right Center Cycle Long Auto"));
-                auto_chooser.addOption("Middle Depot", AutoBuilder.buildAuto("Middle Depot Auto"));
+    /** Publishes match / field telemetry to the dashboard. */
+    private void configureDashboard() {
+        SmartDashboard.putData("Field Elements", new Sendable() {
+            @Override
+            public void initSendable(SendableBuilder builder) {
+                builder.addBooleanProperty("Hub Active", () -> isHubActive(), null);
             }
-            catch(Exception e) {
-                System.out.println("Error" + e.getMessage());
-                auto_chooser.setDefaultOption("Auto Error", new InstantCommand());
-            }
-
-            SmartDashboard.putData("Auto Chooser", auto_chooser);
-            SmartDashboard.putData("Field Elements", new Sendable() {
-                @Override
-                public void initSendable(SendableBuilder builder) {
-                    builder.addBooleanProperty("Hub Active", () -> isHubActive(), null);
-                }
-            });
+        });
 
             SmartDashboard.putData("Distance From Hub", new Sendable() {
-                @Override
-                public void initSendable(SendableBuilder builder) {
-                    builder.addDoubleProperty("Distance", () -> Constants.Field.hubCenterBlue.getTranslation().getDistance(Swerve.getInstance().getPose().getTranslation()), null);
-                }
-            });
+            @Override
+            public void initSendable(SendableBuilder builder) {
+                builder.addDoubleProperty("Distance", () -> FieldConstants.hubCenterBlue.getTranslation().getDistance(swerve.getPose().getTranslation()), null);
+            }
+        });
+    }
 
-        }
+    /** Creates the driver controllers and the swerve default (teleop drive) command. */
+    private void configureControllers() {
+        mainController = new CommandXboxController(0);
+        secondaryController = new CommandXboxController(1);
 
-        // Button Initialization
-        {
-            mainController = new XboxController(0);
-            mainRB = new JoystickButton(mainController, XboxController.Button.kRightBumper.value);
-            mainLB = new JoystickButton(mainController, XboxController.Button.kLeftBumper.value);
-            mainA = new JoystickButton(mainController, XboxController.Button.kA.value);
-            mainB = new JoystickButton(mainController, XboxController.Button.kB.value);
-            mainX = new JoystickButton(mainController, XboxController.Button.kX.value);
-            mainY = new JoystickButton(mainController, XboxController.Button.kY.value);
-            mainUp = new Trigger(() -> mainController.getPOV() == 0);
-            mainRight = new Trigger(() -> mainController.getPOV() == 90);
-            mainDown = new Trigger(() -> mainController.getPOV() == 180);
-            mainLeft = new Trigger(() -> mainController.getPOV() == 270);
-            mainRT = new Trigger(() -> mainController.getRightTriggerAxis() > 0.1);
-            mainLT = new Trigger(() -> mainController.getLeftTriggerAxis() > 0.1);
-            mainBack = new Trigger(() -> mainController.getBackButton());
-
-            secondaryController = new XboxController(1);
-            secondaryRB = new JoystickButton(secondaryController, XboxController.Button.kRightBumper.value);
-            secondaryLB = new JoystickButton(secondaryController, XboxController.Button.kLeftBumper.value);
-            secondaryA = new JoystickButton(secondaryController, XboxController.Button.kA.value);
-            secondaryB = new JoystickButton(secondaryController, XboxController.Button.kB.value);
-            secondaryX = new JoystickButton(secondaryController, XboxController.Button.kX.value);
-            secondaryY = new JoystickButton(secondaryController, XboxController.Button.kY.value);
-            secondaryUp = new Trigger(() -> secondaryController.getPOV() == 0);
-            secondaryRight = new Trigger(() -> secondaryController.getPOV() == 90);
-            secondaryDown = new Trigger(() -> secondaryController.getPOV() == 180);
-            secondaryLeft = new Trigger(() -> secondaryController.getPOV() == 270);
-            secondaryRT = new Trigger(() -> secondaryController.getRightTriggerAxis() > 0.1);
-            secondaryLT = new Trigger(() -> secondaryController.getLeftTriggerAxis() > 0.1);
-            secondaryBack = new Trigger(() -> secondaryController.getBackButton());
-            secondaryLeftStick = new Trigger(() -> secondaryController.getLeftY() != 0);
-            secondaryStart = new Trigger(() -> secondaryController.getStartButton());
-
-        }
-
-
-        Swerve.getInstance().setDefaultCommand(new TeleopSwerve(
+        swerve.setDefaultCommand(new TeleopSwerve(
                 () -> -mainController.getLeftY(),
                 () -> -mainController.getLeftX(),
                 () -> -mainController.getRightX(),
-                () -> mainX.getAsBoolean()
+                () -> mainController.x().getAsBoolean()
         ));
-
-        configureBindings();
-
     }
 
     private void configureBindings () {
+
         // Main Controller Binds
         {
-            // Shoot
-            mainRB.onTrue(new InstantCommand(() -> {
-                Shooter.getInstance().setIndexerSpeed(Constants.Shooter.CloseShootSpeeds.indexerRPS);
-                Transfer.getInstance().setTransferSpeed(Constants.Transfer.shootTransferSpeed);
-            })).onFalse(new InstantCommand(() -> {
-                Transfer.getInstance().setTransferSpeed(0);
-                Shooter.getInstance().setIndexerSpeed(0);
-            }));
-
+            //Shoot -> Run Indexer + Transfer
+            mainController.rightBumper().whileTrue(
+                    new SetShooterSpeeds(shooter, 0,0,ShooterConstants.CloseShootSpeeds.indexerRPS)
+                    .alongWith(new SetTransferSpeed(transfer, TransferConstants.shootTransferSpeed)));
+            
             // Zero Heading
-            mainLB.onTrue(new InstantCommand(() -> {
-                Swerve.getInstance().zeroHeading();
-            }));
+            mainController.leftBumper().onTrue(new ZeroHeading(swerve));
 
-            mainDown.onTrue(new InstantCommand(() -> Swerve.getInstance().setHeading(Rotation2d.k180deg)));
+            // Flip Heading
+            mainController.povDown().onTrue(new SetHeading(swerve, Rotation2d.k180deg));
         }
 
         // Secondary Controller Binds
         {
-            // Intake
-            secondaryX.onTrue(new InstantCommand(() -> {
-                if(Math.abs(Pivot.getInstance().getSpeed()) < 0.05){
-                    Intake.getInstance().setIntakeSpeed(Constants.Intake.intakeSpeedRPS);
-//                    Transfer.getInstance().setTransferSpeed(Constants.Transfer.intakeTransferSpeed);
-                    Pivot.getInstance().setSpeed(0.07);
-                }
-
-            })).onFalse(new InstantCommand(() -> {
-                Intake.getInstance().cancelPID();
-                Transfer.getInstance().setTransferSpeed(0);
-                Pivot.getInstance().setSpeed(0);
-            }));
+            // Intake (only if the pivot isn't already moving)
+            secondaryController.x().whileTrue(
+                    new SetIntakeSpeed(intake, IntakeConstants.intakeSpeedRPS)
+                            .alongWith(new SetPivotSpeed(pivot, 0.07))
+                            .onlyIf(() -> Math.abs(pivot.getSpeed()) < 0.05));
 
 
             // Close Ramp
-            secondaryRB.onTrue(new InstantCommand(() -> Shooter.getInstance().closeRamp()))
-                    .onFalse(new InstantCommand(()-> Shooter.getInstance().cancelPID()));
+            secondaryController.rightBumper().whileTrue(
+                    new SetShooterSpeeds(shooter, ShooterConstants.CloseShootSpeeds.mainShooterRPS, ShooterConstants.CloseShootSpeeds.topShaftRPS,-3));
 
             // Trench Ramp
-            secondaryRT.onTrue(new InstantCommand(() -> Shooter.getInstance().trenchRamp()))
-                    .onFalse(new InstantCommand(()->Shooter.getInstance().cancelPID()));
+            secondaryController.rightTrigger().whileTrue(
+                    new SetShooterSpeeds(shooter, ShooterConstants.TrenchShootSpeeds.mainShooterRPS, ShooterConstants.TrenchShootSpeeds.topShaftRPS,-3));
 
             // Pass Ramp
-            secondaryLT.onTrue(new InstantCommand(() -> Shooter.getInstance().passRamp()))
-                    .onFalse(new InstantCommand(() -> Shooter.getInstance().cancelPID()));
-
-            // Custom Ramp
-            secondaryLB.onTrue(new InstantCommand(() -> {
-                Shooter.getInstance().customRamp();
-            })).onFalse(new InstantCommand(() -> Shooter.getInstance().cancelPID()));
+            secondaryController.leftTrigger().whileTrue(
+                    new SetShooterSpeeds(shooter, ShooterConstants.PassSpeeds.mainShooterRPS, ShooterConstants.PassSpeeds.topShaftRPS,-3));
 
             // PID Retract Intake
-            secondaryB.onTrue(new InstantCommand(() -> {
-                Pivot.getInstance().cancelPID();
-                Pivot.getInstance().setGoal(Constants.Pivot.middlePos);
-            }));
+            secondaryController.b().onTrue(new SetPivotPosition(pivot, PivotConstants.upPos));
 
             // PID Extend Intake
-            secondaryA.onTrue(new InstantCommand(() -> {
-                Pivot.getInstance().cancelPID();
-                Pivot.getInstance().setGoal(Constants.Pivot.downPos);
-            }));
+            secondaryController.a().onTrue(new SetPivotPosition(pivot, PivotConstants.downPos));
 
             // Zero Pivot PID
-            secondaryBack.onTrue(new InstantCommand(() -> Pivot.getInstance().resetAngle()));
+            secondaryController.back().onTrue(new ResetPivotAngle(pivot));
 
             // Manual Extend Intake
-            secondaryLeftStick.whileTrue(Commands.runEnd(
-                    () -> {
-                        Pivot.getInstance().setSpeed(secondaryController.getLeftY() * .2);
-                        Intake.getInstance().setIntakeSpeed(30);
-                    },
-                    () -> {
-                        Pivot.getInstance().cancelPID();
-                        Intake.getInstance().setIntakeSpeed(0);
-                        Pivot.getInstance().setSpeed(0);
-                    }));
+            secondaryController.leftStick().whileTrue(
+                    new SetPivotSpeed(pivot, () -> secondaryController.getLeftY() * 0.2));
 
-            // Manual Shoot Shift Up
-            secondaryUp.onTrue(new InstantCommand(() -> {
-                Shooter.getInstance().changeShooterSpeeds(.5);
-            }))
-                    .onFalse(new InstantCommand(() -> Shooter.getInstance().changeShooterSpeeds(0)));
+            // Shift Main Shooter Up
+            secondaryController.povUp().onTrue(
+                    new AdjustCustomShot(shooter, 0.5,0.0));
 
-            // Manual Shoot Shift Down
-            secondaryDown.onTrue(new InstantCommand(() -> Shooter.getInstance().changeShooterSpeeds(-.5)))
-                    .onFalse(new InstantCommand(() -> Shooter.getInstance().changeShooterSpeeds(0)));
+            // Shift Main Shooter Down
+            secondaryController.povDown().onTrue(
+                    new AdjustCustomShot(shooter, -0.5,0.0));
 
-            // Spit Shooter
-//            secondaryLeft.onTrue(new InstantCommand(() -> {
-//                Shooter.getInstance().setShooterSpeeds(-10, -2, -7);
-//                Transfer.getInstance().setTransferSetpoint(-10);
-//            }))
-//                .onFalse(new InstantCommand(() -> {
-//                    Shooter.getInstance().stop();
-//                    Transfer.getInstance().setTransferSetpoint(0);
-//                }));
-//
-//            // Spit Intake
-//            secondaryRight.onTrue(new InstantCommand(() -> Intake.getInstance().setIntakeSpeed(-15)))
-//                    .onFalse(new InstantCommand(() -> Intake.getInstance().setIntakeSpeed(0)));
+            // Shift Top Shooter Up
+            secondaryController.povLeft().onTrue(
+                    new AdjustCustomShot(shooter, 0.0,0.5));
 
-            secondaryLeft.onTrue(new InstantCommand(() -> Shooter.getInstance().changeIndexerSpeeds(.5)));
-            secondaryRight.onTrue(new InstantCommand(() -> Shooter.getInstance().changeIndexerSpeeds(-.5)));
-
-            secondaryStart.onTrue(new InstantCommand(() -> {
-                //Shooter.getInstance().setIndexerSpeed(Constants.Shooter.CloseShootSpeeds.indexerRPS);
-                Transfer.getInstance().setTransferSpeed(1);//Constants.Transfer.shootTransferSpeed
-            })).onFalse(new InstantCommand(() -> {
-                Transfer.getInstance().setTransferSpeed(0);
-            }));
+            // Shift Top Shooter Down
+            secondaryController.povRight().onTrue(
+                    new AdjustCustomShot(shooter, 0.0,-0.5));
 
             // Regression Shooting
-            secondaryY.whileTrue(Commands.runEnd(() -> Shooter.getInstance().regressionRamp(), () -> Shooter.getInstance().stop()));
+            secondaryController.y().whileTrue(
+                    new SetShooterSpeeds(shooter, shooter::getRegressionMainSpeed, shooter::getRegressionTopSpeed, () -> ShooterConstants.CloseShootSpeeds.indexerRPS));
 
         }
-
-
     }
-
 
     public Command getAutonomousCommand () {
         return auto_chooser.getSelected();

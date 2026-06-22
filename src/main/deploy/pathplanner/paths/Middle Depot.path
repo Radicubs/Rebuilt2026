@@ -32,15 +32,15 @@
     },
     {
       "anchor": {
-        "x": 0.4457590361445781,
+        "x": 0.5622541734527688,
         "y": 7.343083043981482
       },
       "prevControl": {
-        "x": 0.4539179272545808,
+        "x": 0.5704130645627715,
         "y": 7.592949873504443
       },
       "nextControl": {
-        "x": 0.4264285063196597,
+        "x": 0.5429236436278504,
         "y": 6.751083698086319
       },
       "isLocked": false,
@@ -48,16 +48,16 @@
     },
     {
       "anchor": {
-        "x": 0.5878192771084336,
-        "y": 4.974783132530121
+        "x": 0.6814687245521174,
+        "y": 5.130262049572475
       },
       "prevControl": {
-        "x": 0.33782173250926556,
-        "y": 4.975891146242567
+        "x": 0.4314711799529493,
+        "y": 5.131370063284922
       },
       "nextControl": {
-        "x": 2.4365680683340036,
-        "y": 4.966589296007319
+        "x": 2.5302175157776867,
+        "y": 5.1220682130496735
       },
       "isLocked": false,
       "linkedName": null
@@ -98,35 +98,35 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "ExtendIntake",
+      "name": "Extend Pivot",
       "waypointRelativePos": 0.0,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "ExtendIntake"
+          "name": "Extend Pivot"
         }
       }
     },
     {
-      "name": "StartIntake",
-      "waypointRelativePos": 0.2166364734299517,
-      "endWaypointRelativePos": null,
+      "name": "Start Intake",
+      "waypointRelativePos": 0.22,
+      "endWaypointRelativePos": 3.3019943019943008,
       "command": {
         "type": "named",
         "data": {
-          "name": "StartIntake"
+          "name": "Start Intake"
         }
       }
     },
     {
-      "name": "RampShooter",
-      "waypointRelativePos": 3.0284571256038646,
-      "endWaypointRelativePos": null,
+      "name": "Ramp Close Shot",
+      "waypointRelativePos": 3.061832264957264,
+      "endWaypointRelativePos": 4.0,
       "command": {
         "type": "named",
         "data": {
-          "name": "RampTrenchShooter"
+          "name": "Ramp Close Shot"
         }
       }
     }

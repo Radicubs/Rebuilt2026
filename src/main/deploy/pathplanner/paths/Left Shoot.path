@@ -33,41 +33,24 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "RampTrenchShooter",
+      "name": "Ramp Trench Shot",
       "waypointRelativePos": 0,
-      "endWaypointRelativePos": null,
+      "endWaypointRelativePos": 1.0,
       "command": {
         "type": "named",
         "data": {
-          "name": "RampTrenchShooter"
+          "name": "Ramp Trench Shot"
         }
       }
     },
     {
-      "name": "StartIntake",
-      "waypointRelativePos": 0.0,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "StartIntake"
-        }
-      }
-    },
-    {
-      "name": "ExtendIntake",
-      "waypointRelativePos": 0,
-      "endWaypointRelativePos": null,
-      "command": null
-    },
-    {
-      "name": "StartTrenchShooter",
+      "name": "Start Trench Shot",
       "waypointRelativePos": 1.0,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "StartTrenchShooter"
+          "name": "Start Trench Shot"
         }
       }
     }

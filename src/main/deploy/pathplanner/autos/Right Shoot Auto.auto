@@ -7,13 +7,13 @@
         {
           "type": "named",
           "data": {
-            "name": "ExtendIntake"
+            "name": "Extend Pivot"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ReverseShoot"
+            "name": "Eject"
           }
         },
         {
@@ -29,25 +29,19 @@
           }
         },
         {
-          "type": "sequential",
+          "type": "parallel",
           "data": {
             "commands": [
               {
                 "type": "named",
                 "data": {
-                  "name": "StartTrenchShooter"
+                  "name": "Start Trench Shot"
                 }
               },
               {
                 "type": "named",
                 "data": {
                   "name": "Shake Pivot"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "StopShoot"
                 }
               }
             ]

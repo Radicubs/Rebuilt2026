@@ -11,49 +11,25 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "StartIntake"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "Trench to Left Postion"
           }
         },
         {
-          "type": "sequential",
+          "type": "parallel",
           "data": {
             "commands": [
               {
                 "type": "named",
                 "data": {
-                  "name": "StartTrenchShooter"
+                  "name": "Start Trench Shot"
                 }
               },
               {
                 "type": "named",
                 "data": {
                   "name": "Shake Pivot"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "StopShoot"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "StopIntake"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "ExtendIntake"
                 }
               }
             ]
