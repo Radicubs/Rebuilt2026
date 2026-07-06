@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.pivot.Pivot;
-import frc.robot.subsystems.vision.PhotonVision;
+import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.transfer.Transfer;
 import org.littletonrobotics.junction.LogFileUtil;
@@ -25,25 +25,32 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
 public class Robot extends LoggedRobot
 {
+    // set true to deterministically re-run a log instead of physics sim
+    private static final boolean REPLAY = false;
+
     private Command autonomousCommand;
 
     private final RobotContainer robotContainer;
-    
-    
+
+
     public Robot()
     {
-        Logger.recordMetadata("Rebuilt2026", "Rebuilt"); // Set a metadata value
+        Logger.recordMetadata("Rebuilt2026", "Rebuilt");
+        Logger.recordMetadata("RobotMode", isReal() ? "REAL" : (REPLAY ? "REPLAY" : "SIM"));
 
         if (isReal()) {
-            Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
+            Logger.addDataReceiver(new WPILOGWriter()); // USB /U/logs if present, else onboard
+            Logger.addDataReceiver(new NT4Publisher());
+        } else if (REPLAY) {
+            setUseTiming(false);
+            String logPath = LogFileUtil.findReplayLog();
+            Logger.setReplaySource(new WPILOGReader(logPath));
+            Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim")));
         } else {
-            setUseTiming(false); // Run as fast as possible
-            String logPath = LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the user)
-            Logger.setReplaySource(new WPILOGReader(logPath)); // Read replay log
-            Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim"))); // Save outputs to a new log
+            Logger.addDataReceiver(new NT4Publisher());
         }
 
-        Logger.start(); // Start logging! No more data receivers, replay sources, or metadata values may be added.
+        Logger.start();
         robotContainer = new RobotContainer();
     }
     
@@ -54,6 +61,8 @@ public class Robot extends LoggedRobot
 
         CommandScheduler.getInstance().run();
 
+        logOutputs();
+
         SmartDashboard.putNumber("CAN BUS Utilization", CANBus.roboRIO().getStatus().BusUtilization);
         SmartDashboard.putNumber("CAN BUS REC", CANBus.roboRIO().getStatus().REC);
         SmartDashboard.putNumber("CAN BUS TEC", CANBus.roboRIO().getStatus().TEC);
@@ -63,8 +72,13 @@ public class Robot extends LoggedRobot
         SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
 
     }
-    
-    
+
+    private void logOutputs()
+    {
+        Logger.recordOutput("Auto/Command", autonomousCommand != null ? autonomousCommand.getName() : "none");
+    }
+
+
     @Override
     public void disabledInit() {
 
@@ -82,7 +96,7 @@ public class Robot extends LoggedRobot
     @Override
     public void autonomousInit(){
         autonomousCommand = robotContainer.getAutonomousCommand();
-        PhotonVision.getInstance();
+        Vision.getInstance();
         
         if (autonomousCommand != null)
         {

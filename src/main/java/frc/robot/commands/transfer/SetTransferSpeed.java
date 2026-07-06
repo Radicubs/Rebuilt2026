@@ -1,13 +1,10 @@
 package frc.robot.commands.transfer;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.transfer.Transfer;
 
 import java.util.function.DoubleSupplier;
 
-/** Runs the transfer belt to move notes up to the shooter until interrupted. */
 public class SetTransferSpeed extends Command {
 
     private Transfer transfer;
@@ -19,7 +16,6 @@ public class SetTransferSpeed extends Command {
         addRequirements(transfer);
     }
 
-    /** Convenience constructor for fixed speeds. */
     public SetTransferSpeed(Transfer transfer, double transferRPS) {
         this(transfer, () -> transferRPS);
     }

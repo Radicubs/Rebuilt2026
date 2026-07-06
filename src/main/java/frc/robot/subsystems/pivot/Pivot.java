@@ -1,25 +1,20 @@
 package frc.robot.subsystems.pivot;
 
-import com.revrobotics.PersistMode;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.ResetMode;
-import com.revrobotics.spark.SparkLowLevel;
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.config.SparkBaseConfig;
-import com.revrobotics.spark.config.SparkMaxConfig;
+import frc.robot.constants.PivotConstants;
 import edu.wpi.first.math.controller.ArmFeedforward;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import org.littletonrobotics.junction.Logger;
 
 public class Pivot extends SubsystemBase {
 
     private static Pivot INSTANCE;
-    private SparkMax pivotMotor;
+    private final PivotIO io;
+    private final PivotIOInputsAutoLogged inputs = new PivotIOInputsAutoLogged();
     private final ProfiledPIDController pid;
     private final ArmFeedforward feedforward;
-    private final RelativeEncoder relativeEncoder;
     private boolean moveToTargetAngle = false;
 
     public static Pivot getInstance(){
@@ -29,17 +24,8 @@ public class Pivot extends SubsystemBase {
 
     private Pivot(){
 
-        pivotMotor = new SparkMax(PivotConstants.pivotMotorCID, SparkLowLevel.MotorType.kBrushless);
-        SparkMaxConfig pivotMotorConfig = new SparkMaxConfig();
-        pivotMotorConfig.inverted(false);
-        pivotMotorConfig.idleMode(SparkBaseConfig.IdleMode.kBrake);
-        pivotMotorConfig.encoder.positionConversionFactor(1.0/60);
-        pivotMotorConfig.encoder.velocityConversionFactor(1.0/60);
-        pivotMotorConfig.smartCurrentLimit(PivotConstants.pivotMotorStallCurrentLimit, PivotConstants.pivotMotorFreeCurrentLimit);
-        pivotMotor.configure(pivotMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
-        relativeEncoder = pivotMotor.getEncoder();
-        relativeEncoder.setPosition(PivotConstants.upPos);
+        io = RobotBase.isSimulation() ? new PivotIOSim() : new PivotIOReal();
+        io.setPosition(PivotConstants.upPos);
 
         pid = new ProfiledPIDController(PivotConstants.PIDFeedforwardConstants.P, PivotConstants.PIDFeedforwardConstants.I, PivotConstants.PIDFeedforwardConstants.D, new TrapezoidProfile.Constraints(.5, 3));
         pid.setTolerance(PivotConstants.PIDFeedforwardConstants.pidTolerance);
@@ -50,14 +36,14 @@ public class Pivot extends SubsystemBase {
 
     }
     public double getPosition() {
-        return relativeEncoder.getPosition();
+        return inputs.positionRot;
     }
     public double getSpeed(){
-        return pivotMotor.get();
+        return inputs.appliedDuty;
     }
     public void setSpeed(double speed){
         moveToTargetAngle = false;
-        pivotMotor.set(speed);
+        io.setDutyCycle(speed);
     }
     public void setGoal(double targetRotation){
         cancelPID();
@@ -67,25 +53,31 @@ public class Pivot extends SubsystemBase {
     public double getDesiredAngle() {
         return pid.getSetpoint().position;
     }
+    double getSetpointVelocity() { return pid.getSetpoint().velocity; }
+    boolean atGoal() { return pid.atGoal(); }
+    boolean isMovingToTarget() { return moveToTargetAngle; }
     public void resetAngle(){
-        relativeEncoder.setPosition(PivotConstants.downPos);
+        io.setPosition(PivotConstants.downPos);
     }
     public void cancelPID(){
-        pivotMotor.set(0);
+        io.setDutyCycle(0);
         moveToTargetAngle = false;
-        pid.reset(relativeEncoder.getPosition());
+        pid.reset(inputs.positionRot);
     }
 
     @Override
     public void periodic() {
+        io.updateInputs(inputs);
+        Logger.processInputs("Pivot", inputs);
+        PivotLogger.log(this);
+
         if (moveToTargetAngle) {
             double motorSpeed = pid.calculate(getPosition());
             double feedforwardVal = feedforward.calculate(pid.getSetpoint().position, pid.getSetpoint().velocity);
 
-            pivotMotor.set(motorSpeed + feedforwardVal);
+            io.setDutyCycle(motorSpeed + feedforwardVal);
 
             if(pid.atGoal()){cancelPID();}
-
         }
     }
 }

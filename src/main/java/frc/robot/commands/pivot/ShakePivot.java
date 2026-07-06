@@ -3,7 +3,7 @@ package frc.robot.commands.pivot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.pivot.Pivot;
-import frc.robot.subsystems.pivot.PivotConstants;
+import frc.robot.constants.PivotConstants;
 
 public class ShakePivot extends Command {
 

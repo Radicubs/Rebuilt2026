@@ -10,7 +10,6 @@ import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -19,21 +18,20 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.intake.*;
 import frc.robot.commands.pivot.*;
 import frc.robot.commands.shooter.*;
-import frc.robot.commands.swerve.*;
+import frc.robot.commands.drive.*;
 import frc.robot.commands.transfer.*;
-import frc.robot.subsystems.field.FieldConstants;
+import frc.robot.constants.FieldConstants;
 import frc.robot.subsystems.intake.Intake;
-import frc.robot.subsystems.intake.IntakeConstants;
+import frc.robot.constants.IntakeConstants;
 import frc.robot.subsystems.pivot.Pivot;
-import frc.robot.subsystems.pivot.PivotConstants;
-import frc.robot.subsystems.swerve.Swerve;
-import frc.robot.subsystems.vision.PhotonVision;
+import frc.robot.constants.PivotConstants;
+import frc.robot.subsystems.drive.Drive;
+import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.shooter.Shooter;
-import frc.robot.subsystems.shooter.ShooterConstants;
+import frc.robot.constants.ShooterConstants;
 import frc.robot.subsystems.transfer.Transfer;
-import frc.robot.subsystems.transfer.TransferConstants;
-
-import java.util.Optional;
+import frc.robot.constants.TransferConstants;
+import frc.robot.util.HubState;
 
 
 public class RobotContainer {
@@ -41,9 +39,9 @@ public class RobotContainer {
     CommandXboxController mainController;
     CommandXboxController secondaryController;
     // Subsystems
-    PhotonVision photonvision = PhotonVision.getInstance();
+    Vision vision = Vision.getInstance();
     Pivot pivot = Pivot.getInstance();
-    Swerve swerve = Swerve.getInstance();
+    Drive drive = Drive.getInstance();
     Shooter shooter = Shooter.getInstance();
     Transfer transfer = Transfer.getInstance();
     Intake intake = Intake.getInstance();
@@ -57,7 +55,6 @@ public class RobotContainer {
         configureBindings();
     }
 
-    /** Registers the PathPlanner NamedCommands referenced by the autos / path event markers. */
     private void registerNamedCommands() {
         // ---- Shooter / transfer ----
         // Ramp the flywheels (indexer held back at -3, no belt).
@@ -96,10 +93,9 @@ public class RobotContainer {
 
         NamedCommands.registerCommand("Shake Pivot", new ShakePivot(pivot));
 
-        NamedCommands.registerCommand("Reset Heading", new SetHeading(swerve, () -> swerve.getHeading().plus(Rotation2d.k180deg)));
+        NamedCommands.registerCommand("Reset Heading", new SetHeading(drive, () -> drive.getHeading().plus(Rotation2d.k180deg)));
     }
 
-    /** Builds the autonomous chooser from the PathPlanner autos. */
     private void configureAutoChooser() {
         try {
             auto_chooser.setDefaultOption("Left Shoot", AutoBuilder.buildAuto("Left Shoot Auto"));
@@ -117,29 +113,27 @@ public class RobotContainer {
         SmartDashboard.putData("Auto Chooser", auto_chooser);
     }
 
-    /** Publishes match / field telemetry to the dashboard. */
     private void configureDashboard() {
         SmartDashboard.putData("Field Elements", new Sendable() {
             @Override
             public void initSendable(SendableBuilder builder) {
-                builder.addBooleanProperty("Hub Active", () -> isHubActive(), null);
+                builder.addBooleanProperty("Hub Active", HubState::isActive, null);
             }
         });
 
             SmartDashboard.putData("Distance From Hub", new Sendable() {
             @Override
             public void initSendable(SendableBuilder builder) {
-                builder.addDoubleProperty("Distance", () -> FieldConstants.hubCenterBlue.getTranslation().getDistance(swerve.getPose().getTranslation()), null);
+                builder.addDoubleProperty("Distance", () -> FieldConstants.hubCenterBlue.getTranslation().getDistance(drive.getPose().getTranslation()), null);
             }
         });
     }
 
-    /** Creates the driver controllers and the swerve default (teleop drive) command. */
     private void configureControllers() {
         mainController = new CommandXboxController(0);
         secondaryController = new CommandXboxController(1);
 
-        swerve.setDefaultCommand(new TeleopSwerve(
+        drive.setDefaultCommand(new TeleopDrive(
                 () -> -mainController.getLeftY(),
                 () -> -mainController.getLeftX(),
                 () -> -mainController.getRightX(),
@@ -157,10 +151,10 @@ public class RobotContainer {
                     .alongWith(new SetTransferSpeed(transfer, TransferConstants.shootTransferSpeed)));
             
             // Zero Heading
-            mainController.leftBumper().onTrue(new ZeroHeading(swerve));
+            mainController.leftBumper().onTrue(new ZeroHeading(drive));
 
             // Flip Heading
-            mainController.povDown().onTrue(new SetHeading(swerve, Rotation2d.k180deg));
+            mainController.povDown().onTrue(new SetHeading(drive, Rotation2d.k180deg));
         }
 
         // Secondary Controller Binds
@@ -170,7 +164,6 @@ public class RobotContainer {
                     new SetIntakeSpeed(intake, IntakeConstants.intakeSpeedRPS)
                             .alongWith(new SetPivotSpeed(pivot, 0.07))
                             .onlyIf(() -> Math.abs(pivot.getSpeed()) < 0.05));
-
 
             // Close Ramp
             secondaryController.rightBumper().whileTrue(
@@ -222,64 +215,5 @@ public class RobotContainer {
 
     public Command getAutonomousCommand () {
         return auto_chooser.getSelected();
-    }
-
-    public boolean isHubActive() {
-        Optional<DriverStation.Alliance> alliance = DriverStation.getAlliance();
-        // If we have no alliance, we cannot be enabled, therefore no hub.
-        if (alliance.isEmpty()) {
-            return false;
-        }
-        // Hub is always enabled in autonomous.
-        if (DriverStation.isAutonomousEnabled()) {
-            return true;
-        }
-        // At this point, if we're not teleop enabled, there is no hub.
-        if (!DriverStation.isTeleopEnabled()) {
-            return false;
-        }
-
-        // We're teleop enabled, compute.
-        double matchTime = DriverStation.getMatchTime();
-        String gameData = DriverStation.getGameSpecificMessage();
-        // If we have no game data, we cannot compute, assume hub is active, as its likely early in teleop.
-        if (gameData.isEmpty()) {
-            return true;
-        }
-        boolean redInactiveFirst = false;
-        switch (gameData.charAt(0)) {
-            case 'R' -> redInactiveFirst = true;
-            case 'B' -> redInactiveFirst = false;
-            default -> {
-                // If we have invalid game data, assume hub is active.
-                return true;
-            }
-        }
-
-        // Shift was is active for blue if red won auto, or red if blue won auto.
-        boolean shift1Active = switch (alliance.get()) {
-            case Red -> !redInactiveFirst;
-            case Blue -> redInactiveFirst;
-        };
-
-        if (matchTime > 130) {
-            // Transition shift, hub is active.
-            return true;
-        } else if (matchTime > 105) {
-            // Shift 1
-            return shift1Active;
-        } else if (matchTime > 80) {
-            // Shift 2
-            return !shift1Active;
-        } else if (matchTime > 55) {
-            // Shift 3
-            return shift1Active;
-        } else if (matchTime > 30) {
-            // Shift 4
-            return !shift1Active;
-        } else {
-            // End game, hub always active.
-            return true;
-        }
     }
 }

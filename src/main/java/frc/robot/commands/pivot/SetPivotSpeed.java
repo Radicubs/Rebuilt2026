@@ -16,7 +16,6 @@ public class SetPivotSpeed extends Command {
         addRequirements(pivot);
     }
 
-    /** Convenience constructor for a fixed open-loop output. */
     public SetPivotSpeed(Pivot pivot, double speed) {
         this(pivot, () -> speed);
     }

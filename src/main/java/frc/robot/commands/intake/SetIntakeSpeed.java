@@ -1,11 +1,8 @@
 package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.intake.Intake;
-import frc.robot.subsystems.transfer.Transfer;
 
-import java.util.Set;
 import java.util.function.DoubleSupplier;
 
 public class SetIntakeSpeed extends Command {
@@ -19,7 +16,6 @@ public class SetIntakeSpeed extends Command {
         addRequirements(intake);
     }
 
-    /** Convenience constructor for fixed speeds. */
     public SetIntakeSpeed(Intake intake, double intakeRPS) {
         this(intake, () -> intakeRPS);
     }

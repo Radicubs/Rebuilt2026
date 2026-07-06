@@ -1,24 +1,20 @@
 package frc.robot.subsystems.intake;
 
-import com.revrobotics.PersistMode;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.ResetMode;
-import com.revrobotics.spark.SparkLowLevel;
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.config.SparkBaseConfig;
-import com.revrobotics.spark.config.SparkMaxConfig;
+import frc.robot.constants.IntakeConstants;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import org.littletonrobotics.junction.Logger;
 
 public class Intake extends SubsystemBase {
 
     private static Intake INSTANCE;
-    private SparkMax intakeMotor;
+    private final IntakeIO io;
+    private final IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged();
     private boolean pidEnabled = false;
     private final PIDController controller;
     private final SimpleMotorFeedforward feedforward;
-    private final RelativeEncoder encoder;
 
     public static Intake getInstance(){
         if(INSTANCE == null) {INSTANCE = new Intake();}
@@ -27,13 +23,8 @@ public class Intake extends SubsystemBase {
 
     private Intake(){
 
-        intakeMotor = new SparkMax(IntakeConstants.intakeMotorCID, SparkLowLevel.MotorType.kBrushless);
-        SparkMaxConfig intakeConfig = new SparkMaxConfig();
-        intakeConfig.inverted(false);
-        intakeConfig.idleMode(SparkBaseConfig.IdleMode.kCoast);
-        intakeMotor.configure(intakeConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        io = RobotBase.isSimulation() ? new IntakeIOSim() : new IntakeIOReal();
 
-        encoder = intakeMotor.getEncoder();
         controller = new PIDController(IntakeConstants.PIDFeedforwardConstants.P, IntakeConstants.PIDFeedforwardConstants.I, IntakeConstants.PIDFeedforwardConstants.D);
         controller.setTolerance(IntakeConstants.PIDFeedforwardConstants.pidTolerance);
 
@@ -42,26 +33,29 @@ public class Intake extends SubsystemBase {
     }
 
     public double getSetpoint() { return controller.getSetpoint(); }
-    public double getVelocity() { return encoder.getVelocity()/60; }
+    public double getVelocity() { return inputs.velocityRPS; }
+    boolean atSetpoint() { return controller.atSetpoint(); }
+    boolean isPidEnabled() { return pidEnabled; }
     public void setVelocity(double targetVelocity) {
-        intakeMotor.set(0);
-        pidEnabled = true;
+        controller.reset();
         controller.setSetpoint(targetVelocity);
+        pidEnabled = true;
     }
     public void cancelPID() {
-        intakeMotor.set(0);
+        io.setDutyCycle(0);
         pidEnabled = false;
     }
 
     @Override
     public void periodic() {
+        io.updateInputs(inputs);
+        Logger.processInputs("Intake", inputs);
+        IntakeLogger.log(this);
+
         if (pidEnabled) {
             double motorSpeed = controller.calculate(getVelocity());
             double ffValue = feedforward.calculate(getSetpoint());
-            intakeMotor.set(motorSpeed + ffValue);
-        }
-        else{
-            intakeMotor.set(0);
+            io.setDutyCycle(motorSpeed + ffValue);
         }
     }
 

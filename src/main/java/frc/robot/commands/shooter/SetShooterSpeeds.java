@@ -20,7 +20,6 @@ public class SetShooterSpeeds extends Command {
         addRequirements(shooter);
     }
 
-    /** Convenience constructor for fixed speeds. */
     public SetShooterSpeeds(Shooter shooter, double mainShooterRPS, double topShooterRPS, double indexerRPS) {
         this(shooter, () -> mainShooterRPS, () -> topShooterRPS, () -> indexerRPS);
     }
