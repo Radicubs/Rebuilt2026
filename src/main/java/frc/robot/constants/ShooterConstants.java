@@ -18,8 +18,8 @@ public final class ShooterConstants
     public static final boolean shooterEnableCurrentLimit = true;
 
     public static final class CloseShootSpeeds{
-        public static double mainShooterRPS = 47; // Real: 47 Test: 10
-        public static final double topShaftRPS = 2; // Real: 2 Test: 10
+        //public static double mainShooterRPS = 47; // Real: 47 Test: 10
+        //public static final double topShaftRPS = 2; // Real: 2 Test: 10
         public static final double indexerRPS = 20; // Real: 20 Test: 20
     }
     public static final class TrenchShootSpeeds{

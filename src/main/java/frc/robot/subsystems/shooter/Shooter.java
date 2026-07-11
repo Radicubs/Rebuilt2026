@@ -18,9 +18,9 @@ public class Shooter extends SubsystemBase {
     private double mainSetpoint;
     private double topSetpoint;
     private double indexerSetpoint;
-
-    private double customMainShooterSpeed = ShooterConstants.CloseShootSpeeds.mainShooterRPS;
-    private double customTopShooterSpeed = ShooterConstants.CloseShootSpeeds.topShaftRPS;
+//
+//    private double customMainShooterSpeed = ShooterConstants.CloseShootSpeeds.mainShooterRPS;
+//    private double customTopShooterSpeed = ShooterConstants.CloseShootSpeeds.topShaftRPS;
 
     private double distanceToHub;
     private double regressionMainSpeeds;
@@ -64,18 +64,18 @@ public class Shooter extends SubsystemBase {
         io.setIndexerSpeed(indexerRPS);
     }
 
-    public double getCustomMainShooterSpeed() {
-        return customMainShooterSpeed;
-    }
-
-    public double getCustomTopShooterSpeed() {
-        return customTopShooterSpeed;
-    }
-
-    public void adjustCustomSpeeds(double mainShooterChange, double topShooterChange) {
-        customMainShooterSpeed += mainShooterChange;
-        customTopShooterSpeed += topShooterChange;
-    }
+//    public double getCustomMainShooterSpeed() {
+//        return customMainShooterSpeed;
+//    }
+//
+//    public double getCustomTopShooterSpeed() {
+//        return customTopShooterSpeed;
+//    }
+//
+//    public void adjustCustomSpeeds(double mainShooterChange, double topShooterChange) {
+//        customMainShooterSpeed += mainShooterChange;
+//        customTopShooterSpeed += topShooterChange;
+//    }
 
     public double getRegressionMainSpeed() {
         return regressionMainSpeeds;

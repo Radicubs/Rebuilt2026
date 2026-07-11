@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.intake.*;
 import frc.robot.commands.pivot.*;
 import frc.robot.commands.shooter.*;
@@ -58,17 +59,17 @@ public class RobotContainer {
     private void registerNamedCommands() {
         // ---- Shooter / transfer ----
         // Ramp the flywheels (indexer held back at -3, no belt).
-        NamedCommands.registerCommand("Ramp Close Shot",
-                new SetShooterSpeeds(shooter, ShooterConstants.CloseShootSpeeds.mainShooterRPS, ShooterConstants.CloseShootSpeeds.topShaftRPS, -3));
+//        NamedCommands.registerCommand("Ramp Close Shot",
+//                new SetShooterSpeeds(shooter, ShooterConstants.CloseShootSpeeds.mainShooterRPS, ShooterConstants.CloseShootSpeeds.topShaftRPS, -3));
 
         NamedCommands.registerCommand("Ramp Trench Shot",
                 new SetShooterSpeeds(shooter, ShooterConstants.TrenchShootSpeeds.mainShooterRPS, ShooterConstants.TrenchShootSpeeds.topShaftRPS, -3));
 
         // Full shot: flywheels + indexer + belt.
-        NamedCommands.registerCommand("Start Close Shot",
-                new SetShooterSpeeds(shooter, ShooterConstants.CloseShootSpeeds.mainShooterRPS, ShooterConstants.CloseShootSpeeds.topShaftRPS, ShooterConstants.CloseShootSpeeds.indexerRPS)
-                        .alongWith(new SetTransferSpeed(transfer, TransferConstants.shootTransferSpeed))
-                        .withTimeout(6.0));
+//        NamedCommands.registerCommand("Start Close Shot",
+//                new SetShooterSpeeds(shooter, ShooterConstants.CloseShootSpeeds.mainShooterRPS, ShooterConstants.CloseShootSpeeds.topShaftRPS, ShooterConstants.CloseShootSpeeds.indexerRPS)
+//                        .alongWith(new SetTransferSpeed(transfer, TransferConstants.shootTransferSpeed))
+//                        .withTimeout(6.0));
 
         NamedCommands.registerCommand("Start Trench Shot",
                 new SetShooterSpeeds(shooter, ShooterConstants.TrenchShootSpeeds.mainShooterRPS, ShooterConstants.TrenchShootSpeeds.topShaftRPS, ShooterConstants.TrenchShootSpeeds.indexerRPS)
@@ -131,13 +132,13 @@ public class RobotContainer {
 
     private void configureControllers() {
         mainController = new CommandXboxController(0);
-        secondaryController = new CommandXboxController(1);
+//        secondaryController = new CommandXboxController(1);
 
         drive.setDefaultCommand(new TeleopDrive(
                 () -> -mainController.getLeftY(),
                 () -> -mainController.getLeftX(),
                 () -> -mainController.getRightX(),
-                () -> mainController.x().getAsBoolean()
+                () -> false //mainController.x().getAsBoolean()
         ));
     }
 
@@ -147,68 +148,71 @@ public class RobotContainer {
         {
             //Shoot -> Run Indexer + Transfer
             mainController.rightBumper().whileTrue(
-                    new SetShooterSpeeds(shooter, 0,0,ShooterConstants.CloseShootSpeeds.indexerRPS)
+                    new SetShooterSpeeds(shooter, 25,15,ShooterConstants.CloseShootSpeeds.indexerRPS)
                     .alongWith(new SetTransferSpeed(transfer, TransferConstants.shootTransferSpeed)));
-            
-            // Zero Heading
-            mainController.leftBumper().onTrue(new ZeroHeading(drive));
 
-            // Flip Heading
-            mainController.povDown().onTrue(new SetHeading(drive, Rotation2d.k180deg));
+            
+//            // Zero Heading
+//            mainController.leftBumper().onTrue(new ZeroHeading(drive));
+//
+//            // Flip Heading
+//            mainController.povDown().onTrue(new SetHeading(drive, Rotation2d.k180deg));
         }
 
         // Secondary Controller Binds
         {
             // Intake (only if the pivot isn't already moving)
-            secondaryController.x().whileTrue(
+            mainController.x().whileTrue(
                     new SetIntakeSpeed(intake, IntakeConstants.intakeSpeedRPS)
                             .alongWith(new SetPivotSpeed(pivot, 0.07))
                             .onlyIf(() -> Math.abs(pivot.getSpeed()) < 0.05));
 
-            // Close Ramp
-            secondaryController.rightBumper().whileTrue(
-                    new SetShooterSpeeds(shooter, ShooterConstants.CloseShootSpeeds.mainShooterRPS, ShooterConstants.CloseShootSpeeds.topShaftRPS,-3));
 
-            // Trench Ramp
-            secondaryController.rightTrigger().whileTrue(
-                    new SetShooterSpeeds(shooter, ShooterConstants.TrenchShootSpeeds.mainShooterRPS, ShooterConstants.TrenchShootSpeeds.topShaftRPS,-3));
-
-            // Pass Ramp
-            secondaryController.leftTrigger().whileTrue(
-                    new SetShooterSpeeds(shooter, ShooterConstants.PassSpeeds.mainShooterRPS, ShooterConstants.PassSpeeds.topShaftRPS,-3));
-
-            // PID Retract Intake
-            secondaryController.b().onTrue(new SetPivotPosition(pivot, PivotConstants.upPos));
-
-            // PID Extend Intake
-            secondaryController.a().onTrue(new SetPivotPosition(pivot, PivotConstants.downPos));
-
-            // Zero Pivot PID
-            secondaryController.back().onTrue(new ResetPivotAngle(pivot));
+////            // Close Ramp
+////            secondaryController.rightBumper().whileTrue(
+////                    new SetShooterSpeeds(shooter, ShooterConstants.CloseShootSpeeds.mainShooterRPS, ShooterConstants.CloseShootSpeeds.topShaftRPS,-3));
+////
+////            // Trench Ramp
+////            secondaryController.rightTrigger().whileTrue(
+////                    new SetShooterSpeeds(shooter, ShooterConstants.TrenchShootSpeeds.mainShooterRPS, ShooterConstants.TrenchShootSpeeds.topShaftRPS,-3));
+////
+////            // Pass Ramp
+////            secondaryController.leftTrigger().whileTrue(
+////                    new SetShooterSpeeds(shooter, ShooterConstants.PassSpeeds.mainShooterRPS, ShooterConstants.PassSpeeds.topShaftRPS,-3));
+////
+////            // PID Retract Intake
+////            secondaryController.b().onTrue(new SetPivotPosition(pivot, PivotConstants.upPos));
+////
+////            // PID Extend Intake
+////            secondaryController.a().onTrue(new SetPivotPosition(pivot, PivotConstants.downPos));
+//
+//            // Zero Pivot PID
+//            secondaryController.back().onTrue(new ResetPivotAngle(pivot));
 
             // Manual Extend Intake
-            secondaryController.leftStick().whileTrue(
-                    new SetPivotSpeed(pivot, () -> secondaryController.getLeftY() * 0.2));
+//            new Trigger(() -> Math.abs(mainController.getLeftY()) > 0.1).whileTrue(
+//                    new SetPivotSpeed(pivot, () -> secondaryController.getLeftY() * 0.2)
+//            );
 
             // Shift Main Shooter Up
-            secondaryController.povUp().onTrue(
-                    new AdjustCustomShot(shooter, 0.5,0.0));
+            mainController.povUp().whileTrue(
+                    new SetPivotSpeed(pivot, () -> -0.2));
 
             // Shift Main Shooter Down
-            secondaryController.povDown().onTrue(
-                    new AdjustCustomShot(shooter, -0.5,0.0));
-
-            // Shift Top Shooter Up
-            secondaryController.povLeft().onTrue(
-                    new AdjustCustomShot(shooter, 0.0,0.5));
-
-            // Shift Top Shooter Down
-            secondaryController.povRight().onTrue(
-                    new AdjustCustomShot(shooter, 0.0,-0.5));
-
-            // Regression Shooting
-            secondaryController.y().whileTrue(
-                    new SetShooterSpeeds(shooter, shooter::getRegressionMainSpeed, shooter::getRegressionTopSpeed, () -> ShooterConstants.CloseShootSpeeds.indexerRPS));
+            mainController.povDown().whileTrue(
+                    new SetPivotSpeed(pivot, () -> 0.2));
+//
+//            // Shift Top Shooter Up
+//            secondaryController.povLeft().onTrue(
+//                    new AdjustCustomShot(shooter, 0.0,0.5));
+//
+//            // Shift Top Shooter Down
+//            secondaryController.povRight().onTrue(
+//                    new AdjustCustomShot(shooter, 0.0,-0.5));
+//
+//            // Regression Shooting
+//            secondaryController.y().whileTrue(
+//                    new SetShooterSpeeds(shooter, shooter::getRegressionMainSpeed, shooter::getRegressionTopSpeed, () -> ShooterConstants.CloseShootSpeeds.indexerRPS));
 
         }
     }
