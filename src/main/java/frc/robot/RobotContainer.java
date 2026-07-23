@@ -34,6 +34,8 @@ import frc.robot.subsystems.transfer.Transfer;
 import frc.robot.constants.TransferConstants;
 import frc.robot.util.HubState;
 
+import java.lang.constant.Constable;
+
 
 public class RobotContainer {
 
@@ -151,21 +153,29 @@ public class RobotContainer {
                     new SetShooterSpeeds(shooter, 25,15,ShooterConstants.CloseShootSpeeds.indexerRPS)
                     .alongWith(new SetTransferSpeed(transfer, TransferConstants.shootTransferSpeed)));
 
-            
-//            // Zero Heading
+            mainController.x().whileTrue(
+                    new SetIntakeSpeed(intake, IntakeConstants.intakeSpeedRPS)
+                            .alongWith(new SetPivotSpeed(pivot, 0.07))
+                            .onlyIf(() -> Math.abs(pivot.getSpeed()) < 0.05));
+
+            mainController.povUp().onTrue(
+                    new SetPivotPosition(pivot,PivotConstants.upPos));
+
+            mainController.povDown().onTrue(
+                    new SetPivotPosition(pivot,PivotConstants.downPos));
+
+
+
 //            mainController.leftBumper().onTrue(new ZeroHeading(drive));
 //
 //            // Flip Heading
-//            mainController.povDown().onTrue(new SetHeading(drive, Rotation2d.k180deg));
+//            mainController.//            // Zero HeadingpovDown().onTrue(new SetHeading(drive, Rotation2d.k180deg));
         }
 
         // Secondary Controller Binds
         {
             // Intake (only if the pivot isn't already moving)
-            mainController.x().whileTrue(
-                    new SetIntakeSpeed(intake, IntakeConstants.intakeSpeedRPS)
-                            .alongWith(new SetPivotSpeed(pivot, 0.07))
-                            .onlyIf(() -> Math.abs(pivot.getSpeed()) < 0.05));
+
 
 
 ////            // Close Ramp
@@ -195,12 +205,7 @@ public class RobotContainer {
 //            );
 
             // Shift Main Shooter Up
-            mainController.povUp().whileTrue(
-                    new SetPivotSpeed(pivot, () -> -0.2));
 
-            // Shift Main Shooter Down
-            mainController.povDown().whileTrue(
-                    new SetPivotSpeed(pivot, () -> 0.2));
 //
 //            // Shift Top Shooter Up
 //            secondaryController.povLeft().onTrue(
