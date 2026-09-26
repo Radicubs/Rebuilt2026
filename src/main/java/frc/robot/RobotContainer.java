@@ -137,7 +137,7 @@ public class RobotContainer {
                 () -> -mainController.getLeftY(),
                 () -> -mainController.getLeftX(),
                 () -> -mainController.getRightX(),
-                () -> mainController.x().getAsBoolean()
+                () -> false //mainController.x().getAsBoolean()
         ));
     }
 
@@ -147,7 +147,7 @@ public class RobotContainer {
         {
             //Shoot -> Run Indexer + Transfer
             mainController.rightBumper().whileTrue(
-                    new SetShooterSpeeds(shooter, 0,0,ShooterConstants.CloseShootSpeeds.indexerRPS)
+                    new SetShooterSpeeds(shooter, 30,15,ShooterConstants.CloseShootSpeeds.indexerRPS)
                     .alongWith(new SetTransferSpeed(transfer, TransferConstants.shootTransferSpeed)));
             
             // Zero Heading
@@ -155,6 +155,21 @@ public class RobotContainer {
 
             // Flip Heading
             mainController.povDown().onTrue(new SetHeading(drive, Rotation2d.k180deg));
+
+
+            // PID Retract Intake
+            mainController.b().onTrue(new SetPivotPosition(pivot, PivotConstants.upPos));
+
+            // PID Extend Intake
+            mainController.a().onTrue(new SetPivotPosition(pivot, PivotConstants.downPos));
+
+            mainController.povUp().whileTrue(
+                    new SetPivotSpeed(pivot, -.2));
+
+            // Shift Main Shooter Down
+            mainController.povDown().whileTrue(
+                    new SetPivotSpeed(pivot, .2));
+
         }
 
         // Secondary Controller Binds

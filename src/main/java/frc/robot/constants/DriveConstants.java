@@ -80,7 +80,7 @@ public final class DriveConstants {
     /** Meters per Second */
     public static final double maxSpeed = 3.9; //TODO: This must be tuned to specific robot
     /** Radians per Second */
-    public static final double maxAngularVelocity = 4.5; //TODO: This must be tuned to specific robot
+    public static final double maxAngularVelocity = 4; //TODO: This must be tuned to specific robot
 
     /* Neutral Modes */
     public static final NeutralModeValue angleNeutralMode = NeutralModeValue.Brake;
