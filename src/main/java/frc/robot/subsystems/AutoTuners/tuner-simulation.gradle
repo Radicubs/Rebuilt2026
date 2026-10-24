@@ -1,0 +1,42 @@
+// Copy with the tuner files. Adds isolated simulation tasks without editing build.gradle.
+// Uses the destination GradleRIO project's Java dependencies and desktop native libraries.
+def helperFile = gradle.startParameter.initScripts.find { it.name == 'tuner-simulation.gradle' }
+if (helperFile == null) throw new GradleException('Load this file with --init-script')
+def tunerDir = helperFile.parentFile
+
+
+gradle.projectsEvaluated {
+    def p = gradle.rootProject
+    if (!p.plugins.hasPlugin('java') || !p.tasks.names.contains('extractReleaseNative'))
+        throw new GradleException('Use a Java GradleRIO project with desktop nativeRelease dependencies enabled')
+    ['Arm', 'Flywheel', 'Elevator'].each { kind ->
+        def folder = [Arm: 'Arms', Flywheel: 'Flywheels', Elevator: 'Elevator'][kind]
+        def mechanismDir = new File(tunerDir, folder)
+        def sourceFiles = [new File(mechanismDir, "${kind}AutoTuner.java"),
+            new File(mechanismDir, "${kind}AutoTunerIOSim.java"),
+            new File(mechanismDir, "${kind}TunerSimulation.java")]
+        // Each task can be copied independently of the other tuner.
+        if (sourceFiles.every { it.isFile() }) {
+            def mainSource = sourceFiles.last().text
+            def packageMatch = mainSource =~ /(?m)^\s*package\s+([\w.]+)\s*;/
+            def mainClassName = (packageMatch.find() ? packageMatch.group(1) + '.' : '') + "${kind}TunerSimulation"
+            def compileTask = p.tasks.register("compile${kind}TunerSimulation", JavaCompile) {
+                source sourceFiles
+                classpath = p.configurations.getByName('compileClasspath')
+                destinationDirectory.set(p.layout.buildDirectory.dir("portable-tuners/${kind.toLowerCase()}/classes"))
+                options.release.set(17)
+                options.compilerArgs.add('-proc:none')
+            }
+            p.tasks.register("${kind.toLowerCase()}TunerSim", JavaExec) {
+                group = 'verification'
+                description = "Run the portable ${kind.toLowerCase()} tuner physics and safety checks"
+                dependsOn compileTask, p.tasks.named('extractReleaseNative')
+                classpath = p.files(compileTask.flatMap { it.destinationDirectory }) + p.configurations.getByName('runtimeClasspath')
+                mainClass.set(mainClassName)
+                workingDir p.projectDir
+                systemProperty 'java.library.path', p.layout.buildDirectory.dir('jni/release').get().asFile.absolutePath
+            }
+        }
+    }
+}
+

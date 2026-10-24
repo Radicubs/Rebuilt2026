@@ -13,6 +13,7 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.intake.*;
@@ -21,6 +22,8 @@ import frc.robot.commands.shooter.*;
 import frc.robot.commands.drive.*;
 import frc.robot.commands.transfer.*;
 import frc.robot.constants.FieldConstants;
+import frc.robot.subsystems.AutoTuners.Flywheels.FlywheelAutoTuner;
+import frc.robot.subsystems.AutoTuners.Flywheels.FlywheelAutoTunerTalonFXIO;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.constants.IntakeConstants;
 import frc.robot.subsystems.pivot.Pivot;
@@ -38,6 +41,7 @@ public class RobotContainer {
 
     CommandXboxController mainController;
     CommandXboxController secondaryController;
+    CommandXboxController testingController;
     // Subsystems
     Vision vision = Vision.getInstance();
     Pivot pivot = Pivot.getInstance();
@@ -45,6 +49,9 @@ public class RobotContainer {
     Shooter shooter = Shooter.getInstance();
     Transfer transfer = Transfer.getInstance();
     Intake intake = Intake.getInstance();
+    private final FlywheelAutoTuner flywheelAutoTuner = new FlywheelAutoTuner(
+        new FlywheelAutoTunerTalonFXIO(new com.ctre.phoenix6.hardware.TalonFX(13), 1.0, 35),
+        FlywheelAutoTuner.Config.defaults());
     private final SendableChooser<Command> auto_chooser = new SendableChooser<Command>();
 
     public RobotContainer() {
@@ -132,6 +139,7 @@ public class RobotContainer {
     private void configureControllers() {
         mainController = new CommandXboxController(0);
         secondaryController = new CommandXboxController(1);
+        testingController = new CommandXboxController(2);
 
         drive.setDefaultCommand(new TeleopDrive(
                 () -> -mainController.getLeftY(),
@@ -139,6 +147,21 @@ public class RobotContainer {
                 () -> -mainController.getRightX(),
                 () -> false //mainController.x().getAsBoolean()
         ));
+
+        testingController.x().whileTrue(
+            Commands.startEnd(
+                    flywheelAutoTuner::beginTuning,
+                    flywheelAutoTuner::stop,
+                    flywheelAutoTuner
+            )
+        );
+        testingController.y().whileTrue(
+            Commands.startEnd(
+                    () -> flywheelAutoTuner.runCandidate(20.0),
+                    flywheelAutoTuner::stop,
+                    flywheelAutoTuner
+            )
+        );
     }
 
     private void configureBindings () {
